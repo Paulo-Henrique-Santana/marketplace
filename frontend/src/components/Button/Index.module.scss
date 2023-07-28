@@ -1,0 +1,18 @@
+@import "../../styles/Variables.scss";
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 1.5rem;
+    height: 3rem;
+    cursor: pointer;
+    border-radius: 20rem;
+    background: $purple;
+    border: none;
+    font-size: 1.2rem;
+    color: $white;
+    transition: .3s;
+        &:hover {
+            background:$strongPurple;
+        }
+}
