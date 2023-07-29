@@ -1,0 +1,27 @@
+@import "../../../styles/Variables.scss";
+
+.span {
+    margin-top: 3rem;
+    position: relative;
+    &::before {
+        content: "";
+        width: 100%;
+        top: 1.5rem;
+        background: #dfdede;
+        position: absolute;
+        height: 1px;
+    }
+    p {
+        text-align: center;
+        color: #4a4a4a;
+    }
+    a {
+        color: $purple;
+        text-align: center;
+        transition: .3s;
+        &:hover {
+            color:strongPurple;
+            text-decoration: underline;
+        }
+    }
+}
