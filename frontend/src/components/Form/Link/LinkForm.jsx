@@ -6,8 +6,7 @@ const FomrLink = ({ firstText, secondText, link }) => {
   return (
     <span className={styles.span}>
       <p>
-        {firstText}
-        <Link to={link}>{secondText}</Link>
+        {firstText} <Link to={link}> {secondText}</Link>
       </p>
     </span>
   );

@@ -37,31 +37,6 @@ header {
         max-width: 1300px;
         margin: 0 auto;
         padding: 1.5rem;
-        h1 {
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
-            gap: .3rem;
-            position: relative;
-            z-index: 1;
-            color: #000;
-            &::before {
-                content: "";
-                display: block;
-                height: 23px;
-                width: 23px;
-                background-color: #8758ff;
-                top: .2rem;
-                left: 2.2rem;
-                position: absolute;
-                transition: 0.4s;
-                border-radius: 4px;
-                z-index: -1;
-            }
-            svg {
-                color: #000;
-            }
-        }
         ul {
             display: flex;
             gap: 1.7rem;
@@ -99,7 +74,7 @@ header {
     }
 }
 
-.formContainer {
+.inputContainer {
     box-shadow:  0px 1px 1px rgba(0, 0, 0, 0.1);
     form {
         max-width: 1300px;

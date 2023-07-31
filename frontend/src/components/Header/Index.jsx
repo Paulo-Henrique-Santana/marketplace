@@ -9,12 +9,13 @@ import {
   FaArrowRightFromBracket,
   FaCartShopping,
   FaHeart,
-  FaBuildingColumns
+  FaBuildingColumns,
 } from "react-icons/fa6";
 
 import "./Index.scss";
+import Logo from "../Logo/Logo";
 
-const Index = () => {
+const Header = () => {
   return (
     <>
       <div className="navTopBar">
@@ -32,10 +33,7 @@ const Index = () => {
       </div>
       <header>
         <nav>
-          <h1>
-            <FaDumpster />
-            Marketplace
-          </h1>
+          <Logo />
           <ul>
             <li>
               <FaUserLarge />
@@ -60,7 +58,7 @@ const Index = () => {
           </ul>
         </nav>
       </header>
-      <div className="formContainer">
+      <div className="inputContainer">
         <form>
           <input type="text" />
           <button>
@@ -72,4 +70,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Header;
