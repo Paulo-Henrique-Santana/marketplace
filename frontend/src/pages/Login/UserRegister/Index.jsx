@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import Form from "../../../components/Form/Form";
 import Logo from "../../../components/Logo/Logo";
 import InformationText from "../../../components/Form/InformationText/InformationText";
 import LinkForm from "../../../components/Form/Link/LinkForm";
+import Input from "../../../components/Form/Input/Input";
+import Button from "../../../components/Button/Button";
+
 import "../Index.scss";
 
 const UserRegister = () => {
@@ -27,13 +29,23 @@ const UserRegister = () => {
     };
     fetchData();
   }, []);
-  
+
   return (
     <section className="formContainer">
       <div className="form">
         <Logo />
         <InformationText text="Access your account" />
-        <Form />
+        <form>
+          {/* <Input htmlFor="name" type="text" name="name" id="name" text="Name" />
+          <Input
+            htmlFor="password"
+            type="password"
+            name="password"
+            id="password"
+            text="Password"
+          /> */}
+          <Button text="Enter" />
+        </form>
         <LinkForm link="/forgot-password" secondText="Forgot password" />
         <LinkForm
           link="/register"

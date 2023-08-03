@@ -1,8 +1,10 @@
 import React from "react";
-import Form from "../../../components/Form/Form";
 import Logo from "../../../components/Logo/Logo";
 import InformationText from "../../../components/Form/InformationText/InformationText";
 import LinkForm from "../../../components/Form/Link/LinkForm";
+import Input from "../../../components/Form/Input/Input";
+import Button from "../../../components/Button/Button";
+
 import "../Index.scss";
 
 const ForgotPassword = () => {
@@ -13,15 +15,19 @@ const ForgotPassword = () => {
         <InformationText text="Forgot your password?" />
         <p className="forgotYourPassword">
           Don't worry! Enter your registration email and we will send you
-          instructions
+          instructions.
         </p>
-        <Form />
-        <LinkForm link="/forgot-password" secondText="Forgot password" />
-        <LinkForm
-          link="/register"
-          firstText="Don't have an account?"
-          secondText=" Register"
-        />
+        <form>
+          {/* <Input
+            htmlFor="email"
+            type="email"
+            name="email"
+            id="email"
+            text="E-mail"
+          /> */}
+          <Button text="Receive instructions" />
+        </form>
+        <LinkForm link="/" firstText="Back to" secondText=" Login" />
       </div>
     </section>
   );
