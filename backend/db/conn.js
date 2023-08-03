@@ -1,8 +1,19 @@
+require("dotenv").config();
+
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(
-  "postgres://postgres:107757576@localhost:5432/marketplace"
-);
+const dbName = process.env.DB_NAME;
+const dbUser = process.env.DB_USER;
+const dbHost = process.env.DB_HOST;
+const dbDriver = process.env.DB_DRIVER;
+const dbPassword = process.env.DB_PASSWORD;
+
+console.log(dbName);
+
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+  host: dbHost,
+  dialect: dbDriver,
+});
 
 try {
   sequelize.authenticate();
