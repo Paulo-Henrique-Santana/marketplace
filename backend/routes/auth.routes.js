@@ -18,13 +18,13 @@ AuthRouter.post("/", async (req, res) => {
     });
   } catch {
     return res.status(401).send({
-      error: "Usuário inválido",
+      message: "Usuário inválido",
     });
   }
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(401).send({
-      error: "Usuário inválido",
+      message: "Usuário inválido",
     });
   }
 
@@ -38,7 +38,7 @@ AuthRouter.post("/", async (req, res) => {
     );
   } catch (err) {
     return res.status(401).send({
-      error: "Usuário inválido",
+      message: "Usuário inválido",
     });
   }
 
@@ -54,16 +54,16 @@ AuthRouter.post("/", async (req, res) => {
 });
 
 AuthRouter.get("*", async (req, res) => {
-  return res.json({ error: "Endpoint não encontrado" });
+  return res.json({ message: "Endpoint não encontrado" });
 });
 AuthRouter.post("*", async (req, res) => {
-  return res.json({ error: "Endpoint não encontrado" });
+  return res.json({ message: "Endpoint não encontrado" });
 });
 AuthRouter.put("*", async (req, res) => {
-  return res.json({ error: "Endpoint não encontrado" });
+  return res.json({ message: "Endpoint não encontrado" });
 });
 AuthRouter.delete("*", async (req, res) => {
-  return res.json({ error: "Endpoint não encontrado" });
+  return res.json({ message: "Endpoint não encontrado" });
 });
 
 module.exports = AuthRouter;
