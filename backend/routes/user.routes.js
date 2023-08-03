@@ -24,6 +24,20 @@ UserRouter.get("/:id", async (req, res) => {
 
 UserRouter.post("/", async (req, res) => {
   try {
+    const { email, cpf } = req.body;
+
+    let user = await User.findOne({ where: { email } });
+
+    if (user) {
+      return res.status(409).send({ message: "Email já cadastrado" });
+    }
+
+    user = await User.findOne({ where: { cpf } });
+
+    if (user) {
+      return res.status(409).send({ message: "CPF já cadastrado" });
+    }
+
     const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
 
     const data = await User.create({
