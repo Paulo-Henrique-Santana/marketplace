@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 const UserRouter = express.Router();
-const salt = bcrypt.genSaltSync(13);
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -25,10 +24,7 @@ UserRouter.get("/:id", async (req, res) => {
 
 UserRouter.post("/", async (req, res) => {
   try {
-    const encryptedPassword = bcrypt.hashSync(
-      Buffer.from(req.body.password).toString("base64"),
-      salt
-    );
+    const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
 
     const data = await User.create({
       ...req.body,
@@ -67,6 +63,19 @@ UserRouter.delete("/:id", async (req, res) => {
   } catch (err) {
     res.status(400).send(err.toString());
   }
+});
+
+UserRouter.get("*", async (req, res) => {
+  return res.json({ error: "Endpoint não encontrado" });
+});
+UserRouter.post("*", async (req, res) => {
+  return res.json({ error: "Endpoint não encontrado" });
+});
+UserRouter.put("*", async (req, res) => {
+  return res.json({ error: "Endpoint não encontrado" });
+});
+UserRouter.delete("*", async (req, res) => {
+  return res.json({ error: "Endpoint não encontrado" });
 });
 
 module.exports = UserRouter;

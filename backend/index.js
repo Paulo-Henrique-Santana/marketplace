@@ -1,8 +1,11 @@
 const express = require("express");
+const cors = require("cors");
+
 const conn = require("./db/conn");
 const UserRouter = require("./routes/user.routes");
+const AuthRouter = require("./routes/auth.routes");
+
 const app = express();
-const cors = require("cors");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -22,15 +25,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api/user", UserRouter);
-
-// app.use(
-//   queryParser({
-//     parseNull: true,
-//     parseUndefined: true,
-//     parseBoolean: true,
-//     parseNumber: true,
-//   })
-// );
+app.use("/api/auth", AuthRouter);
 
 conn
   .sync({ alter: true })
