@@ -7,6 +7,9 @@ const Validation = () => {
   const cpfRegex = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
   const passwordRegex =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+  const removerCaracteresEspeciais = (string) => {
+    return string.replace(/[^a-zA-Z0-9]/g, "");
+  };
 
   const schema = Yup.object().shape({
     name: Yup.string()
@@ -19,18 +22,19 @@ const Validation = () => {
 
     cpf: Yup.string()
       .required("Required field")
-      .matches(cpfRegex, "Invalid CPF"),
+      .matches(cpfRegex, "Invalid CPF")
+      .transform((element) => removerCaracteresEspeciais(element)),
 
     password: Yup.string()
-      .required("Required field"),
-      // .matches(
-      //   passwordRegex,
-      //   "Required 8 characters,1 capital letter, 1 number,1 special character"
-      // ),
+      .required("Required field")
+      .matches(
+        passwordRegex,
+        "Required 8 characters,1 capital letter, 1 number,1 special character"
+      ),
 
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords need to be the same")
-      .required("Required field")
+      .required("Required field"),
   });
 
   const {
@@ -46,7 +50,6 @@ const Validation = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // console.log(getValues());
     reset();
   };
 

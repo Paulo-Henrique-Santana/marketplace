@@ -4,12 +4,12 @@ import InformationText from "../../../components/Form/InformationText/Informatio
 import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
 import LinkForm from "../../../components/Form/Link/LinkForm";
-import ValidationForm from "../Validation/ValidationForm";
+import Validation from "./Validation";
 import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
 
 const Register = () => {
-  const { onSubmit, register, handleSubmit, errors } = ValidationForm();
+  const { onSubmit, register, handleSubmit, errors } = Validation();
 
   return (
     <section className="formContainer">

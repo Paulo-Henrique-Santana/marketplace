@@ -5,12 +5,12 @@ import LinkForm from "../../../components/Form/Link/LinkForm";
 import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
 import Error from "../../../components/Form/Error/Error";
-import ValidationForm from "../Validation/ValidationForm";
+import Validation from "../ForgotPassword/Validation";
 
 import "../Index.scss";
 
 const ForgotPassword = () => {
-  const { onSubmit, register, handleSubmit, errors } = ValidationForm();
+  const { onSubmit, register, handleSubmit, errors } = Validation();
 
   return (
     <section className="formContainer">
