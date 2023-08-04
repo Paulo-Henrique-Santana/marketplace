@@ -4,6 +4,7 @@ const cors = require("cors");
 const conn = require("./db/conn");
 const UserRouter = require("./routes/user.routes");
 const AuthRouter = require("./routes/auth.routes");
+const ProductRouter = require("./routes/product.routes");
 
 const app = express();
 
@@ -24,8 +25,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/api/user", UserRouter);
 app.use("/api/auth", AuthRouter);
+app.use("/api/user", UserRouter);
+app.use("/api/product", ProductRouter);
 
 conn
   .sync({ alter: true })
