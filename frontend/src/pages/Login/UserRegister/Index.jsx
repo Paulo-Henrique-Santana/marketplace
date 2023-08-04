@@ -4,10 +4,13 @@ import InformationText from "../../../components/Form/InformationText/Informatio
 import LinkForm from "../../../components/Form/Link/LinkForm";
 import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
+import ValidationForm from "../Validation/ValidationForm";
+import Error from "../../../components/Form/Error/Error";
 
 import "../Index.scss";
 
 const UserRegister = () => {
+  const { onSubmit, register, handleSubmit, errors } = ValidationForm();
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch("http://localhost:3000/api/user", {
@@ -35,14 +38,24 @@ const UserRegister = () => {
         <Logo />
         <InformationText text="Access your account" />
         <form>
-          {/* <Input htmlFor="name" type="text" name="name" id="name" text="Name" />
+          <Input
+            htmlFor="name"
+            type="text"
+            name="name"
+            id="name"
+            text="Name"
+            register={register}
+            validation="name"
+          />
           <Input
             htmlFor="password"
             type="password"
             name="password"
             id="password"
             text="Password"
-          /> */}
+            register={register}
+            validation="password"
+          />
           <Button text="Enter" />
         </form>
         <LinkForm link="/forgot-password" secondText="Forgot password" />

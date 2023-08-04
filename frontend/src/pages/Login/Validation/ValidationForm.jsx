@@ -1,18 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import AppContext from "../../../context/AppContext";
-
-// .transform((name) => {
-//   return name
-//     .trim()
-//     .split(" ")
-//     .map((word) => {
-//       return word[0].toLocaleUpperCase().concat(word.substring(1));
-//     })
-//     .join(" ");
-// }),
 
 const Validation = () => {
   const cpfRegex = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
@@ -33,15 +22,15 @@ const Validation = () => {
       .matches(cpfRegex, "Invalid CPF"),
 
     password: Yup.string()
-      .required("Required field")
-      .matches(
-        passwordRegex,
-        "Required 8 characters,1 capital letter, 1 number,1 special character"
-      ),
+      .required("Required field"),
+      // .matches(
+      //   passwordRegex,
+      //   "Required 8 characters,1 capital letter, 1 number,1 special character"
+      // ),
 
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords need to be the same")
-      .required("Required field"),
+      .required("Required field")
   });
 
   const {
@@ -49,22 +38,24 @@ const Validation = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    getValues,
   } = useForm({
     mode: "all",
     resolver: yupResolver(schema),
   });
 
-  console.log(errors);
-
   const onSubmit = (data) => {
     console.log(data);
+    // console.log(getValues());
     reset();
   };
+
   return {
     onSubmit,
     register,
     handleSubmit,
     errors,
+    schema,
   };
 };
 

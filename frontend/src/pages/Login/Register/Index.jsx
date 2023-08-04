@@ -7,12 +7,9 @@ import LinkForm from "../../../components/Form/Link/LinkForm";
 import ValidationForm from "../Validation/ValidationForm";
 import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
-import ReactInputMask from "react-input-mask";
+
 const Register = () => {
   const { onSubmit, register, handleSubmit, errors } = ValidationForm();
-
-  const { text } = useContext(AppContext);
-  console.log(text);
 
   return (
     <section className="formContainer">
@@ -65,10 +62,10 @@ const Register = () => {
           />
           {errors.password && <Error error={errors.password.message} />}
           <Input
-            htmlFor="password"
+            htmlFor="confirmPassword"
             type="password"
             name="password"
-            id="password"
+            id="confirmPassword"
             text="Confirm password"
             register={register}
             validation="confirmPassword"

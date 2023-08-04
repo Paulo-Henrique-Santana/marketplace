@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 
 const Provider = ({ children }) => {
-  const [text, setText] = useState("");
+  const [textInput, setTextInput] = useState("");
+  const [color, serColor] = useState(false);
 
   const value = {
-    text,
-    setText,
+    textInput,
+    setTextInput,
+    color,
+    serColor,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

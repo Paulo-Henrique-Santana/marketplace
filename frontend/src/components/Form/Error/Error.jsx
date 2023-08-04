@@ -1,7 +1,7 @@
 import React from "react";
-
+import styles from "./Index.module.scss";
 const Error = ({ error }) => {
-  return <div>{error}</div>;
+  return <p className={styles.error}>{error}</p>;
 };
 
 export default Error;
