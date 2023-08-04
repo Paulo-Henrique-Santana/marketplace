@@ -1,27 +1,59 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import AppContext from "../../../context/AppContext";
+
+// .transform((name) => {
+//   return name
+//     .trim()
+//     .split(" ")
+//     .map((word) => {
+//       return word[0].toLocaleUpperCase().concat(word.substring(1));
+//     })
+//     .join(" ");
+// }),
 
 const Validation = () => {
+  const cpfRegex = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
+  const passwordRegex =
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+
   const schema = Yup.object().shape({
-    name: Yup.string().required("Campo obrigatório"),
-    email: Yup.string().required("Campo obrigatório"),
-    cpf: Yup.string().required("Campo obrigatório"),
+    name: Yup.string()
+      .required("Required field")
+      .min(3, "Name must be at least 3 characters long"),
+
+    email: Yup.string()
+      .email("Email format is not valid")
+      .required("Required field"),
+
+    cpf: Yup.string()
+      .required("Required field")
+      .matches(cpfRegex, "Invalid CPF"),
+
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters long")
-      .required("Campo obrigatório"),
+      .required("Required field")
+      .matches(
+        passwordRegex,
+        "Required 8 characters,1 capital letter, 1 number,1 special character"
+      ),
+
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "A senhas precisam ser iguais")
-      .required("Campo"),
+      .oneOf([Yup.ref("password"), null], "Passwords need to be the same")
+      .required("Required field"),
   });
 
-  const { register, handleSubmit, formState, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     mode: "all",
     resolver: yupResolver(schema),
   });
 
-  const { errors, isSubmitting } = formState;
   console.log(errors);
 
   const onSubmit = (data) => {
@@ -32,7 +64,6 @@ const Validation = () => {
     onSubmit,
     register,
     handleSubmit,
-    formState,
     errors,
   };
 };

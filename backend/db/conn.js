@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-  "postgres://postgres:107757576@localhost:5432/marketplace"
+  "postgres://postgres:07092000@localhost:5432/marketplace"
 );
 
 try {

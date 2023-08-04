@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "../../../components/Logo/Logo";
 import InformationText from "../../../components/Form/InformationText/InformationText";
 import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
 import LinkForm from "../../../components/Form/Link/LinkForm";
 import ValidationForm from "../Validation/ValidationForm";
-
+import AppContext from "../../../context/AppContext";
+import Error from "../../../components/Form/Error/Error";
+import ReactInputMask from "react-input-mask";
 const Register = () => {
   const { onSubmit, register, handleSubmit, errors } = ValidationForm();
+
+  const { text } = useContext(AppContext);
+  console.log(text);
 
   return (
     <section className="formContainer">
@@ -25,7 +30,7 @@ const Register = () => {
             register={register}
             validation="name"
           />
-          {errors.name && <p>{errors.name.message}</p>}
+          {errors.name && <Error error={errors.name.message} />}
           <Input
             htmlFor="email"
             type="email"
@@ -36,18 +41,19 @@ const Register = () => {
             register={register}
             validation="email"
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <Error error={errors.email.message} />}
           <Input
             htmlFor="cpf"
-            type="number"
+            type="text"
             name="cpf"
             id="cpf"
             text="CPF"
             placeholder="123.456.789-10"
             register={register}
             validation="cpf"
+            mask="999.999.999-99"
           />
-          {errors.cpf && <p>{errors.cpf.message}</p>}
+          {errors.cpf && <Error error={errors.cpf.message} />}
           <Input
             htmlFor="password"
             type="password"
@@ -56,10 +62,8 @@ const Register = () => {
             text="Password"
             register={register}
             validation="password"
-            pattern={/^\d+$/}
-            message="dsad"
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <Error error={errors.password.message} />}
           <Input
             htmlFor="password"
             type="password"
@@ -69,7 +73,9 @@ const Register = () => {
             register={register}
             validation="confirmPassword"
           />
-          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          {errors.confirmPassword && (
+            <Error error={errors.confirmPassword.message} />
+          )}
           <Button text="Register" />
         </form>
         <LinkForm

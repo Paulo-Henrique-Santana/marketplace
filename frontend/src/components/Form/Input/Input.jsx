@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 // import { useForm } from "react-hook-form";
 import styles from "./Index.module.scss";
+import AppContext from "../../../context/AppContext";
+import ReactInputMask from "react-input-mask";
 
 const Input = ({
   htmlFor,
@@ -11,9 +13,8 @@ const Input = ({
   placeholder,
   register,
   validation,
-  pattern,
-  message,
 }) => {
+  const { setText } = useContext(AppContext);
   // const { register, handleSubmit } = useForm();
   // console.log(register);
   return (
@@ -27,6 +28,7 @@ const Input = ({
         id={id}
         placeholder={placeholder}
         {...register(validation)}
+        onChange={(event) => setText(event.target.value)}
       />
     </div>
   );
