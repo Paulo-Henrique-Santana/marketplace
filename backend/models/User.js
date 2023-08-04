@@ -10,7 +10,19 @@ User.init(
     password: { type: DataTypes.STRING, allowNull: false },
     cpf: { type: DataTypes.BIGINT(11), allowNull: false },
   },
-  { sequelize, modelName: "User", timestamps: false }
+  {
+    sequelize,
+    modelName: "User",
+    timestamps: false,
+    defaultScope: {
+      attributes: { exclude: ["password"] },
+    },
+    hooks: {
+      afterCreate: (record) => {
+        delete record.dataValues.password;
+      },
+    },
+  }
 );
 
 module.exports = User;
