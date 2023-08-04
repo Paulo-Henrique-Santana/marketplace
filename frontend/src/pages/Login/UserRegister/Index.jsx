@@ -10,10 +10,9 @@ import "../Index.scss";
 const UserRegister = () => {
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("localhost:3000/api/user", {
+      const response = await fetch("http://localhost:3000/api/user", {
         method: "POST",
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
