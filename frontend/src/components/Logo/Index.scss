@@ -1,16 +1,14 @@
+@import "../../styles/Variables.scss";
+
 h1 {
     font-size: 2rem;
-    display: flex;
-    align-items: center;
-    gap: .3rem;
-    position: relative;
-    z-index: 1;
     a {
-        color: #000;
+        color: $black;
         display: flex;
         align-items: center;
+        gap: .7rem;
     }
     svg {
-        color: #000;
+        color: $black;
     }
 }
