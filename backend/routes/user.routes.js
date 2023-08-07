@@ -6,6 +6,18 @@ const UserRouter = express.Router();
 
 UserRouter.get("/", async (req, res) => {
   try {
+    const { cpf, email } = req.query;
+
+    if (cpf) {
+      const data = await User.findAll({ where: { cpf } });
+      return res.status(200).json(data);
+    }
+
+    if (email) {
+      const data = await User.findAll({ where: { email } });
+      return res.status(200).json(data);
+    }
+
     const data = await User.findAll();
     return res.status(200).json(data);
   } catch (err) {
