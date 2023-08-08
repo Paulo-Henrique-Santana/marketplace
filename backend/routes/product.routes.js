@@ -6,6 +6,13 @@ const ProductRouter = express.Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
+    const { idCategory } = req.query;
+
+    if (idCategory) {
+      const data = await Product.findAll({ where: { idCategory } });
+      return res.status(200).json(data);
+    }
+
     const data = await Product.findAll();
     return res.status(200).json(data);
   } catch (err) {
