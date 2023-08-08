@@ -5,6 +5,8 @@ const conn = require("./db/conn");
 const UserRouter = require("./routes/user.routes");
 const AuthRouter = require("./routes/auth.routes");
 const ProductRouter = require("./routes/product.routes");
+const Category = require("./models/Category");
+const CategoryRouter = require("./routes/category.routes");
 
 const app = express();
 
@@ -25,9 +27,37 @@ app.use(function (req, res, next) {
   next();
 });
 
+const productCategories = [
+  "Electronics",
+  "Clothing",
+  "Accessories",
+  "Cosmetics",
+  "Food",
+  "Toys",
+  "Furniture",
+  "Books",
+  "Sports",
+  "Games",
+  "Musical Instruments",
+  "Automobiles",
+];
+
+const createCategories = async () => {
+  const categories = await Category.findAll();
+  if (!categories.length) {
+    Promise.all(
+      productCategories.map(async (category) => {
+        await Category.create({ name: category });
+      })
+    );
+  }
+};
+createCategories();
+
 app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
+app.use("/api/category", CategoryRouter);
 
 conn
   .sync({ alter: true })
