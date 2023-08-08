@@ -14,9 +14,9 @@ User.init(
     sequelize,
     modelName: "User",
     timestamps: false,
-    defaultScope: {
-      attributes: { exclude: ["password"] },
-    },
+    // defaultScope: {
+    //   attributes: { exclude: ["password"] },
+    // },
     hooks: {
       afterCreate: (record) => {
         delete record.dataValues.password;
