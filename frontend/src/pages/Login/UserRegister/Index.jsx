@@ -1,69 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Logo from "../../../components/Logo/Logo";
 import InformationText from "../../../components/Form/InformationText/InformationText";
 import LinkForm from "../../../components/Form/Link/LinkForm";
 import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
-import Validation from "../Register/Validation";
+import Validation from "./Validation";
+import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
-import useFetch from "../../../Hooks/useFetch";
-import { USER_POST_LOGIN } from "../../../Api/Index";
 
 import "../Index.scss";
 
 const UserRegister = () => {
-  const { onSubmit, register, handleSubmit, errors } = Validation();
-  const { data, loading, error, request } = useFetch();
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch("http://localhost:3000/api/user", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         name: "Gabriel",
-  //         password: "123",
-  //         email: "gabrielp_lacerda@hotmail.com",
-  //         cpf: 51412984858,
-  //       }),
-  //     });
-  //     const json = await response.json();
-
-  //     console.log(json);
-  //   };
-  //   fetchData();
-  // }, []);
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    const { url, options } = USER_POST_LOGIN({
-      name: "J222",
-      password: "22222",
-      email: "ff3_lacerda@hotmail.com",
-      cpf: 14323,
-    });
-    // console.log("dsa");
-    // request(url, options);
-    const { response } = await request(url, options);
-    // console.log(await response.json());
-    // if (response.ok) userLogin(username.value, password.value);
-  };
-
+  const { onSubmit, register, handleSubmit } = Validation();
+  const { errorInputLogin } = useContext(AppContext);
   return (
     <section className="formContainer">
       <div className="form">
         <Logo />
         <InformationText text="Access your account" />
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Input
-            htmlFor="name"
-            type="text"
-            name="name"
-            id="name"
-            text="Name"
+            htmlFor="email"
+            type="email"
+            name="email"
+            id="email"
+            text="E-mail"
+            placeholder="market@gmail.com"
             register={register}
-            validation="name"
+            validation="email"
           />
           <Input
             htmlFor="password"
@@ -74,6 +38,7 @@ const UserRegister = () => {
             register={register}
             validation="password"
           />
+          <Error error={errorInputLogin} />
           <Button text="Enter" />
         </form>
         <LinkForm link="/forgot-password" secondText="Forgot password" />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaMagnifyingGlass,
@@ -11,16 +11,24 @@ import {
   FaHeart,
   FaBuildingColumns,
 } from "react-icons/fa6";
+import Logo from "../Logo/Logo";
+import AppContext from "../../context/AppContext";
 
 import "./Index.scss";
-import Logo from "../Logo/Logo";
 
 const Header = () => {
+  const { token, loginName, setToken, setLoginName } = useContext(AppContext);
+
+  const handleClick = () => {
+    setToken("");
+    setLoginName("");
+  };
+
   return (
     <>
       <div className="navTopBar">
         <ul className="topBar">
-          <li>By: Paulo Henrique and Gabriel</li>
+          <li>By: Paulo Henrique and Gabriel Silva</li>
           <li>
             <p>
               Eng. <FaAngleDown />
@@ -35,26 +43,49 @@ const Header = () => {
         <nav>
           <Logo />
           <ul>
+            {token && (
+              <li>
+                <Link>
+                  <FaUserLarge />
+                  {loginName}
+                </Link>
+              </li>
+            )}
+            {token ? (
+              <li>
+                <Link onClick={handleClick} to="/">
+                  <FaArrowRightFromBracket />
+                  Logout
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/">
+                  <FaUserLarge />
+                  Enter
+                </Link>
+              </li>
+            )}
             <li>
-              <FaUserLarge />
-              <Link>User</Link>
+              <Link>
+                <FaCartShopping />
+                Cart
+              </Link>
             </li>
             <li>
-              <FaArrowRightFromBracket />
-              <Link>Enter</Link>
+              <Link>
+                <FaHeart />
+                Favorites
+              </Link>
             </li>
-            <li>
-              <FaCartShopping />
-              <Link>Cart</Link>
-            </li>
-            <li>
-              <FaHeart />
-              <Link>Favorites</Link>
-            </li>
-            <li>
-              <FaBuildingColumns />
-              <Link>Sell</Link>
-            </li>
+            {token && (
+              <li>
+                <Link>
+                  <FaBuildingColumns />
+                  Sell
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </header>

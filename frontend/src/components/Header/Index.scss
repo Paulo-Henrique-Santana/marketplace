@@ -54,6 +54,9 @@ header {
                 a {
                     font-weight: 500;
                     color: $brown;
+                    display: flex;
+                    align-items: center;
+                    gap: .6rem;
                     border-bottom: 2px solid transparent;
                     position: relative;
                     &::after {

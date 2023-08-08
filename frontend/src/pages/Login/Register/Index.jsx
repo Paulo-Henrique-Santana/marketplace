@@ -9,7 +9,9 @@ import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
 
 const Register = () => {
-  const { onSubmit, register, handleSubmit, errors } = Validation();
+  const { onSubmit, onBlurCpf, onBlurEmail, register, handleSubmit, errors } =
+    Validation();
+  const { errorInputCpf, errorInputEmail } = useContext(AppContext);
 
   return (
     <section className="formContainer">
@@ -37,8 +39,11 @@ const Register = () => {
             placeholder="market@gmail.com"
             register={register}
             validation="email"
+            onBlur={onBlurEmail}
           />
           {errors.email && <Error error={errors.email.message} />}
+          <Error error={errorInputEmail} />
+
           <Input
             htmlFor="cpf"
             type="text"
@@ -49,8 +54,11 @@ const Register = () => {
             register={register}
             validation="cpf"
             mask="999.999.999-99"
+            onBlur={onBlurCpf}
           />
           {errors.cpf && <Error error={errors.cpf.message} />}
+          <Error error={errorInputCpf} />
+
           <Input
             htmlFor="password"
             type="password"

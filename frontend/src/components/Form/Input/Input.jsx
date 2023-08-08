@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import styles from "./Index.module.scss";
-import AppContext from "../../../context/AppContext";
 
 const Input = ({
   htmlFor,
@@ -11,13 +10,8 @@ const Input = ({
   placeholder,
   register,
   validation,
-  errors,
+  onBlur,
 }) => {
-  const { textInput, setTextInput } = useContext(AppContext);
-
-  // const handleChange = (event) => {
-  //   setTextInput(event.target.value);
-  // };
 
   return (
     <div className={styles.wrapper}>
@@ -30,7 +24,7 @@ const Input = ({
         id={id}
         placeholder={placeholder}
         {...register(validation)}
-        // onChange={handleChange}
+        onBlur={onBlur}
       />
     </div>
   );
