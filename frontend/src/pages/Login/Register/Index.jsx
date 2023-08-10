@@ -9,9 +9,17 @@ import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
 
 const Register = () => {
-  const { onSubmit, onBlurCpf, onBlurEmail, register, handleSubmit, errors } =
-    Validation();
-  const { errorInputCpf, errorInputEmail } = useContext(AppContext);
+  const {
+    onSubmit,
+    onBlurCpf,
+    onBlurEmail,
+    register,
+    handleSubmit,
+    errors,
+    errorInputCpf,
+    errorInputEmail,
+  } = Validation();
+  // const {} = useContext(AppContext);
 
   return (
     <section className="formContainer">
@@ -28,6 +36,7 @@ const Register = () => {
             placeholder="Example: Gabriel Silva"
             register={register}
             validation="name"
+            errors={errors}
           />
           {errors.name && <Error error={errors.name.message} />}
           <Input
@@ -40,6 +49,7 @@ const Register = () => {
             register={register}
             validation="email"
             onBlur={onBlurEmail}
+            errors={errors}
           />
           {errors.email && <Error error={errors.email.message} />}
           <Error error={errorInputEmail} />
@@ -55,6 +65,7 @@ const Register = () => {
             validation="cpf"
             mask="999.999.999-99"
             onBlur={onBlurCpf}
+            errors={errors}
           />
           {errors.cpf && <Error error={errors.cpf.message} />}
           <Error error={errorInputCpf} />
@@ -67,6 +78,7 @@ const Register = () => {
             text="Password"
             register={register}
             validation="password"
+            errors={errors}
           />
           {errors.password && <Error error={errors.password.message} />}
           <Input
@@ -77,6 +89,7 @@ const Register = () => {
             text="Confirm password"
             register={register}
             validation="confirmPassword"
+            errors={errors}
           />
           {errors.confirmPassword && (
             <Error error={errors.confirmPassword.message} />

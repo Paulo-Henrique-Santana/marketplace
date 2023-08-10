@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -6,33 +6,34 @@ import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import AppContext from "../../../context/AppContext";
+import Regex from "./Regex";
 
 const Validation = () => {
-  const cpfRegex = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
-  const passwordRegex =
-    /^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/;
-  const removerCaracteresEspeciais = (string) => {
+  const [errorInputCpf, setErrorInputCpf] = useState("");
+  const [errorInputEmail, setErrorInputEmail] = useState("");
+  const { passwordRegex, cpfRegex } = Regex();
+  const { setLoginName } = useContext(AppContext);
+  const { request } = useFetch();
+  const navigate = useNavigate();
+
+  const RemoverSpecialCharacters = (string) => {
     return string.replace(/[^a-zA-Z0-9]/g, "");
   };
 
-  const { request } = useFetch();
-  const { setErrorInputCpf, setErrorInputEmail, setLoginName } =
-    useContext(AppContext);
-
-  const navigate = useNavigate();
   const schema = Yup.object().shape({
-    name: Yup.string().required("Required field"),
-    // .min(3, "Name must be at least 3 characters long"),
+    name: Yup.string()
+      .required("Required field")
+      .min(3, "Name must be at least 3 characters long"),
 
-    email: Yup.string(),
-    // .email("Email format is not valid")
-    // .required("Required field"),
+    email: Yup.string()
+      .email("Email format is not valid")
+      .required("Required field"),
 
-    cpf: Yup.string(),
-    // .required("Required field")
-    // .max(11, "Maximum 12 characters")
-    // .matches(cpfRegex, "Invalid CPF")
-    // .transform((element) => removerCaracteresEspeciais(element)),
+    cpf: Yup.string()
+      .required("Required field")
+      .max(11, "Maximum 12 characters")
+      .matches(cpfRegex, "Invalid CPF")
+      .transform((element) => RemoverSpecialCharacters(element)),
 
     password: Yup.string().required("Required field"),
     // .matches(
@@ -48,7 +49,7 @@ const Validation = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({
     mode: "all",
@@ -58,7 +59,7 @@ const Validation = () => {
   const onBlurCpf = async (cpf) => {
     if (cpf.target.value && !errors.email) {
       const { url, options } = USERS_GET({
-        cpf: removerCaracteresEspeciais(cpf.target.value),
+        cpf: RemoverSpecialCharacters(cpf.target.value),
       });
       const { json } = await request(url, options);
       if (json.length) setErrorInputCpf("CPF already registered");
@@ -85,7 +86,7 @@ const Validation = () => {
       email: data.email,
       cpf: data.cpf,
     });
-    const { response, json } = await request(url, options);
+    const { response } = await request(url, options);
 
     if (response.ok) {
       setLoginName(data.name);
@@ -102,7 +103,9 @@ const Validation = () => {
     register,
     handleSubmit,
     errors,
-    schema,
+    isSubmitting,
+    errorInputCpf,
+    errorInputEmail,
   };
 };
 

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import styles from "./Index.module.scss";
+import Validation from "../../../pages/Login/Register/Validation";
 
 const Input = ({
   htmlFor,
@@ -11,6 +12,7 @@ const Input = ({
   register,
   validation,
   onBlur,
+  errors,
 }) => {
 
   return (
@@ -25,6 +27,11 @@ const Input = ({
         placeholder={placeholder}
         {...register(validation)}
         onBlur={onBlur}
+        style={
+          errors[validation]
+            ? { borderColor: "red" }
+            : { borderColor: "rgb(170, 170, 170)" }
+        }
       />
     </div>
   );

@@ -6,13 +6,12 @@ import Input from "../../../components/Form/Input/Input";
 import Button from "../../../components/Button/Button";
 import Error from "../../../components/Form/Error/Error";
 import Validation from "../ForgotPassword/Validation";
-import useFetch from "../../../Hooks/useFetch";
-import "../Index.scss";
 
+import "../Index.scss";
 
 const ForgotPassword = () => {
   const { onSubmit, register, handleSubmit, errors } = Validation();
- 
+
   return (
     <section className="formContainer">
       <div className="form">
@@ -31,6 +30,7 @@ const ForgotPassword = () => {
             text="E-mail"
             register={register}
             validation="email"
+            errors
           />
           {errors.email && <Error error={errors.email.message} />}
           <Button text="Receive instructions" />

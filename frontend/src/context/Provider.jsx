@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 
 const Provider = ({ children }) => {
-  const [errorInputCpf, setErrorInputCpf] = useState("");
-  const [errorInputEmail, setErrorInputEmail] = useState("");
-  const [errorInputLogin, setErrorInputLogin] = useState("");
   const [token, setToken] = useState(localStorage.getItem("key") || "");
   const [loginName, setLoginName] = useState(
     localStorage.getItem("key2") || ""
@@ -24,12 +21,6 @@ const Provider = ({ children }) => {
   }, [loginName]);
 
   const value = {
-    errorInputCpf,
-    setErrorInputCpf,
-    errorInputEmail,
-    setErrorInputEmail,
-    errorInputLogin,
-    setErrorInputLogin,
     token,
     setToken,
     loginName,

@@ -9,10 +9,15 @@ import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Error";
 
 import "../Index.scss";
+import { Navigate } from "react-router-dom";
 
 const UserRegister = () => {
-  const { onSubmit, register, handleSubmit } = Validation();
-  const { errorInputLogin } = useContext(AppContext);
+  const { onSubmit, register, handleSubmit, errorInputLogin, errors } =
+    Validation();
+  const { token } = useContext(AppContext);
+
+  if (token) return <Navigate to="/home" />;
+
   return (
     <section className="formContainer">
       <div className="form">
@@ -28,6 +33,7 @@ const UserRegister = () => {
             placeholder="market@gmail.com"
             register={register}
             validation="email"
+            errors
           />
           <Input
             htmlFor="password"
@@ -37,6 +43,7 @@ const UserRegister = () => {
             text="Password"
             register={register}
             validation="password"
+            errors
           />
           <Error error={errorInputLogin} />
           <Button text="Enter" />

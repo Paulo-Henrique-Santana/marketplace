@@ -5,10 +5,10 @@ import ForgotPassword from "./pages/Login/ForgotPassword/Index";
 import Header from "../src/components/Header/Index";
 import Register from "./pages/Login/Register/Index";
 import Home from "./pages/Home/Home";
-import "./styles/Global.scss";
 import Provider from "./context/Provider";
 import ProtectedRoute from "./Helper/ProtectedRoute";
 
+import "./styles/Global.scss";
 const App = () => {
   return (
     <BrowserRouter>
@@ -18,14 +18,7 @@ const App = () => {
           <Route path="/" element={<UserRegister />} />
           <Route path="forgot-password/" element={<ForgotPassword />} />
           <Route path="register/" element={<Register />} />
-          <Route
-            path="home/*"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="home/*" element={<Home />} />
         </Routes>
       </Provider>
     </BrowserRouter>
