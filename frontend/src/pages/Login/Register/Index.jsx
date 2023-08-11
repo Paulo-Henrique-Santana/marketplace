@@ -19,7 +19,6 @@ const Register = () => {
     errorInputCpf,
     errorInputEmail,
   } = Validation();
-  // const {} = useContext(AppContext);
 
   return (
     <section className="formContainer">
@@ -32,13 +31,14 @@ const Register = () => {
             type="text"
             name="name"
             id="name"
-            text="Name"
-            placeholder="Example: Gabriel Silva"
+            text="First  name"
+            placeholder="Example: Gabriel "
             register={register}
             validation="name"
             errors={errors}
           />
           {errors.name && <Error error={errors.name.message} />}
+          
           <Input
             htmlFor="email"
             type="email"
@@ -97,7 +97,7 @@ const Register = () => {
           <Button text="Register" />
         </form>
         <LinkForm
-          link="/"
+          link="/login"
           firstText="Already have an account?"
           secondText=" Enter"
         />

@@ -11,7 +11,7 @@ import Error from "../../../components/Form/Error/Error";
 import "../Index.scss";
 import { Navigate } from "react-router-dom";
 
-const UserRegister = () => {
+const Login = () => {
   const { onSubmit, register, handleSubmit, errorInputLogin, errors } =
     Validation();
   const { token } = useContext(AppContext);
@@ -59,4 +59,4 @@ const UserRegister = () => {
   );
 };
 
-export default UserRegister;
+export default Login;

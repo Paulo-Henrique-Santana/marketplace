@@ -91,7 +91,7 @@ const Validation = () => {
     if (response.ok) {
       setLoginName(data.name);
       alert("Registration done successfully");
-      navigate("/");
+      navigate("/login");
     }
     reset();
   };

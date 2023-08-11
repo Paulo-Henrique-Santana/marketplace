@@ -35,7 +35,11 @@ const ForgotPassword = () => {
           {errors.email && <Error error={errors.email.message} />}
           <Button text="Receive instructions" />
         </form>
-        <LinkForm link="/" firstText="Back to" secondText=" Login" />
+        <LinkForm
+          link="/login"
+          firstText="Back to"
+          secondText=" Login"
+        />
       </div>
     </section>
   );
