@@ -31,6 +31,7 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/category", CategoryRouter);
+app.use("/api/files", express.static("uploads"));
 
 const productCategories = [
   "Electronics",

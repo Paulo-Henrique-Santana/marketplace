@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const Product = require("../models/Product");
+const upload = require("../config/multer");
 
 const ProductRouter = express.Router();
 
@@ -16,7 +17,7 @@ ProductRouter.get("/", async (req, res) => {
     const data = await Product.findAll();
     return res.status(200).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
@@ -25,16 +26,19 @@ ProductRouter.get("/:id", async (req, res) => {
     const data = await Product.findByPk(req.params.id);
     return res.status(200).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
-ProductRouter.post("/", async (req, res) => {
+ProductRouter.post("/", upload.single("image"), async (req, res) => {
   try {
-    const data = await Product.create(req.body);
+    const data = await Product.create({
+      ...req.body,
+      image: req.file.filename,
+    });
     return res.status(201).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
@@ -53,7 +57,7 @@ ProductRouter.put("/:id", async (req, res) => {
     const result = await Product.update(data, { where: { id: req.params.id } });
     return res.status(200).json(result);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
@@ -62,7 +66,7 @@ ProductRouter.delete("/:id", async (req, res) => {
     const data = await Product.destroy({ where: { id: req.params.id } });
     return res.status(200).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
