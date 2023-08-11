@@ -8,9 +8,10 @@ import { useNavigate } from "react-router-dom";
 import AppContext from "../../../context/AppContext";
 
 const Validation = () => {
+  const [errorInputLogin, setErrorInputLogin] = useState("");
   const { request } = useFetch();
-  const { setErrorInputLogin, setToken } = useContext(AppContext);
   const navigate = useNavigate();
+  const { setToken } = useContext(AppContext);
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -45,7 +46,6 @@ const Validation = () => {
         setErrorInputLogin("");
       }
     }
-
     reset();
   };
   return {
@@ -54,6 +54,7 @@ const Validation = () => {
     handleSubmit,
     errors,
     schema,
+    errorInputLogin,
   };
 };
 

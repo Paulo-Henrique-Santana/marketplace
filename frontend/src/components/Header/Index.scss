@@ -32,6 +32,8 @@
 }
 header {
     background: $white;
+    justify-content: space-between;
+    box-shadow:  $boxShadowContainer;
     nav {
         display: flex;
         align-items: center;
@@ -39,17 +41,76 @@ header {
         max-width: 1300px;
         margin: 0 auto;
         padding: 1.5rem;
-        ul {
+    
+        .inputContainer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            input {
+                width: 70%;
+                height: 3.5rem;
+                font-size: 1.3rem;
+                padding: 0 .9rem;
+                border: 1px solid $borderInput;
+                border-right: none;
+                outline: none;
+                border-top-left-radius: .5rem;
+                border-bottom-left-radius: .5rem;
+                &:focus {
+                border-color:$lightPurple ; 
+                }
+                &:focus + button {
+                    border-color:$lightPurple;
+                }
+            }
+            button {
+                padding: 0 1rem;
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                border-left: 0;
+                cursor: pointer;
+                background: transparent;
+                border: 1px solid $borderInput;
+                border-top-right-radius: .5rem;
+                border-bottom-right-radius: .5rem;
+                svg {
+                    color: $purple;
+                }
+            }
+        }
+        .menu {
             display: flex;
             gap: 1.7rem;
+            .loginName {
+                a {
+                    padding: .5rem;
+                }
+            }
             li {
                 padding-top: .1rem;
                 display: flex;
                 align-items: center;
                 gap: .6rem;
+                &:first-child {
+                    position: relative;
+                }
+                &:first-child:hover .subMenu {
+                    display: flex;
+                    animation: show-up .3s forwards;
+                }
+                @keyframes show-up {
+                    from {
+                        opacity: 0;
+                        transform: translate3d(0, 30px, 0);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate3d(0, 0, 0);
+                    }
+                }
                 svg {
                     font-size: 1.2rem;
-                    margin-bottom: .3rem;
                 }
                 a {
                     font-weight: 500;
@@ -75,49 +136,33 @@ header {
                     }
                 } 
             }
-        }
-    }
-}
-
-.inputContainer {
-    box-shadow:  $boxShadowContainer;
-    form {
-        max-width: 1300px;
-        margin: 0 auto;
-        width: 100%;
-        padding: 0 1.5rem 1.5rem 1.5rem;
-        display: flex;
-        justify-content: center;
-        input {
-            width: 70%;
-            height: 3.5rem;
-            font-size: 1.3rem;
-            padding: 0 .9rem;
-            border: 1px solid $borderInput;
-            border-right: none;
-            outline: none;
-            border-top-left-radius: .5rem;
-            border-bottom-left-radius: .5rem;
-            &:focus {
-               border-color:$lightPurple ; 
+            .subMenu {
+                position: absolute;
+                display: none;
+                justify-content: center;
+                top: 45px;
+                padding: .5rem;
+                left: -80px;
+                flex-direction: column;
+                gap: 10px;
+                border: 2px solid $lightPurple;
+                z-index: 200;
+                background: #eae4f8;
+                &::before {
+                    content: '';
+                    display: block;
+                    top: -10px;
+                    right: 20px;
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-bottom: 10px solid $lightPurple;
+                }
             }
-            &:focus + button {
-                border-color:$lightPurple;
-            }
-        }
-        button {
-            padding: 0 1rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            border-left: 0;
-            cursor: pointer;
-            background: transparent;
-            border: 1px solid $borderInput;
-            border-top-right-radius: .5rem;
-            border-bottom-right-radius: .5rem;
-            svg {
-                color: $purple;
+            .subMenu.active {
+                // display: flex;
             }
         }
     }

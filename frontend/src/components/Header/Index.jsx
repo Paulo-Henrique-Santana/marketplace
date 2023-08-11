@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaMagnifyingGlass,
@@ -18,11 +18,21 @@ import "./Index.scss";
 
 const Header = () => {
   const { token, loginName, setToken, setLoginName } = useContext(AppContext);
+  const [active, setActive] = useState(false);
 
   const handleClick = () => {
     setToken("");
     setLoginName("");
   };
+
+  const dropMenu = () => {
+    setActive(true);
+  };
+
+  window.addEventListener("click", (e) => {
+    console.log(e.target);
+    e.setActive(false);
+  });
 
   return (
     <>
@@ -42,61 +52,79 @@ const Header = () => {
       <header>
         <nav>
           <Logo />
-          <ul>
+          <form className="inputContainer">
+            <input type="text" />
+            <button>
+              <FaMagnifyingGlass />
+            </button>
+          </form>
+          <ul className="menu">
             {token && (
-              <li>
+              <li className="loginName" onClick={dropMenu}>
                 <Link>
                   <FaUserLarge />
                   {loginName}
+                  <FaAngleDown />
                 </Link>
+                <ul className={`subMenu ${active ? "active" : ""}`}>
+                  <li>
+                    <Link>
+                      <FaCartShopping />
+                      Cart
+                    </Link>
+                  </li>
+                  <li>
+                    <Link>
+                      <FaHeart />
+                      Favorites
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link>
+                      <FaBuildingColumns />
+                      Sell
+                    </Link>
+                  </li>
+                  <li>
+                    <Link onClick={handleClick} to="/login">
+                      <FaArrowRightFromBracket />
+                      Logout
+                    </Link>
+                  </li>
+                </ul>
               </li>
             )}
-            {token ? (
-              <li>
-                <Link onClick={handleClick} to="/">
-                  <FaArrowRightFromBracket />
-                  Logout
-                </Link>
-              </li>
-            ) : (
-              <li>
-                <Link to="/">
-                  <FaUserLarge />
-                  Enter
-                </Link>
-              </li>
-            )}
-            <li>
+            <li style={token ? { display: "none" } : { display: "block" }}>
+              <Link to="/login">
+                <FaUserLarge />
+                Enter
+              </Link>
+            </li>
+
+            <li style={token ? { display: "none" } : { display: "block" }}>
               <Link>
                 <FaCartShopping />
                 Cart
               </Link>
             </li>
-            <li>
+            <li style={token ? { display: "none" } : { display: "block" }}>
               <Link>
                 <FaHeart />
                 Favorites
               </Link>
             </li>
-            {token && (
-              <li>
-                <Link>
-                  <FaBuildingColumns />
-                  Sell
-                </Link>
-              </li>
-            )}
           </ul>
         </nav>
       </header>
-      <div className="inputContainer">
+      {/* <div className="inputContainer">
         <form>
           <input type="text" />
           <button>
             <FaMagnifyingGlass />
           </button>
         </form>
-      </div>
+      </div> */}
     </>
   );
 };
