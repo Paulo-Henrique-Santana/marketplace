@@ -27,6 +27,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use("/api/auth", AuthRouter);
+app.use("/api/user", UserRouter);
+app.use("/api/product", ProductRouter);
+app.use("/api/category", CategoryRouter);
+
 const productCategories = [
   "Electronics",
   "Clothing",
@@ -42,26 +47,18 @@ const productCategories = [
   "Automobiles",
 ];
 
-const createCategories = async () => {
-  const categories = await Category.findAll();
-  if (!categories.length) {
-    Promise.all(
-      productCategories.map(async (category) => {
-        await Category.create({ name: category });
-      })
-    );
-  }
-};
-createCategories();
-
-app.use("/api/auth", AuthRouter);
-app.use("/api/user", UserRouter);
-app.use("/api/product", ProductRouter);
-app.use("/api/category", CategoryRouter);
-
 conn
   .sync({ alter: true })
-  .then(() => {
+  .then(async () => {
     app.listen(3000);
+
+    const categories = await Category.findAll();
+    if (!categories.length) {
+      Promise.all(
+        productCategories.map(async (category) => {
+          await Category.create({ name: category });
+        })
+      );
+    }
   })
   .catch((err) => console.log(err));
