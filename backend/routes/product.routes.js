@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const Product = require("../models/Product");
 const upload = require("../config/multer");
+const ProductImage = require("../models/ProductImage");
 
 const ProductRouter = express.Router();
 
@@ -9,7 +10,7 @@ ProductRouter.get("/", async (req, res) => {
   try {
     const { idCategory, page, pageSize } = req.query;
 
-    const findOptions = {};
+    const findOptions = { include: { model: ProductImage, as: "images" } };
 
     if (page && pageSize) {
       findOptions.limit = pageSize;
@@ -35,20 +36,29 @@ ProductRouter.get("/", async (req, res) => {
 
 ProductRouter.get("/:id", async (req, res) => {
   try {
-    const data = await Product.findByPk(req.params.id);
+    const data = await Product.findByPk(req.params.id, {
+      include: { model: ProductImage, as: "images" },
+    });
     return res.status(200).json(data);
   } catch (err) {
     res.status(400).send(err);
   }
 });
 
-ProductRouter.post("/", upload.single("image"), async (req, res) => {
+ProductRouter.post("/", upload.array("image"), async (req, res) => {
   try {
-    const data = await Product.create({
+    const product = await Product.create({
       ...req.body,
-      image: req.file.filename,
     });
-    return res.status(201).json(data);
+
+    for (const img of req.files) {
+      await ProductImage.create({
+        fileName: img.filename,
+        idProduct: product.id,
+      });
+    }
+
+    return res.status(201).json(product);
   } catch (err) {
     res.status(400).send(err);
   }

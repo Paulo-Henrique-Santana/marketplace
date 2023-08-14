@@ -7,6 +7,11 @@ const AuthRouter = require("./routes/auth.routes");
 const ProductRouter = require("./routes/product.routes");
 const Category = require("./models/Category");
 const CategoryRouter = require("./routes/category.routes");
+const Product = require("./models/Product");
+const Favorite = require("./models/Favorites");
+const ProductImage = require("./models/ProductImage");
+Favorite;
+ProductImage;
 
 const app = express();
 
@@ -61,5 +66,18 @@ conn
         })
       );
     }
+
+    // for (let i = 0; i < 30; i++) {
+    //   await Product.create({
+    //     idUser: 1,
+    //     name: "sla",
+    //     quantity: 5,
+    //     idCategory: 1,
+    //     description:
+    //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt eget erat nec tincidunt. Nunc tristique eros venenatis feugiat sagittis. Maecenas vel convallis ex, nec vehicula velit. Sed nec semper mi. Pellentesque vitae sollicitudin tellus. Sed cursus tortor eget tortor ultricies, et suscipit justo interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    //     price: 200,
+    //     image: "1691795392713.jpeg",
+    //   });
+    // }
   })
   .catch((err) => console.log(err));
