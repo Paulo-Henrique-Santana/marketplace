@@ -7,15 +7,27 @@ const ProductRouter = express.Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
-    const { idCategory } = req.query;
+    const { idCategory, page, pageSize } = req.query;
 
-    if (idCategory) {
-      const data = await Product.findAll({ where: { idCategory } });
-      return res.status(200).json(data);
+    const findOptions = {};
+
+    if (page && pageSize) {
+      findOptions.limit = pageSize;
+      findOptions.offset = (page - 1) * pageSize;
     }
 
-    const data = await Product.findAll();
-    return res.status(200).json(data);
+    if (idCategory) {
+      findOptions.where = { idCategory };
+    }
+
+    const { rows, count } = await Product.findAndCountAll(findOptions);
+
+    const result = {
+      items: rows,
+      hasNext: count > pageSize * page,
+    };
+
+    return res.status(200).json(result);
   } catch (err) {
     res.status(400).send(err);
   }
