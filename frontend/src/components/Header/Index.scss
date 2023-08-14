@@ -84,7 +84,7 @@ header {
             gap: 1.7rem;
             .loginName {
                 a {
-                    padding: .5rem;
+                    padding: .5rem .5rem .5rem 1.1rem;
                 }
             }
             li {
@@ -120,6 +120,7 @@ header {
                     gap: .6rem;
                     border-bottom: 2px solid transparent;
                     position: relative;
+                    padding-bottom: .3rem;
                     &::after {
                         content: "";
                         width: 0px;
@@ -141,7 +142,7 @@ header {
                 display: none;
                 justify-content: center;
                 top: 45px;
-                padding: .5rem;
+                padding: .5rem ;
                 left: -80px;
                 flex-direction: column;
                 gap: 10px;
@@ -162,8 +163,8 @@ header {
                 }
             }
             .subMenu.active {
-                // display: flex;
-            }
+                display: flex;
+            }  
         }
     }
 }

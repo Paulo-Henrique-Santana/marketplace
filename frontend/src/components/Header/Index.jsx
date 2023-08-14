@@ -18,21 +18,11 @@ import "./Index.scss";
 
 const Header = () => {
   const { token, loginName, setToken, setLoginName } = useContext(AppContext);
-  const [active, setActive] = useState(false);
 
   const handleClick = () => {
     setToken("");
     setLoginName("");
   };
-
-  const dropMenu = () => {
-    setActive(true);
-  };
-
-  window.addEventListener("click", (e) => {
-    console.log(e.target);
-    e.setActive(false);
-  });
 
   return (
     <>
@@ -41,9 +31,6 @@ const Header = () => {
           <li>By: Paulo Henrique and Gabriel Silva</li>
           <li>
             <p>
-              Eng. <FaAngleDown />
-            </p>
-            <p>
               Clear your doubts <FaCircleQuestion />
             </p>
           </li>
@@ -51,7 +38,7 @@ const Header = () => {
       </div>
       <header>
         <nav>
-          <Logo />
+          <Logo link="/" />
           <form className="inputContainer">
             <input type="text" />
             <button>
@@ -60,13 +47,13 @@ const Header = () => {
           </form>
           <ul className="menu">
             {token && (
-              <li className="loginName" onClick={dropMenu}>
+              <li className="loginName">
                 <Link>
                   <FaUserLarge />
                   {loginName}
                   <FaAngleDown />
                 </Link>
-                <ul className={`subMenu ${active ? "active" : ""}`}>
+                <ul className="subMenu">
                   <li>
                     <Link>
                       <FaCartShopping />
@@ -79,9 +66,8 @@ const Header = () => {
                       Favorites
                     </Link>
                   </li>
-
                   <li>
-                    <Link>
+                    <Link to="/sales">
                       <FaBuildingColumns />
                       Sell
                     </Link>
@@ -108,23 +94,15 @@ const Header = () => {
                 Cart
               </Link>
             </li>
-            <li style={token ? { display: "none" } : { display: "block" }}>
+            {/* <li style={token ? { display: "none" } : { display: "block" }}>
               <Link>
                 <FaHeart />
                 Favorites
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </header>
-      {/* <div className="inputContainer">
-        <form>
-          <input type="text" />
-          <button>
-            <FaMagnifyingGlass />
-          </button>
-        </form>
-      </div> */}
     </>
   );
 };
