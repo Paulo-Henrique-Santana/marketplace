@@ -59,3 +59,15 @@ export function GET_CATEGORY() {
     },
   };
 }
+
+export function GET_PRODUCTS() {
+  return {
+    url: API_URL + "product",
+    options: {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}

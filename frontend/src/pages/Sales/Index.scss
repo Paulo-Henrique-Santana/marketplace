@@ -4,6 +4,13 @@
     max-width: 1300px;
     margin: 0 auto;
     padding: 2rem 1.5rem 0 1.5rem;
+    label {
+        margin-top: .7rem;
+        margin-bottom: .7rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: $colorLabel;
+    }
     form {
         display: flex;
         gap: 3.5rem;
@@ -54,19 +61,56 @@
                     border-radius: 1rem;
                 }
             } 
+            .inputFileContainer {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                button {
+                    padding: .8rem 2rem;
+                    width: 50%;
+                    margin-top: .6rem;
+                    border: none;
+                    background: $purple;
+                    border-radius: 3rem;
+                    cursor: pointer;
+                    display: block;
+                    color: $white;
+                    font-size: 1rem;
+                    font-weight: bold;
+                }
+            }
+       
         }
         .salesForm {
             flex: 1;
-
+            .selectContainer {
+                position: relative;
+                display: inline-block;
+                select {
+                    border: 1px solid $borderInput;
+                    appearance: none;
+                    padding: 0.2rem 1.3rem 0.2rem 1rem;
+                    background: rgb(247, 246, 246);
+                    font-size: 1rem;
+                    outline: none;
+                    option {
+                        background: rgb(247, 246, 246);
+                    }
+                }
+                svg {
+                    position: absolute;
+                    right: 0px;
+                    background: rgb(247, 246, 246);
+                    height: 100%;
+                    width: 1.3rem;
+                    padding: .2rem;
+                    border: 1px solid $borderInput;
+                }
+            }
         }
         .salesDescription {
             margin-top: .7rem;
-            label {
-                margin-bottom: .7rem;
-                font-size: 1rem;
-                font-weight: bold;
-                color: $colorLabel;
-            }
             textarea {
                 width: 100%;
                 border-radius: .4rem;

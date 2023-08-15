@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Input from "./Input/Input";
-import Validation from "../Login/Register/Validation";
-import "./Index.scss";
 import { GET_CATEGORY } from "../../Api/Index";
 import useFetch from "../../Hooks/useFetch";
+import { FaAngleDown } from "react-icons/fa6";
+import Validation from "./Validation";
+import Error from "../../components/Form/Error/Error";
+
+import "./Index.scss";
 
 const Index = () => {
-  const { register } = Validation();
+  const { register, onSubmit, handleSubmit, errors } = Validation();
   const [img, setImg] = useState("");
   const [category, setCategory] = useState([]);
   const [select, setSelect] = useState("select");
@@ -33,7 +36,7 @@ const Index = () => {
 
   return (
     <section className="salesContainer">
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="salesImg">
           <span className="textPreviw">Preview Image</span>
           <div className="previewImg">
@@ -51,8 +54,15 @@ const Index = () => {
                 ))
               : ""}
           </div>
-
-          <input type="file" onChange={handleImgChange} multiple />
+          <div className="inputFileContainer">
+            <input
+              type="file"
+              onChange={handleImgChange}
+              multiple
+              {...register("inputFile")}
+            />
+            <button>Send</button>
+          </div>
         </div>
         <div className="salesForm">
           <Input
@@ -62,40 +72,55 @@ const Index = () => {
             id="name"
             text="Product name"
             placeholder="Samsung S10 Plus"
+            register={register}
+            validation="productName"
           />
+          {errors.name && <p>{errors.productName.message}</p>}
           <Input
             htmlFor="price"
-            type="text"
+            type="number"
             name="price"
             id="price"
             text="Price"
             placeholder="Example: Gabriel "
+            register={register}
+            validation="price"
           />
           <Input
             htmlFor="name"
             type="text"
             name="name"
             id="name"
-            text="Quantidade"
+            text="Quantity"
             placeholder="Example: Gabriel "
+            register={register}
+            validation="quantity"
           />
-          <select
-            value={select}
-            name="category"
-            id="category"
-            onChange={(e) => setSelect(e.target.value)}
-          >
-            <option disabled value="select">
-              Select
-            </option>
-            {category.map((product) => (
-              <option key={product.id} value={product.name}>
-                {product.name}
+          <label htmlFor="category">Category</label>
+          <div className="selectContainer">
+            <select
+              value={select}
+              name="category"
+              id="category"
+              onChange={(e) => setSelect(e.target.value)}
+              {...register("category")}
+            >
+              <option disabled value="select">
+                Select
               </option>
-            ))}
-          </select>
+              {category &&
+                category.map((product) => (
+                  <option key={product.id} value={product.name}>
+                    {product.name}
+                  </option>
+                ))}
+            </select>
+            <FaAngleDown />
+          </div>
           <div className="salesDescription">
-            <label htmlFor="Description">Description</label>
+            <label htmlFor="Description" {...register("description")}>
+              Description
+            </label>
             <textarea rows="10"></textarea>
           </div>
         </div>
