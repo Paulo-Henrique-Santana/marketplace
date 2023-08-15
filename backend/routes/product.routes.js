@@ -10,7 +10,10 @@ ProductRouter.get("/", async (req, res) => {
   try {
     const { idCategory, page, pageSize } = req.query;
 
-    const findOptions = { include: { model: ProductImage, as: "images" } };
+    const findOptions = {
+      include: { model: ProductImage, as: "images" },
+      distinct: true,
+    };
 
     if (page && pageSize) {
       findOptions.limit = pageSize;
