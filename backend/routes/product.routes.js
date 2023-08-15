@@ -34,6 +34,16 @@ ProductRouter.get("/", async (req, res) => {
         ...findOptions.where,
         price: { [Op.between]: [minPrice, maxPrice] },
       };
+    } else if (minPrice) {
+      findOptions.where = {
+        ...findOptions.where,
+        price: { [Op.gte]: minPrice },
+      };
+    } else if (maxPrice) {
+      findOptions.where = {
+        ...findOptions.where,
+        price: { [Op.lte]: maxPrice },
+      };
     }
 
     if (idCategory) {
