@@ -10,6 +10,7 @@ const CategoryRouter = require("./routes/category.routes");
 const Product = require("./models/Product");
 const Favorite = require("./models/Favorites");
 const ProductImage = require("./models/ProductImage");
+const User = require("./models/User");
 Favorite;
 ProductImage;
 
@@ -67,17 +68,35 @@ conn
       );
     }
 
-    // for (let i = 0; i < 30; i++) {
-    //   await Product.create({
-    //     idUser: 1,
-    //     name: "sla",
-    //     quantity: 5,
-    //     idCategory: 1,
-    //     description:
-    //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt eget erat nec tincidunt. Nunc tristique eros venenatis feugiat sagittis. Maecenas vel convallis ex, nec vehicula velit. Sed nec semper mi. Pellentesque vitae sollicitudin tellus. Sed cursus tortor eget tortor ultricies, et suscipit justo interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    //     price: 200,
-    //     image: "1691795392713.jpeg",
-    //   });
-    // }
+    for (let i = 0; i < 20; i++) {
+      await User.findOrCreate({
+        where: { id: i + 1 },
+        defaults: {
+          name: `user${i + 1}`,
+          email: `user${i + 1}@user${i + 1}.com`,
+          password:
+            "$2b$10$tTz3YJdBiwluhvaO2n9/AuT8UnvYTwz7N94jSdkHDcstyYN7UhMD2",
+          cpf: i + 1,
+        },
+      });
+
+      await Product.findOrCreate({
+        where: { id: i + 1 },
+        defaults: {
+          idUser: 1,
+          name: `sla${i + 1}`,
+          quantity: i + 1,
+          idCategory: 1,
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt eget erat nec tincidunt. Nunc tristique eros venenatis feugiat sagittis. Maecenas vel convallis ex, nec vehicula velit. Sed nec semper mi. Pellentesque vitae sollicitudin tellus. Sed cursus tortor eget tortor ultricies, et suscipit justo interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          price: 100 * (i + 1),
+        },
+      });
+
+      await ProductImage.findOrCreate({
+        where: { id: i + 1 },
+        defaults: { fileName: "1691795392713.jpeg", idProduct: i + 1 },
+      });
+    }
   })
   .catch((err) => console.log(err));

@@ -3,14 +3,16 @@ const bcrypt = require("bcrypt");
 const Product = require("../models/Product");
 const upload = require("../config/multer");
 const ProductImage = require("../models/ProductImage");
+const { Op } = require("sequelize");
 
 const ProductRouter = express.Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
-    const { idCategory, page, pageSize } = req.query;
+    const { idCategory, page, pageSize, name, minPrice, maxPrice } = req.query;
 
     const findOptions = {
+      where: {},
       include: { model: ProductImage, as: "images" },
       distinct: true,
     };
@@ -20,8 +22,22 @@ ProductRouter.get("/", async (req, res) => {
       findOptions.offset = (page - 1) * pageSize;
     }
 
+    if (name) {
+      findOptions.where = {
+        ...findOptions.where,
+        name: { [Op.iLike]: "%" + name + "%" },
+      };
+    }
+
+    if (minPrice && maxPrice) {
+      findOptions.where = {
+        ...findOptions.where,
+        price: { [Op.between]: [minPrice, maxPrice] },
+      };
+    }
+
     if (idCategory) {
-      findOptions.where = { idCategory };
+      findOptions.where = { ...findOptions.where, idCategory };
     }
 
     const { rows, count } = await Product.findAndCountAll(findOptions);
