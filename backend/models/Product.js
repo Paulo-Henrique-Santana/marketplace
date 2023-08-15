@@ -10,7 +10,6 @@ Product.init(
     price: { type: DataTypes.DECIMAL, allowNull: false },
     quantity: { type: DataTypes.INTEGER, allowNull: false },
     description: { type: DataTypes.STRING(1000), allowNull: false },
-    image: { type: DataTypes.STRING, allowNull: false },
   },
   { sequelize, modelName: "Product", timestamps: false }
 );

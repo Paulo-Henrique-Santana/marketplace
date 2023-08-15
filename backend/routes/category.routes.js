@@ -8,7 +8,7 @@ CategoryRouter.get("/", async (req, res) => {
     const data = await Category.findAll();
     return res.status(200).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
@@ -17,7 +17,7 @@ CategoryRouter.get("/:id", async (req, res) => {
     const data = await Category.findByPk(req.params.id);
     return res.status(200).json(data);
   } catch (err) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
 });
 
