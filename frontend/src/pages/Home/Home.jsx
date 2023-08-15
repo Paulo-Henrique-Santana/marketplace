@@ -1,11 +1,7 @@
-import React, { useContext } from "react";
-import AppContext from "../../context/AppContext";
-import { Navigate } from "react-router-dom";
+import React from "react";
 
 const Home = () => {
- 
-
-  return <div>Homdddddddddddddddddddddddddddddddddddddddde</div>;
+  return <div>ola</div>;
 };
 
 export default Home;

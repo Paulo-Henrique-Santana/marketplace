@@ -1,14 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login/Login/Index";
-import ForgotPassword from "./pages/Login/ForgotPassword/Index";
 import Header from "../src/components/Header/Index";
-import Register from "./pages/Login/Register/Index";
 import Home from "./pages/Home/Home";
 import Provider from "./context/Provider";
-import ProtectedRoute from "./Helper/ProtectedRoute";
+import RouterLogin from "./pages/Login/RouterLogin";
+import Sales from "./pages/Sales/Index";
 
 import "./styles/Global.scss";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -16,10 +15,8 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="login/*" element={<RouterLogin />} />
+          <Route path="/sales" element={<Sales />} />
         </Routes>
       </Provider>
     </BrowserRouter>

@@ -48,9 +48,9 @@ const Login = () => {
           <Error error={errorInputLogin} />
           <Button text="Enter" />
         </form>
-        <LinkForm link="/forgot-password" secondText="Forgot password" />
+        <LinkForm link="forgot-password" secondText="Forgot password" />
         <LinkForm
-          link="/register"
+          link="register"
           firstText="Don't have an account?"
           secondText=" Register"
         />

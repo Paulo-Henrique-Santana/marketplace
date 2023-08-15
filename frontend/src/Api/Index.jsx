@@ -47,3 +47,15 @@ export function USERS_GET(params) {
   }
   return api;
 }
+
+export function GET_CATEGORY() {
+  return {
+    url: API_URL + "category",
+    options: {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
