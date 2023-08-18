@@ -14,15 +14,14 @@ const Home = () => {
     };
     getCategory();
   }, [request]);
-  // console.log(products.items.id);
-  console.log(products);
+
   if (products.items)
     return (
       <section>
         <ul>
           {products.items.length
             ? products.items.map((product) => (
-                <li>
+                <li key={product.id}>
                   <img
                     src={"http://localhost:3000/api/files/1691795392713.jpeg"}
                     alt=""

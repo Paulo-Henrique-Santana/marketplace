@@ -15,7 +15,7 @@ const Validation = () => {
     quantity: Yup.string().required("Required field"),
     category: Yup.string().required("Required field"),
     description: Yup.string().required("Required field"),
-    inputFile: Yup.string().required("Required field"),
+    // inputFile: Yup.string().required("Required field"),
   });
 
   const {
@@ -27,18 +27,19 @@ const Validation = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-
   console.log(errors);
-  const onSubmit = async (data) => {
-    console.log(data);
-    reset();
-  };
+  // const onSubmit = async (data) => {
+  //   console.log(data);
+  //   reset();
+  // };
   return {
-    onSubmit,
+    // onSubmit,
     register,
     handleSubmit,
+    reset,
     errors,
     schema,
+
     // errorInputLogin,
   };
 };

@@ -71,3 +71,16 @@ export function GET_PRODUCTS() {
     },
   };
 }
+
+export function PHOTO_POST(body) {
+  return {
+    url: API_URL + "product",
+    options: {
+      method: "POST",
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
+      body: body,
+    },
+  };
+}
