@@ -15,13 +15,26 @@ import Logo from "../Logo/Logo";
 import AppContext from "../../context/AppContext";
 
 import "./Index.scss";
+import { GET_CATEGORY, GET_PRODUCTS } from "../../Api/Index";
+import useFetch from "../../Hooks/useFetch";
 
 const Header = () => {
-  const { token, loginName, setToken, setLoginName } = useContext(AppContext);
+  const { token, loginName, setToken, setLoginName, category } =
+    useContext(AppContext);
+
+  const { request } = useFetch();
 
   const handleClick = () => {
     setToken("");
     setLoginName("");
+  };
+
+  const handleClickCategory = async (id) => {
+    console.log(id);
+    const { url, options } = GET_PRODUCTS({
+      idCategory: id,
+    });
+    const { json } = await request(url, options);
   };
 
   return (
@@ -47,12 +60,29 @@ const Header = () => {
           </form>
           <ul className="menu">
             {token && (
+              <li className="categories">
+                Categories <FaAngleDown />
+                <ul className="subMenuCategories">
+                  {category &&
+                    category.map((cat) => (
+                      <li
+                        key={cat.id}
+                        onClick={() => handleClickCategory(cat.id)}
+                      >
+                        <Link>{cat.name}</Link>
+                      </li>
+                    ))}
+                </ul>
+              </li>
+            )}
+            {token && (
               <li className="loginName">
                 <Link>
                   <FaUserLarge />
                   {loginName}
                   <FaAngleDown />
                 </Link>
+
                 <ul className="subMenu">
                   <li>
                     <Link>
@@ -81,25 +111,25 @@ const Header = () => {
                 </ul>
               </li>
             )}
-            <li style={token ? { display: "none" } : { display: "block" }}>
+            <li
+              style={token ? { display: "none" } : { display: "block" }}
+              className="li-home"
+            >
               <Link to="/login">
                 <FaUserLarge />
                 Enter
               </Link>
             </li>
 
-            <li style={token ? { display: "none" } : { display: "block" }}>
+            <li
+              style={token ? { display: "none" } : { display: "block" }}
+              className="li-home"
+            >
               <Link>
                 <FaCartShopping />
                 Cart
               </Link>
             </li>
-            {/* <li style={token ? { display: "none" } : { display: "block" }}>
-              <Link>
-                <FaHeart />
-                Favorites
-              </Link>
-            </li> */}
           </ul>
         </nav>
       </header>

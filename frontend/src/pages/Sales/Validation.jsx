@@ -13,9 +13,7 @@ const Validation = () => {
     productName: Yup.string().required("Required field"),
     price: Yup.string().required("Required field"),
     quantity: Yup.string().required("Required field"),
-    category: Yup.string().required("Required field"),
     description: Yup.string().required("Required field"),
-    // inputFile: Yup.string().required("Required field"),
   });
 
   const {
@@ -28,19 +26,13 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
   console.log(errors);
-  // const onSubmit = async (data) => {
-  //   console.log(data);
-  //   reset();
-  // };
+
   return {
-    // onSubmit,
     register,
     handleSubmit,
     reset,
     errors,
     schema,
-
-    // errorInputLogin,
   };
 };
 

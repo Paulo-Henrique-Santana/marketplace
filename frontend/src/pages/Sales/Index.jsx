@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Input from "./Input/Input";
 import { GET_CATEGORY, PHOTO_POST } from "../../Api/Index";
 import useFetch from "../../Hooks/useFetch";
@@ -7,16 +7,17 @@ import Validation from "./Validation";
 import Error from "../../components/Form/Error/Error";
 
 import "./Index.scss";
+import AppContext from "../../context/AppContext";
 
 const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
-  const [img, setImg] = useState("");
-  const [category, setCategory] = useState([]);
-  const [select, setSelect] = useState("select");
   const { request } = useFetch();
+  const [img, setImg] = useState("");
+  const { category } = useContext(AppContext);
 
   const onSubmit = async (data) => {
     console.log(data);
+
     const formData = new FormData();
     formData.append("image", img[0].file);
     formData.append("name", data.productName);
@@ -40,18 +41,8 @@ const Index = () => {
       };
     });
 
-    console.log(target.files);
     setImg(result);
   };
-
-  useEffect(() => {
-    const getCategory = async () => {
-      const { url, options } = GET_CATEGORY();
-      const { json } = await request(url, options);
-      setCategory(json);
-    };
-    getCategory();
-  }, [request]);
 
   return (
     <section className="salesContainer">
@@ -120,29 +111,16 @@ const Index = () => {
           <label htmlFor="category">Category</label>
 
           <div className="selectContainer">
-            <select
-              value={select}
-              name="category"
-              id="category"
-              onChange={(e) => setSelect(e.target.value)}
-            >
-              <option disabled value="select">
-                Select
-              </option>
+            <select name="category" id="category" {...register("category")}>
               {category &&
                 category.map((product) => (
-                  <option
-                    key={product.id}
-                    value={product.id}
-                    {...register("category")}
-                  >
+                  <option key={product.id} value={product.id}>
                     {product.name}
                   </option>
                 ))}
             </select>
             <FaAngleDown />
           </div>
-          {errors.category && <Error error={errors.category.message} />}
 
           <div className="salesDescription">
             <label htmlFor="Description">Description</label>
