@@ -76,16 +76,15 @@ ProductRouter.get("/:id", async (req, res) => {
 
 ProductRouter.post("/", upload.array("image"), async (req, res) => {
   try {
-    const product = await Product.create({
-      ...req.body,
-    });
+    console.log(req.body);
+    const product = await Product.create(req.body);
 
-    for (const img of req.files) {
-      await ProductImage.create({
-        fileName: img.filename,
-        idProduct: product.id,
-      });
-    }
+    // for (const img of req.files) {
+    //   await ProductImage.create({
+    //     fileName: img.filename,
+    //     idProduct: product.id,
+    //   });
+    // }
 
     return res.status(201).json(product);
   } catch (err) {
