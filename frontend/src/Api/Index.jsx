@@ -59,3 +59,28 @@ export function GET_CATEGORY() {
     },
   };
 }
+
+export function GET_PRODUCTS() {
+  return {
+    url: API_URL + "product",
+    options: {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
+
+export function PHOTO_POST(body) {
+  return {
+    url: API_URL + "product",
+    options: {
+      method: "POST",
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
+      body: body,
+    },
+  };
+}

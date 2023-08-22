@@ -25,7 +25,7 @@ const Input = ({
         name={name}
         id={id}
         placeholder={placeholder}
-        // {...register(validation)}
+        {...register(validation)}
         // onBlur={onBlur}
         // style={
         //   errors[validation]
