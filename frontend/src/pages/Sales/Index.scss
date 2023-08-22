@@ -37,17 +37,26 @@
                 margin: 1rem 0;
                 overflow-y: auto;
                 overflow-x: hidden;
-
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: $boxShadowForm;
                 &::-webkit-scrollbar {
                     width: 5px;
                   }
                 &::-webkit-scrollbar-track {
                     box-shadow: inset 0 0 5px rgb(241, 241, 241); 
                     border-radius: .4rem;
+                    height: 10px;
                 }
                 &::-webkit-scrollbar-thumb {
                     background-color: $lightPurple;
                     border-radius: .4rem;
+                }
+
+                p {
+                    text-align: center;
+                    color: $placeholder;
                 }
 
                 div {

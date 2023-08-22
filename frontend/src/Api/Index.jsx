@@ -60,9 +60,9 @@ export function GET_CATEGORY() {
   };
 }
 
-export function GET_PRODUCTS() {
-  return {
-    url: API_URL + "product",
+export function GET_PRODUCTS(params) {
+  const apiCategory = {
+    url: API_URL + "product?",
     options: {
       method: "GET",
       headers: {
@@ -70,6 +70,12 @@ export function GET_PRODUCTS() {
       },
     },
   };
+  if (params && params.idCategory) {
+    apiCategory.url += `idCategory=${params.idCategory}&`;
+  }
+
+  console.log(apiCategory);
+  return apiCategory;
 }
 
 export function PHOTO_POST(body) {
@@ -77,9 +83,6 @@ export function PHOTO_POST(body) {
     url: API_URL + "product",
     options: {
       method: "POST",
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
       body: body,
     },
   };
