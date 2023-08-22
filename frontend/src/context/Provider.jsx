@@ -6,6 +6,8 @@ import useFetch from "../Hooks/useFetch";
 const Provider = ({ children }) => {
   const { request } = useFetch();
   const [category, setCategory] = useState([]);
+  const [categoryName, setCategoryName] = useState([]);
+  const [products, setProducts] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("key") || "");
   const [loginName, setLoginName] = useState(
     localStorage.getItem("key2") || ""
@@ -32,7 +34,7 @@ const Provider = ({ children }) => {
     };
     getCategory();
   }, [request]);
-  
+
   const value = {
     token,
     setToken,
@@ -40,6 +42,10 @@ const Provider = ({ children }) => {
     setLoginName,
     category,
     setCategory,
+    categoryName,
+    setCategoryName,
+    products,
+    setProducts,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

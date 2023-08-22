@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaMagnifyingGlass,
   FaAngleDown,
@@ -13,16 +13,20 @@ import {
 } from "react-icons/fa6";
 import Logo from "../Logo/Logo";
 import AppContext from "../../context/AppContext";
-
-import "./Index.scss";
-import { GET_CATEGORY, GET_PRODUCTS } from "../../Api/Index";
+import { GET_PRODUCTS } from "../../Api/Index";
 import useFetch from "../../Hooks/useFetch";
 
+import "./Index.scss";
+
 const Header = () => {
-  const { token, loginName, setToken, setLoginName, category } =
+  const { token, loginName, setToken, setLoginName, category, setProducts } =
     useContext(AppContext);
+  const [filter, setFilter] = useState({
+    idCategory: null,
+  });
 
   const { request } = useFetch();
+
 
   const handleClick = () => {
     setToken("");
@@ -35,6 +39,7 @@ const Header = () => {
       idCategory: id,
     });
     const { json } = await request(url, options);
+    setProducts(json);
   };
 
   return (

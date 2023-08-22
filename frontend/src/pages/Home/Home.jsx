@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../Hooks/useFetch";
 import { GET_PRODUCTS } from "../../Api/Index";
+import AppContext from "../../context/AppContext";
 
 const Home = () => {
   const { request } = useFetch();
-  const [products, setProducts] = useState([]);
+  const { products, setProducts } = useContext(AppContext);
 
   useEffect(() => {
     const getCategory = async () => {
@@ -13,7 +14,7 @@ const Home = () => {
       setProducts(json);
     };
     getCategory();
-  }, [request]);
+  }, [request, setProducts]);
 
   if (products.items)
     return (
@@ -23,8 +24,7 @@ const Home = () => {
             ? products.items.map((product) => (
                 <li key={product.id}>
                   <img
-                    src={"http://localhost:3000/api/files/1691795392713.jpeg"}
-                    alt=""
+                    src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
                   />
                   <p>{product.name}</p>
                   <p>{product.price}</p>
