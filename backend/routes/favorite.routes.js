@@ -1,7 +1,7 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const Favorite = require("../models/Favorites");
 const Product = require("../models/Product");
+const ProductImage = require("../models/ProductImage");
 
 const FavoriteRouter = express.Router();
 
@@ -10,10 +10,16 @@ FavoriteRouter.get("/", async (req, res) => {
     const { idUser } = req.query;
 
     if (idUser) {
-      const data = await Favorite.findAll({ where: { id } });
+      const data = await Favorite.findAll({
+        where: { idUser },
+        include: {
+          model: Product,
+          include: { model: ProductImage, as: "images" },
+        },
+      });
       return res.status(200).json(data);
     } else {
-      res.status(422).send({ message: "IdUser expected as query parameter" });
+      res.status(422).send({ message: "idUser expected as query parameter" });
     }
   } catch (err) {
     res.status(400).send(err);
@@ -22,7 +28,12 @@ FavoriteRouter.get("/", async (req, res) => {
 
 FavoriteRouter.get("/:id", async (req, res) => {
   try {
-    const data = await Favorite.findByPk(req.params.id);
+    const data = await Favorite.findByPk(req.params.id, {
+      include: {
+        model: Product,
+        include: { model: ProductImage, as: "images" },
+      },
+    });
     return res.status(200).json(data);
   } catch (err) {
     res.status(400).send(err);
@@ -31,25 +42,8 @@ FavoriteRouter.get("/:id", async (req, res) => {
 
 FavoriteRouter.post("/", async (req, res) => {
   try {
-    const { email, cpf } = req.body;
-
-    let user = await Favorite.findOne({ where: { email } });
-
-    if (user) {
-      return res.status(409).send({ message: "Email já cadastrado" });
-    }
-
-    user = await Favorite.findOne({ where: { cpf } });
-
-    if (user) {
-      return res.status(409).send({ message: "CPF já cadastrado" });
-    }
-
-    const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
-
     const data = await Favorite.create({
       ...req.body,
-      password: encryptedPassword,
     });
 
     return res.status(201).json(data);
@@ -60,17 +54,7 @@ FavoriteRouter.post("/", async (req, res) => {
 
 FavoriteRouter.put("/:id", async (req, res) => {
   try {
-    let { password } = req.body;
-    const data = req.body;
-
-    if (password) {
-      data.password = bcrypt.hashSync(
-        Buffer.from(password).toString("base64"),
-        salt
-      );
-    }
-
-    const result = await Favorite.update(data, {
+    const result = await Favorite.update(req.body, {
       where: { id: req.params.id },
     });
     return res.status(200).json(result);

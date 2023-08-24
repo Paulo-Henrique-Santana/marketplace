@@ -5,14 +5,8 @@ const conn = require("./db/conn");
 const UserRouter = require("./routes/user.routes");
 const AuthRouter = require("./routes/auth.routes");
 const ProductRouter = require("./routes/product.routes");
-const Category = require("./models/Category");
 const CategoryRouter = require("./routes/category.routes");
-const Product = require("./models/Product");
-const Favorite = require("./models/Favorites");
-const ProductImage = require("./models/ProductImage");
-const User = require("./models/User");
-Favorite;
-ProductImage;
+const FavoriteRouter = require("./routes/favorite.routes");
 
 const app = express();
 
@@ -37,6 +31,7 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/category", CategoryRouter);
+app.use("/api/favorite", FavoriteRouter);
 app.use("/api/files", express.static("uploads"));
 
 conn
