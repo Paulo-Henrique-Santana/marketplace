@@ -18,15 +18,13 @@ import useFetch from "../../Hooks/useFetch";
 
 import "./Index.scss";
 
+
 const Header = () => {
-  const { token, loginName, setToken, setLoginName, category, setProducts } =
+  const { token, loginName, setToken, setLoginName, category } =
     useContext(AppContext);
-  const [filter, setFilter] = useState({
-    idCategory: null,
-  });
 
   const { request } = useFetch();
-
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setToken("");
@@ -34,12 +32,12 @@ const Header = () => {
   };
 
   const handleClickCategory = async (id) => {
-    console.log(id);
+    id;
     const { url, options } = GET_PRODUCTS({
       idCategory: id,
     });
     const { json } = await request(url, options);
-    setProducts(json);
+    navigate(`/?idCategory=${id}`);
   };
 
   return (
@@ -74,7 +72,7 @@ const Header = () => {
                         key={cat.id}
                         onClick={() => handleClickCategory(cat.id)}
                       >
-                        <Link>{cat.name}</Link>
+                        <p>{cat.name}</p>
                       </li>
                     ))}
                 </ul>

@@ -74,7 +74,7 @@ export function GET_PRODUCTS(params) {
     apiCategory.url += `idCategory=${params.idCategory}&`;
   }
 
-  console.log(apiCategory);
+  apiCategory;
   return apiCategory;
 }
 

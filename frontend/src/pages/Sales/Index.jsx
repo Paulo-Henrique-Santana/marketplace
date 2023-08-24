@@ -12,14 +12,13 @@ import AppContext from "../../context/AppContext";
 const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { request } = useFetch();
-  const [img, setImg] = useState("");
+  const [imgs, setImg] = useState("");
   const { category } = useContext(AppContext);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     const formData = new FormData();
-    formData.append("image", img[0].file);
+    imgs.forEach((img) => formData.append("image", img.file));
+
     formData.append("name", data.productName);
     formData.append("price", data.price);
     formData.append("quantity", data.quantity);
@@ -42,6 +41,7 @@ const Index = () => {
     });
 
     setImg(result);
+    // setImg("");
   };
 
   return (
@@ -50,8 +50,8 @@ const Index = () => {
         <div className="salesImg">
           <span className="textPreviw">Preview Image</span>
           <div className="previewImg">
-            {img.length ? (
-              img.map((item, index) => (
+            {imgs.length ? (
+              imgs.map((item, index) => (
                 <div
                   key={index}
                   style={{
