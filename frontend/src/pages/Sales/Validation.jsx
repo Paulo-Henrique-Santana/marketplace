@@ -25,7 +25,6 @@ const Validation = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-  console.log(errors);
 
   return {
     register,

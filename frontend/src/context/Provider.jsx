@@ -8,6 +8,9 @@ const Provider = ({ children }) => {
   const [category, setCategory] = useState([]);
   const [categoryName, setCategoryName] = useState([]);
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState({
+    idCategory: null,
+  });
   const [token, setToken] = useState(localStorage.getItem("key") || "");
   const [loginName, setLoginName] = useState(
     localStorage.getItem("key2") || ""
@@ -46,6 +49,8 @@ const Provider = ({ children }) => {
     setCategoryName,
     products,
     setProducts,
+    filter,
+    setFilter,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
