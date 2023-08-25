@@ -8,18 +8,21 @@ import Product from "./pages/Product/Index";
 import Home from "./pages/Home/HomePage/Home";
 
 import "./styles/Global.scss";
+import Categories from "./context/Categories";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Provider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login/*" element={<RouterLogin />} />
-          <Route path="/sales" element={<Sales />} />
-          <Route path="product/:id" element={<Product />} />
-        </Routes>
+        {/* <Categories> */}
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="login/*" element={<RouterLogin />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="product/:id" element={<Product />} />
+          </Routes>
+        {/* </Categories> */}
       </Provider>
     </BrowserRouter>
   );

@@ -5,21 +5,28 @@
     padding: 2rem 1.5rem 0 1.5rem;
 
     .containerDescription {
-        display: flex;
+        // display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 2rem;
         .containerImg {
-            // width: 700px;
             display: flex;
             gap: 2rem;
             .imgs {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
+                
                 img {
                     max-width: 100px;
                     width: 100%;
                     height: 100px;
                     cursor: pointer;
+                    border: 2px solid transparent;
+                    border-radius: .5rem;
+                    &:hover {
+                        border: 2px solid $purple;
+                    }
                 }
             }
             .img {
@@ -32,27 +39,54 @@
           
         }
         ul {
+            max-width: 400px;
+            div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .heart {
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    svg {
+                        font-size: 2rem; 
+                        fill: $lightPurple;
+                        &:hover {
+                            fill: red;
+                        } 
+                    }
+                }
+            }
             li {
                 &:nth-child(1) {
                     font-size: 3rem;
                     font-weight: 600;
+                    text-transform: capitalize;
                 }
                 &:nth-child(2) {
                     font-size: 2rem;
                     font-weight: 300;
                 }
                 &:nth-child(3) {
+                    font-size: 1rem;
+                    font-weight: 300;
+                }
+                &:nth-child(4) {
                     font-size: 2rem;
                     font-weight: 300;
                 }
-            }    
-            button {
+            } 
+            .quantity {
+                font-weight: 500;
+                display: inline;
+            }
+            .buy     {
                 display: inline-block;
                 width: 100%;
                 margin-top: 1.5rem;
-                height: 3rem;
+                height: 3.5rem;
                 cursor: pointer;
-                border-radius: 20rem;
+                border-radius: .5rem;
                 background: $purple;
                 border: none;
                 font-size: 1.2rem;
