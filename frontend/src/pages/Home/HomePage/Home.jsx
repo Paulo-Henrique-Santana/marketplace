@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../../Hooks/useFetch";
 import { GET_PRODUCTS } from "../../../Api/Index";
-import AppContext from "../../../context/AppContext";
+import AppContext from "../../../Context/AppContext";
 import { Link, useLocation } from "react-router-dom";
 import "./Home.scss";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";

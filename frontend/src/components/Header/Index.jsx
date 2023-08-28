@@ -18,7 +18,6 @@ import useFetch from "../../Hooks/useFetch";
 
 import "./Index.scss";
 
-
 const Header = () => {
   const { token, loginName, setToken, setLoginName, category } =
     useContext(AppContext);
@@ -80,9 +79,9 @@ const Header = () => {
             )}
             {token && (
               <li className="loginName">
-                <Link>
+                <Link className="ola">
                   <FaUserLarge />
-                  {loginName}
+                  {loginName.split(" ")[0]}
                   <FaAngleDown />
                 </Link>
 

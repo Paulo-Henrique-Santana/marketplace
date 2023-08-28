@@ -31,14 +31,14 @@ const Register = () => {
             type="text"
             name="name"
             id="name"
-            text="First  name"
-            placeholder="Example: Gabriel "
+            text="Name"
+            placeholder="Example: Gabriel Paulo "
             register={register}
             validation="name"
             errors={errors}
           />
           {errors.name && <Error error={errors.name.message} />}
-          
+
           <Input
             htmlFor="email"
             type="email"

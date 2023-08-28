@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
-import { USERS_GET } from "../Api/Index";
+import { GET_CATEGORY, USERS_GET } from "../Api/Index";
 import useFetch from "../Hooks/useFetch";
 
 const Categories = ({ children }) => {
+  const [category, setCategory] = useState([]);
+  const [categoryName, setCategoryName] = useState([]);
   const { request } = useFetch();
-  const [users, setUsers] = useState([]);
+
   useEffect(() => {
-    const ola = async () => {
-      const { url, options } = USERS_GET();
+    const getCategory = async () => {
+      const { url, options } = GET_CATEGORY();
       const { json } = await request(url, options);
-      setUsers(json);
+      setCategory(json);
     };
-    ola();
+    getCategory();
   }, [request]);
 
   const value = {
-    users,
-    setUsers,
+    category,
+    setCategory,
+    categoryName,
+    setCategoryName,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

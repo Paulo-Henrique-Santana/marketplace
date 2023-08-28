@@ -93,6 +93,7 @@ const Validation = () => {
       alert("Registration done successfully");
       navigate("/login");
     }
+
     reset();
   };
 
