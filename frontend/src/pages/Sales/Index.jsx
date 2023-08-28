@@ -14,13 +14,20 @@ const Index = () => {
   const { request } = useFetch();
   const [imgs, setImg] = useState("");
   const { category } = useContext(AppContext);
+  const [data, setdData] = useState([]);
+
+  function separator(numb) {
+    const str = numb.toString().split(".");
+    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return str.join(".");
+  }
 
   const onSubmit = async (data) => {
     const formData = new FormData();
     imgs.forEach((img) => formData.append("image", img.file));
 
     formData.append("name", data.productName);
-    formData.append("price", data.price);
+    formData.append("price", separator(data.price));
     formData.append("quantity", data.quantity);
     formData.append("idCategory", data.category);
     formData.append("description", data.description);
@@ -30,6 +37,7 @@ const Index = () => {
     request(url, options);
 
     reset();
+    setImg("");
   };
 
   const handleImgChange = ({ target }) => {
@@ -41,7 +49,6 @@ const Index = () => {
     });
 
     setImg(result);
-    // setImg("");
   };
 
   return (
@@ -63,7 +70,9 @@ const Index = () => {
                 </div>
               ))
             ) : (
-              <p>Recommended photos with 400 x 400</p>
+              <div className="recommendedPhoto">
+                <p>Recommended photos with 400 x 400</p>
+              </div>
             )}
           </div>
 
@@ -129,6 +138,7 @@ const Index = () => {
           </div>
         </div>
       </form>
+      {/* {data && <p>Parabens</p>} */}
     </section>
   );
 };
