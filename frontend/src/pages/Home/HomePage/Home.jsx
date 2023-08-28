@@ -14,7 +14,7 @@ const Home = ({ useFilters }) => {
 
   useEffect(() => {
     const getCategory = async () => {
-      console.log(filters);
+      // console.log(filters);
       const { url, options } = GET_PRODUCTS(filters);
       const { json } = await request(url, options);
       setProducts(json);
@@ -47,7 +47,7 @@ const Home = ({ useFilters }) => {
             </li>
           ))}
         </ul>
-        {!filters && <p>DASDASASD</p>}
+        {!products.items.length && <p>Product not found</p>}
       </section>
     );
 };
