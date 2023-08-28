@@ -11,10 +11,7 @@ import "./styles/Global.scss";
 import Categories from "./context/Categories";
 
 const App = () => {
-  const [filters, setFilters] = useState({
-    idCategory: null,
-    search: "",
-  });
+  const [filters, setFilters] = useState({});
 
   return (
     <BrowserRouter>

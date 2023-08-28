@@ -1,26 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
-import {
-  FaMagnifyingGlass,
   FaAngleDown,
-  FaCircleQuestion,
-  FaDumpster,
-  FaUserLarge,
   FaArrowRightFromBracket,
-  FaCartShopping,
-  FaHeart,
   FaBuildingColumns,
+  FaCartShopping,
+  FaCircleQuestion,
+  FaHeart,
+  FaMagnifyingGlass,
+  FaUserLarge,
 } from "react-icons/fa6";
-import Logo from "../Logo/Logo";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AppContext from "../../context/AppContext";
-import { GET_PRODUCTS } from "../../Api/Index";
-import useFetch from "../../Hooks/useFetch";
+import Logo from "../Logo/Logo";
 
 import "./Index.scss";
 
@@ -38,13 +29,19 @@ const Header = ({ useFilters }) => {
     }
   }, [filters]);
 
+  const handleClickLogo = () => {
+    setFilters({});
+    setSearch("");
+  };
+
   const handleClick = () => {
     setToken("");
     setLoginName("");
   };
 
   const handleClickCategory = async (id) => {
-    setFilters({ ...filters, idCategory: id });
+    setFilters({ idCategory: id });
+    setSearch("");
   };
 
   const handleSearch = (event) => {
@@ -66,7 +63,7 @@ const Header = ({ useFilters }) => {
       </div>
       <header>
         <nav>
-          <Logo link="/" />
+          <Logo onClick={handleClickLogo} />
           <form className="inputContainer" onSubmit={handleSearch}>
             <input
               type="text"

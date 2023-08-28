@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Logo = (props) => {
   return (
     <h1>
-      <Link to={props.link}>
+      <Link to={props.link} {...props}>
         <FaDumpster />
         Marketplace
       </Link>
