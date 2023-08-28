@@ -82,9 +82,14 @@ header {
             display: flex;
             align-items: center;
             gap: 1.7rem;
+            
             .li-home {
+                display: flex;
+                align-items: center;
+
                 a {
                     display: flex;
+                    align-items: center;
                     gap: .7rem;
                     color: $brown;
                 }
@@ -170,9 +175,13 @@ header {
             }
 
             .loginName {
+                display: flex;
+                align-items: center;
                 padding-top: .1rem;
+                gap: .6rem;
                 position: relative;
                 padding: .5rem 0;
+                cursor: pointer;
                 &:hover .subMenu {
                     display: flex;
                     animation: show-up .3s forwards;
@@ -188,6 +197,30 @@ header {
                     }
                 }
 
+                .ola {
+                    padding-left: 0;
+                    padding-right: 0;
+                    &:hover::after {
+                        width: 0%;
+                    }
+                    // &:hover::before {
+                    //     display: flex;
+                    //     animation: show-up .3s forwards;
+                    // }
+                    // &::before {
+                    //     content: '';
+                    //     display: none;
+                    //     top: 27px;
+                    //     right: 5px;
+                    //     position: absolute;
+                    //     width: 0;
+                    //     height: 0;
+                    //     border-left: 10px solid transparent;
+                    //     border-right: 10px solid transparent;
+                    //     border-bottom: 10px solid $lightPurple;
+                    // }
+                }
+
                 a {
                     font-weight: 500;
                     color: $brown;
@@ -197,7 +230,6 @@ header {
                     border-bottom: 2px solid transparent;
                     position: relative;
                     padding: .5rem;
-                    // padding: .5rem 0.1rem .5rem 0;
                     &::after {
                         content: "";
                         width: 0px;
@@ -209,30 +241,34 @@ header {
                         position: absolute;
                         transition: 0.4s;
                     }
+               
+                    
                     &:hover::after {
                         width: 100%;
                     }
+
+                    
                 } 
             }
             .subMenu {
                 position: absolute;
+                // display: flex;
                 display: none;
                 justify-content: center;
-                top: 45px;
                 padding: .5rem ;
-                left: -5.5%;
-                top: 43px;
+                left: 0px;
+                top: 45px;
                 flex-direction: column;
                 gap: 10px;
                 border: 2px solid $lightPurple;
                 z-index: 200;
                 background: #eae4f8;
-                
+              
                 &::before {
                     content: '';
                     display: block;
                     top: -10px;
-                    right: 20px;
+                    left: -2px;
                     position: absolute;
                     width: 0;
                     height: 0;
@@ -240,6 +276,7 @@ header {
                     border-right: 10px solid transparent;
                     border-bottom: 10px solid $lightPurple;
                 }
+ 
             }
             .subMenu.active {
                 display: flex;

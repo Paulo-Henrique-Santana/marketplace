@@ -97,9 +97,9 @@ const Header = ({ useFilters }) => {
             )}
             {token && (
               <li className="loginName">
-                <Link>
+                <Link className="ola">
                   <FaUserLarge />
-                  {loginName}
+                  {loginName.split(" ")[0]}
                   <FaAngleDown />
                 </Link>
 
