@@ -70,11 +70,16 @@ export function GET_PRODUCTS(params) {
       },
     },
   };
-  if (params && params.idCategory) {
-    apiCategory.url += `idCategory=${params.idCategory}&`;
+
+  if (params) {
+    if (params.idCategory) {
+      apiCategory.url += `idCategory=${params.idCategory}&`;
+    }
+    if (params.search) {
+      apiCategory.url += `name=${params.search}&`;
+    }
   }
 
-  apiCategory;
   return apiCategory;
 }
 

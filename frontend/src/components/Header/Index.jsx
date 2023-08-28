@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   FaMagnifyingGlass,
   FaAngleDown,
@@ -18,13 +24,20 @@ import useFetch from "../../Hooks/useFetch";
 
 import "./Index.scss";
 
-
-const Header = () => {
+const Header = ({ useFilters }) => {
   const { token, loginName, setToken, setLoginName, category } =
     useContext(AppContext);
-
   const { request } = useFetch();
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useFilters;
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+  }, [filters]);
 
   const handleClick = () => {
     setToken("");
@@ -32,12 +45,12 @@ const Header = () => {
   };
 
   const handleClickCategory = async (id) => {
-    id;
-    const { url, options } = GET_PRODUCTS({
-      idCategory: id,
-    });
-    const { json } = await request(url, options);
-    navigate(`/?idCategory=${id}`);
+    setFilters({ ...filters, idCategory: id });
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setFilters({ ...filters, search: search });
   };
 
   return (
@@ -55,8 +68,12 @@ const Header = () => {
       <header>
         <nav>
           <Logo link="/" />
-          <form className="inputContainer">
-            <input type="text" />
+          <form className="inputContainer" onSubmit={handleSearch}>
+            <input
+              type="text"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
             <button>
               <FaMagnifyingGlass />
             </button>

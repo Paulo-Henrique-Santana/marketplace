@@ -7,33 +7,21 @@ import "./Home.scss";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 // AiOutlineHeart
 
-const Home = () => {
-  function useQuery() {
-    const { search } = useLocation();
-
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-  }
-  let query = useQuery();
+const Home = ({ useFilters }) => {
+  const [filters, setFilters] = useFilters;
 
   const { request } = useFetch();
   const { products, setProducts } = useContext(AppContext);
 
-  const [filter, setFilter] = useState({
-    idCategory: null,
-  });
-
-  useEffect(() => {
-    setFilter({ idCategory: query.get("idCategory") });
-  }, [query]);
-
   useEffect(() => {
     const getCategory = async () => {
-      const { url, options } = GET_PRODUCTS(filter);
+      console.log(filters);
+      const { url, options } = GET_PRODUCTS(filters);
       const { json } = await request(url, options);
       setProducts(json);
     };
     getCategory();
-  }, [filter, request, setProducts]);
+  }, [filters, request, setProducts]);
 
   if (products.items)
     return (
