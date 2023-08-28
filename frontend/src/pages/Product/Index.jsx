@@ -11,7 +11,6 @@ const Index = () => {
   const { data, request } = useFetch();
   const { id } = useParams();
   const [indexImg, setIndexImg] = useState(0);
-  const { users } = useContext(AppContext);
   const divImgs = useRef(null);
 
   useEffect(() => {
@@ -25,7 +24,6 @@ const Index = () => {
     setIndexImg(index);
     const imgs = divImgs.current.querySelectorAll("img");
     imgs.forEach((img) => {
-      // img[0].classList.add("color");
       if (img !== event.target) {
         img.classList.remove("color");
       } else {
@@ -34,7 +32,6 @@ const Index = () => {
     });
   };
 
-  // console.log(users[id].name);
 
   return (
     <div className="productDescription">

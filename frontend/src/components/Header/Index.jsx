@@ -27,7 +27,6 @@ import "./Index.scss";
 const Header = ({ useFilters }) => {
   const { token, loginName, setToken, setLoginName, category } =
     useContext(AppContext);
-  const { request } = useFetch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useFilters;

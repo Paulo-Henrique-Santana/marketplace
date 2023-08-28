@@ -8,10 +8,10 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 // AiOutlineHeart
 
 const Home = ({ useFilters }) => {
-  const [filters, setFilters] = useFilters;
+  const [filters] = useFilters;
 
-  const { request } = useFetch();
-  const { products, setProducts } = useContext(AppContext);
+  const { request, loading } = useFetch();
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const getCategory = async () => {
@@ -26,29 +26,29 @@ const Home = ({ useFilters }) => {
   if (products.items)
     return (
       <section className="productContainer">
+        {loading && <p>Loading</p>}
         <ul>
-          {products.items.length
-            ? products.items.map((product) => (
-                <li key={product.id}>
-                  <Link to={`product/${product.id}`}>
-                    <div className="containerImg">
-                      <img
-                        src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
-                      />
-                    </div>
+          {products.items.map((product) => (
+            <li key={product.id}>
+              <Link to={`product/${product.id}`}>
+                <div className="containerImg">
+                  <img
+                    src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
+                  />
+                </div>
 
-                    <div className="containerName">
-                      <p className="name">{product.name}</p>
-                      <button>
-                        <AiOutlineHeart />
-                      </button>
-                    </div>
-                    <p className="price">R${product.price}</p>
-                  </Link>
-                </li>
-              ))
-            : "loading..."}
+                <div className="containerName">
+                  <p className="name">{product.name}</p>
+                  <button>
+                    <AiOutlineHeart />
+                  </button>
+                </div>
+                <p className="price">R${product.price}</p>
+              </Link>
+            </li>
+          ))}
         </ul>
+        {!filters && <p>DASDASASD</p>}
       </section>
     );
 };

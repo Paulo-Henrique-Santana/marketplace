@@ -7,10 +7,6 @@ const Provider = ({ children }) => {
   const { request } = useFetch();
   const [category, setCategory] = useState([]);
   const [categoryName, setCategoryName] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState({
-    idCategory: null,
-  });
   const [token, setToken] = useState(localStorage.getItem("key") || "");
   const [loginName, setLoginName] = useState(
     localStorage.getItem("key2") || ""
@@ -47,10 +43,6 @@ const Provider = ({ children }) => {
     setCategory,
     categoryName,
     setCategoryName,
-    products,
-    setProducts,
-    filter,
-    setFilter,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
