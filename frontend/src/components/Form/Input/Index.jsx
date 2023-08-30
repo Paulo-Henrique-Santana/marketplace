@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import styles from "./Index.module.scss";
-import Validation from "../../../pages/Login/Register/Validation";
 
 const Input = ({
   htmlFor,

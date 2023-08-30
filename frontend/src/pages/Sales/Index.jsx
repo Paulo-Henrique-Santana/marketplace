@@ -4,17 +4,19 @@ import { GET_CATEGORY, PHOTO_POST } from "../../Api/Index";
 import useFetch from "../../Hooks/useFetch";
 import { FaAngleDown } from "react-icons/fa6";
 import Validation from "./Validation";
-import Error from "../../components/Form/Error/Error";
-
-import "./Index.scss";
+import Error from "../../components/Form/Error/Index";
+import { FaXmark } from "react-icons/fa6";
 import AppContext from "../../context/AppContext";
+//
+import "./Index.scss";
 
 const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { request } = useFetch();
-  const [imgs, setImg] = useState("");
   const { category } = useContext(AppContext);
-  const [data, setdData] = useState([]);
+  const [apiData, setApiData] = useState([]);
+  const [imgs, setImg] = useState("");
+  const [active, setActive] = useState(true);
 
   function separator(numb) {
     const str = numb.toString().split(".");
@@ -34,10 +36,12 @@ const Index = () => {
     formData.append("idUser", 1);
 
     const { url, options } = PHOTO_POST(formData);
-    request(url, options);
+    const { response } = await request(url, options);
+    setApiData(response);
 
     reset();
     setImg("");
+    console.log(apiData);
   };
 
   const handleImgChange = ({ target }) => {
@@ -78,7 +82,7 @@ const Index = () => {
 
           <div className="inputFileContainer">
             <input type="file" onChange={handleImgChange} multiple required />
-            <button>Send</button>
+            <button onClick={() => setActive(true)}>Send</button>
           </div>
         </div>
         <div className="salesForm">
@@ -138,7 +142,18 @@ const Index = () => {
           </div>
         </div>
       </form>
-      {/* {data && <p>Parabens</p>} */}
+
+      {apiData.ok && (
+        <div className={active ? `modalContainer` : `modalContainer close`}>
+          <div className={active ? `modal` : `modal close`}>
+            <button onClick={() => setActive(false)}>
+              <FaXmark />
+            </button>
+
+            <p>Sent successfully</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

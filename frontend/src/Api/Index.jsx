@@ -92,3 +92,13 @@ export function PHOTO_POST(body) {
     },
   };
 }
+
+export function FAVORITES_PRODUCTY(body) {
+  return {
+    url: API_URL + "favorite",
+    options: {
+      method: "POST",
+      body: JSON.stringify(body),
+    },
+  };
+}

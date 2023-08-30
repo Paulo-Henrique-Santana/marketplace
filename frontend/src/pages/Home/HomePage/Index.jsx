@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../../Hooks/useFetch";
-import { GET_PRODUCTS } from "../../../Api/Index";
+import { FAVORITES_PRODUCTY, GET_PRODUCTS } from "../../../Api/Index";
 import { Link, useLocation } from "react-router-dom";
-import "./Home.scss";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { FaCartShopping } from "react-icons/fa6";
+
+import "./Index.scss";
 // AiOutlineHeart
 
 const Home = ({ useFilters }) => {
@@ -20,7 +22,19 @@ const Home = ({ useFilters }) => {
       setProducts(json);
     };
     getCategory();
+    // console.log(products.items);
   }, [filters, request, setProducts]);
+
+  const postFavorite = (product) => {
+    console.log(product);
+    const { url, options } = FAVORITES_PRODUCTY({
+      id: product.id,
+      idUser: 1,
+      idProduct: product.name,
+    });
+    const { response, json } = request(url, options);
+    console.log(json, response);
+  };
 
   if (products.items)
     return (
@@ -35,15 +49,15 @@ const Home = ({ useFilters }) => {
                     src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
                   />
                 </div>
-
-                <div className="containerName">
-                  <p className="name">{product.name}</p>
-                  <button>
-                    <AiOutlineHeart />
-                  </button>
-                </div>
-                <p className="price">R${product.price}</p>
               </Link>
+              <div className="containerName">
+                <p className="name">{product.name}</p>
+                <button onClick={() => postFavorite(product)}>
+                  <AiOutlineHeart />
+                  {/* <FaCartShopping /> */}
+                </button>
+              </div>
+              <p className="price">R${product.price}</p>
             </li>
           ))}
         </ul>

@@ -4,8 +4,7 @@ import useFetch from "../../Hooks/useFetch";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import "./Index.scss";
-import { USERS_GET } from "../../Api/Index";
-import AppContext from "../../Context/AppContext";
+
 
 const Index = () => {
   const { data, request } = useFetch();
@@ -71,9 +70,11 @@ const Index = () => {
             <li>
               Quantity: <span className="quantity">{data.quantity}</span>
             </li>
-            <button className="buy">Buy</button>
+           
             <h2>Description</h2>
             <li>{data.description}</li>
+            <button className="btn">Buy</button>
+            <button className="btn cart">Add to Cart</button>
           </ul>
         </div>
       ) : (

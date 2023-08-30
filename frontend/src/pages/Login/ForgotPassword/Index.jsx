@@ -1,10 +1,10 @@
 import React from "react";
 import Logo from "../../../components/Logo/Logo";
-import InformationText from "../../../components/Form/InformationText/InformationText";
-import LinkForm from "../../../components/Form/Link/LinkForm";
-import Input from "../../../components/Form/Input/Input";
-import Button from "../../../components/Button/Button";
-import Error from "../../../components/Form/Error/Error";
+import InformationText from "../../../components/Form/InformationText/Index";
+import LinkForm from "../../../components/Form/Link/Index";
+import Input from "../../../components/Form/Input/Index";
+import Button from "../../../components/Button/Index";
+import Error from "../../../components/Form/Error/Index";
 import Validation from "../ForgotPassword/Validation";
 
 import "../Index.scss";

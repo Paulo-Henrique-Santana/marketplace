@@ -5,10 +5,10 @@ import Provider from "./context/Provider";
 import RouterLogin from "./pages/Login/RouterLogin";
 import Sales from "./pages/Sales/Index";
 import Product from "./pages/Product/Index";
-import Home from "./pages/Home/HomePage/Home";
-
-import "./styles/Global.scss";
+import Home from "./pages/Home/HomePage/Index";
 import Categories from "./context/Categories";
+import Favorites from "./pages/Favorites/Index";
+import "./styles/Global.scss";
 
 const App = () => {
   const [filters, setFilters] = useState({});
@@ -25,6 +25,7 @@ const App = () => {
           <Route path="login/*" element={<RouterLogin />} />
           <Route path="/sales" element={<Sales />} />
           <Route path="product/:id" element={<Product />} />
+          <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </Provider>
     </BrowserRouter>

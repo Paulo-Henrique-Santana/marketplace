@@ -107,7 +107,7 @@ const Header = ({ useFilters }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/favorites">
                       <FaHeart />
                       Favorites
                     </Link>
