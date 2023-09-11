@@ -49,7 +49,13 @@ ProductRouter.get("/", async (req, res) => {
     }
 
     if (idLoggedUser) {
-      findOptions.include.push({ model: Favorite, as: "favorites" });
+      findOptions.include.push({
+        model: Favorite,
+        as: "favorites",
+        left: true,
+        required: false,
+        where: { idUser: idLoggedUser },
+      });
     }
 
     if (idSeller) {
