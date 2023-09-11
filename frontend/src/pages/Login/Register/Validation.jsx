@@ -12,7 +12,7 @@ const Validation = () => {
   const [errorInputCpf, setErrorInputCpf] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState("");
   const { passwordRegex, cpfRegex } = Regex();
-  const { setLoginName } = useContext(AppContext);
+  const { setloggedUser } = useContext(AppContext);
   const { request } = useFetch();
   const navigate = useNavigate();
 
@@ -89,7 +89,7 @@ const Validation = () => {
     const { response } = await request(url, options);
 
     if (response.ok) {
-      setLoginName(data.name);
+      setloggedUser(data.name);
       alert("Registration done successfully");
       navigate("/login");
     }

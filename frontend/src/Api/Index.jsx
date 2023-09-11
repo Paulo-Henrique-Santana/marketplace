@@ -60,7 +60,7 @@ export function GET_CATEGORY() {
   };
 }
 
-export function GET_PRODUCTS(params) {
+export function GET_PRODUCTS(params, id) {
   const apiCategory = {
     url: API_URL + "product?",
     options: {
@@ -78,12 +78,15 @@ export function GET_PRODUCTS(params) {
     if (params.search) {
       apiCategory.url += `name=${params.search}&`;
     }
+    if (params.idLoggedUser) {
+      apiCategory.url += `idLoggedUser=${params.idLoggedUser}&`;
+    }
   }
 
   return apiCategory;
 }
 
-export function PHOTO_POST(body) {
+export function PRODUCTY_POST(body) {
   return {
     url: API_URL + "product",
     options: {
@@ -98,7 +101,19 @@ export function FAVORITES_PRODUCTY(body) {
     url: API_URL + "favorite",
     options: {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(body),
+    },
+  };
+}
+
+export function GET_FAVORITES_PRODUCTY(id) {
+  return {
+    url: API_URL + "favorite?idUser=" + id,
+    options: {
+      method: "GET",
     },
   };
 }

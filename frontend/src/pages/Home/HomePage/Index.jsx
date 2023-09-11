@@ -6,6 +6,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaCartShopping } from "react-icons/fa6";
 
 import "./Index.scss";
+import AppContext from "../../../context/AppContext";
 // AiOutlineHeart
 
 const Home = ({ useFilters }) => {
@@ -13,35 +14,48 @@ const Home = ({ useFilters }) => {
 
   const { request, loading } = useFetch();
   const [products, setProducts] = useState([]);
+  const { loggedUser } = useContext(AppContext);
 
   useEffect(() => {
-    const getCategory = async () => {
-      // console.log(filters);
-      const { url, options } = GET_PRODUCTS(filters);
+    const getProducts = async () => {
+      const { url, options } = GET_PRODUCTS({
+        ...filters,
+        idLoggedUser: loggedUser.id,
+      });
       const { json } = await request(url, options);
-      setProducts(json);
+      setProducts(json.items);
     };
-    getCategory();
-    // console.log(products.items);
+    getProducts();
   }, [filters, request, setProducts]);
 
-  const postFavorite = (product) => {
-    console.log(product);
-    const { url, options } = FAVORITES_PRODUCTY({
-      id: product.id,
-      idUser: 1,
-      idProduct: product.name,
-    });
-    const { response, json } = request(url, options);
-    console.log(json, response);
-  };
+  const postFavorite = async (product) => {
+    if (products[0].favorites.length) {
+      setProducts({ favorites: [] });
+    } else {
+      const { url, options } = FAVORITES_PRODUCTY({
+        idProduct: product.id,
+        idUser: loggedUser.id,
+      });
+      const { json } = await request(url, options);
 
-  if (products.items)
+      setProducts(
+        products.map((item) => {
+          if (item.id === product.id) {
+            console.log(item);
+            return { ...item, favorites: [json] };
+          }
+          return item;
+        })
+      );
+    }
+  };
+  console.log(products);
+  if (products.length)
     return (
       <section className="productContainer">
         {loading && <p>Loading</p>}
         <ul>
-          {products.items.map((product) => (
+          {products.map((product) => (
             <li key={product.id}>
               <Link to={`product/${product.id}`}>
                 <div className="containerImg">
@@ -53,15 +67,18 @@ const Home = ({ useFilters }) => {
               <div className="containerName">
                 <p className="name">{product.name}</p>
                 <button onClick={() => postFavorite(product)}>
-                  <AiOutlineHeart />
-                  {/* <FaCartShopping /> */}
+                  {product.favorites.length ? (
+                    <AiFillHeart />
+                  ) : (
+                    <AiOutlineHeart />
+                  )}
                 </button>
               </div>
               <p className="price">R${product.price}</p>
             </li>
           ))}
         </ul>
-        {!products.items.length && <p>Product not found</p>}
+        {!products.length && <p>Product not found</p>}
       </section>
     );
 };

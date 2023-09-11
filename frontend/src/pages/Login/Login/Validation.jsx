@@ -11,7 +11,7 @@ const Validation = () => {
   const [errorInputLogin, setErrorInputLogin] = useState("");
   const { request } = useFetch();
   const navigate = useNavigate();
-  const { setToken, setLoginName } = useContext(AppContext);
+  const { setToken, setloggedUser } = useContext(AppContext);
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -43,7 +43,7 @@ const Validation = () => {
       if (response.ok) {
         navigate("/");
         setToken(json.token);
-        setLoginName(json.user.name);
+        setloggedUser(json.user);
         setErrorInputLogin("");
       }
     }

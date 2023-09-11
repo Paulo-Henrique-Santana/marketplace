@@ -16,7 +16,7 @@ import Logo from "../Logo/Logo";
 import "./Index.scss";
 
 const Header = ({ useFilters }) => {
-  const { token, loginName, setToken, setLoginName, category } =
+  const { token, loggedUser, setToken, setloggedUser, category } =
     useContext(AppContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -36,7 +36,7 @@ const Header = ({ useFilters }) => {
 
   const handleClick = () => {
     setToken("");
-    setLoginName("");
+    setloggedUser("");
   };
 
   const handleClickCategory = async (id) => {
@@ -92,10 +92,10 @@ const Header = ({ useFilters }) => {
               </li>
             )}
             {token && (
-              <li className="loginName">
+              <li className="loggedUser">
                 <Link className="ola">
                   <FaUserLarge />
-                  {loginName.split(" ")[0]}
+                  {loggedUser && loggedUser.name.split(" ")[0]}
                   <FaAngleDown />
                 </Link>
 

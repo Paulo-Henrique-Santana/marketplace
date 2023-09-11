@@ -8,8 +8,8 @@ const Provider = ({ children }) => {
   const [category, setCategory] = useState([]);
   const [categoryName, setCategoryName] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("key") || "");
-  const [loginName, setLoginName] = useState(
-    localStorage.getItem("key2") || ""
+  const [loggedUser, setloggedUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || ""
   );
 
   useEffect(() => {
@@ -21,9 +21,9 @@ const Provider = ({ children }) => {
   }, [token]);
 
   useEffect(() => {
-    if (loginName) localStorage.setItem("key2", loginName);
-    else localStorage.removeItem("key2");
-  }, [loginName]);
+    if (loggedUser) localStorage.setItem("user", JSON.stringify(loggedUser));
+    else localStorage.removeItem("user");
+  }, [loggedUser]);
 
   useEffect(() => {
     const getCategory = async () => {
@@ -37,8 +37,8 @@ const Provider = ({ children }) => {
   const value = {
     token,
     setToken,
-    loginName,
-    setLoginName,
+    loggedUser,
+    setloggedUser,
     category,
     setCategory,
     categoryName,

@@ -12,7 +12,7 @@ import "../Index.scss";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { onSubmit, register, handleSubmit, errorInputLogin, errors } =
+  const { onSubmit, register, handleSubmit, errorInputLogin } =
     Validation();
   const { token } = useContext(AppContext);
 

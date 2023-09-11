@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import Input from "./Input/Input";
-import { GET_CATEGORY, PHOTO_POST } from "../../Api/Index";
+import { PRODUCTY_POST } from "../../Api/Index";
 import useFetch from "../../Hooks/useFetch";
 import { FaAngleDown } from "react-icons/fa6";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
 import { FaXmark } from "react-icons/fa6";
 import AppContext from "../../context/AppContext";
-//
+
 import "./Index.scss";
 
 const Index = () => {
@@ -35,13 +35,12 @@ const Index = () => {
     formData.append("description", data.description);
     formData.append("idUser", 1);
 
-    const { url, options } = PHOTO_POST(formData);
+    const { url, options } = PRODUCTY_POST(formData);
     const { response } = await request(url, options);
     setApiData(response);
 
     reset();
     setImg("");
-    console.log(apiData);
   };
 
   const handleImgChange = ({ target }) => {
