@@ -14,6 +14,7 @@ FavoriteRouter.get("/", async (req, res) => {
         where: { idUser },
         include: {
           model: Product,
+          as: "product",
           include: { model: ProductImage, as: "images" },
         },
       });
@@ -31,6 +32,7 @@ FavoriteRouter.get("/:id", async (req, res) => {
     const data = await Favorite.findByPk(req.params.id, {
       include: {
         model: Product,
+        as: "product",
         include: { model: ProductImage, as: "images" },
       },
     });

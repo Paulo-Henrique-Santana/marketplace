@@ -1,19 +1,29 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const Product = require("../models/Product");
-const upload = require("../config/multer");
+const Favorite = require("../models/Favorites");
 const ProductImage = require("../models/ProductImage");
+const upload = require("../config/multer");
 const { Op } = require("sequelize");
 
 const ProductRouter = express.Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
-    const { idCategory, page, pageSize, name, minPrice, maxPrice } = req.query;
+    const {
+      idCategory,
+      page,
+      pageSize,
+      name,
+      minPrice,
+      maxPrice,
+      idLoggedUser,
+      idSeller,
+    } = req.query;
 
     const findOptions = {
       where: {},
-      include: { model: ProductImage, as: "images" },
+      include: [{ model: ProductImage, as: "images" }],
       distinct: true,
     };
 
@@ -23,31 +33,27 @@ ProductRouter.get("/", async (req, res) => {
     }
 
     if (name) {
-      findOptions.where = {
-        ...findOptions.where,
-        name: { [Op.iLike]: "%" + name + "%" },
-      };
+      findOptions.where.name = { [Op.iLike]: "%" + name + "%" };
     }
 
     if (minPrice && maxPrice) {
-      findOptions.where = {
-        ...findOptions.where,
-        price: { [Op.between]: [minPrice, maxPrice] },
-      };
+      findOptions.where.price = { [Op.between]: [minPrice, maxPrice] };
     } else if (minPrice) {
-      findOptions.where = {
-        ...findOptions.where,
-        price: { [Op.gte]: minPrice },
-      };
+      findOptions.where.price = { [Op.gte]: minPrice };
     } else if (maxPrice) {
-      findOptions.where = {
-        ...findOptions.where,
-        price: { [Op.lte]: maxPrice },
-      };
+      findOptions.where.price = { [Op.lte]: maxPrice };
     }
 
     if (idCategory) {
-      findOptions.where = { ...findOptions.where, idCategory };
+      findOptions.where.idCategory = idCategory;
+    }
+
+    if (idLoggedUser) {
+      findOptions.include.push({ model: Favorite, as: "favorites" });
+    }
+
+    if (idSeller) {
+      findOptions.where.idUser = idSeller;
     }
 
     const { rows, count } = await Product.findAndCountAll(findOptions);

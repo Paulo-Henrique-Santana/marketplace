@@ -12,9 +12,11 @@ Favorite.belongsTo(User, { foreignKey: { name: "idUser", allowNull: false } });
 
 Product.hasMany(Favorite, {
   foreignKey: { name: "idProduct", allowNull: false },
+  as: "favorites",
 });
 Favorite.belongsTo(Product, {
   foreignKey: { name: "idProduct", allowNull: false },
+  as: "product",
 });
 
 module.exports = Favorite;
