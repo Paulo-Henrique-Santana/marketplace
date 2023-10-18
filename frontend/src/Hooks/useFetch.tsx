@@ -1,19 +1,33 @@
-import React from "react";
+import React, { SetStateAction, useCallback } from "react";
+
+type DataProps = {
+  description: string;
+  id: number;
+  idCategory: number;
+  idUser: number;
+  images: Array<{
+    id: number;
+    fileName: string;
+    idProdyct: number;
+  }>;
+  name: string;
+  price: string;
+  quantity: number;
+};
 
 const useFetch = () => {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState<DataProps | null>(null);
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  const request = React.useCallback(async (url, options) => {
-    let response;
-    let json;
+  const request = useCallback(async (url: string, options?: RequestInit) => {
+    let response: any;
+    let json: any;
     try {
       setError(null);
       setLoading(true);
       response = await fetch(url, options);
       json = await response.json();
-      // if (response.ok === false) throw new Error(json.message);
     } catch (error) {
       json = null;
       setError(error);

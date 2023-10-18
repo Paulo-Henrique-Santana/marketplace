@@ -10,14 +10,14 @@ import {
   FaUserLarge,
 } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import AppContext from "../../context/AppContext";
+import { LocalStorageProvider } from "../../Context/LocalStorageContext";
 import Logo from "../Logo/Logo";
 
 import "./Index.scss";
 
 const Header = ({ useFilters }) => {
   const { token, loggedUser, setToken, setloggedUser, category } =
-    useContext(AppContext);
+    useContext(LocalStorageProvider);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useFilters;
@@ -93,11 +93,11 @@ const Header = ({ useFilters }) => {
             )}
             {token && (
               <li className="loggedUser">
-                <Link className="ola">
+                <span className="userName">
                   <FaUserLarge />
                   {loggedUser && loggedUser.name.split(" ")[0]}
                   <FaAngleDown />
-                </Link>
+                </span>
 
                 <ul className="subMenu">
                   <li>

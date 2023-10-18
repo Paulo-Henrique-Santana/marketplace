@@ -1,6 +1,14 @@
 import React, { useContext, useState } from "react";
 import styles from "./Index.module.scss";
-import Validation from "../../../pages/Login/Register/Validation";
+
+type InputProps = React.ComponentProps<"input"> & {
+  htmlFor: string;
+  text: string;
+  register: (item: any) => any;
+  validation: any;
+  errors?: any;
+  onBlur?: any;
+};
 
 const Input = ({
   htmlFor,
@@ -11,10 +19,7 @@ const Input = ({
   placeholder,
   register,
   validation,
-  onBlur,
-  errors,
-}) => {
-
+}: InputProps) => {
   return (
     <div className={styles.wrapper}>
       <label htmlFor={htmlFor} className={styles.label}>
@@ -26,12 +31,6 @@ const Input = ({
         id={id}
         placeholder={placeholder}
         {...register(validation)}
-        // onBlur={onBlur}
-        // style={
-        //   errors[validation]
-        //     ? { borderColor: "red" }
-        //     : { borderColor: "rgb(170, 170, 170)" }
-        // }
       />
     </div>
   );

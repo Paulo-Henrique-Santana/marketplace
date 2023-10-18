@@ -5,18 +5,26 @@ import * as Yup from "yup";
 import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import AppContext from "../../../context/AppContext";
+import { LocalStorageProvider } from "../../../Context/LocalStorageContext";
 import Regex from "./Regex";
+
+type OnSubmitProps = {
+  name: string;
+  password: string;
+  email: string;
+  cpf: string;
+  confirmPassword: string;
+};
 
 const Validation = () => {
   const [errorInputCpf, setErrorInputCpf] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState("");
   const { passwordRegex, cpfRegex } = Regex();
-  const { setloggedUser } = useContext(AppContext);
+  const { setloggedUser } = useContext(LocalStorageProvider);
   const { request } = useFetch();
   const navigate = useNavigate();
 
-  const RemoverSpecialCharacters = (string) => {
+  const RemoverSpecialCharacters = (string: string) => {
     return string.replace(/[^a-zA-Z0-9]/g, "");
   };
 
@@ -42,7 +50,7 @@ const Validation = () => {
     // ),
 
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords need to be the same")
+      .oneOf([Yup.ref("password")], "Passwords need to be the same")
       .required("Required field"),
   });
 
@@ -56,7 +64,9 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
 
-  const onBlurCpf = async (cpf) => {
+  const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(cpf);
+
     if (cpf.target.value && !errors.email) {
       const { url, options } = USERS_GET({
         cpf: RemoverSpecialCharacters(cpf.target.value),
@@ -67,7 +77,7 @@ const Validation = () => {
     }
   };
 
-  const onBlurEmail = async (email) => {
+  const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
     if (email.target.value && !errors.email) {
       const { url, options } = USERS_GET({ email: email.target.value });
       const { json } = await request(url, options);
@@ -79,7 +89,7 @@ const Validation = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: OnSubmitProps) => {
     const { url, options } = USER_POST_REGISTER({
       name: data.name,
       password: data.password,

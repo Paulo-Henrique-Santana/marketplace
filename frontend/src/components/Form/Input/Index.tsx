@@ -1,5 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, {
+  FocusEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styles from "./Index.module.scss";
+
+type InputProps = React.ComponentProps<"input"> & {
+  htmlFor: string;
+  text: string;
+  register: (item: any) => any;
+  validation: any;
+  errors?: any;
+  onBlur?: any;
+};
 
 const Input = ({
   htmlFor,
@@ -12,8 +26,7 @@ const Input = ({
   validation,
   onBlur,
   errors,
-}) => {
-
+}: InputProps) => {
   return (
     <div className={styles.wrapper}>
       <label htmlFor={htmlFor} className={styles.label}>

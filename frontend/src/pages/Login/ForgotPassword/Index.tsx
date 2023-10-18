@@ -5,7 +5,7 @@ import LinkForm from "../../../components/Form/Link/Index";
 import Input from "../../../components/Form/Input/Index";
 import Button from "../../../components/Button/Index";
 import Error from "../../../components/Form/Error/Index";
-import Validation from "../ForgotPassword/Validation";
+import Validation from "./Validation";
 
 import "../Index.scss";
 

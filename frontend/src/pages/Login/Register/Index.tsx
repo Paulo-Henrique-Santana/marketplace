@@ -5,7 +5,6 @@ import Input from "../../../components/Form/Input/Index";
 import Button from "../../../components/Button/Index";
 import LinkForm from "../../../components/Form/Link/Index";
 import Validation from "./Validation";
-import AppContext from "../../../context/AppContext";
 import Error from "../../../components/Form/Error/Index";
 
 const Register = () => {
@@ -63,7 +62,6 @@ const Register = () => {
             placeholder="123.456.789-10"
             register={register}
             validation="cpf"
-            mask="999.999.999-99"
             onBlur={onBlurCpf}
             errors={errors}
           />

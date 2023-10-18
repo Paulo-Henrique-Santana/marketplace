@@ -60,7 +60,7 @@ export function GET_CATEGORY() {
   };
 }
 
-export function GET_PRODUCTS(params, id) {
+export function GET_PRODUCTS(params) {
   const apiCategory = {
     url: API_URL + "product?",
     options: {
@@ -101,10 +101,24 @@ export function FAVORITES_PRODUCTY(body) {
     url: API_URL + "favorite",
     options: {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+    },
+  };
+}
+
+export function DELETE_FAVORITES_PRODUCTY(id) {
+
+  return {
+    url: API_URL + "favorite/" + id,
+    options: {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
   };
 }

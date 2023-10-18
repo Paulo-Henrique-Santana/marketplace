@@ -2,7 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Index.module.scss";
 
-const FomrLink = ({ firstText, secondText, link }) => {
+type FormLinkProps = {
+  firstText?: string;
+  secondText?: string;
+  link: string;
+};
+
+const FomrLink = ({ firstText, secondText, link }: FormLinkProps) => {
   return (
     <span className={styles.span}>
       <p>

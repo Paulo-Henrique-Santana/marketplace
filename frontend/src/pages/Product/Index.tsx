@@ -5,12 +5,11 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import "./Index.scss";
 
-
 const Index = () => {
   const { data, request } = useFetch();
   const { id } = useParams();
   const [indexImg, setIndexImg] = useState(0);
-  const divImgs = useRef(null);
+  const divImgs = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -19,10 +18,14 @@ const Index = () => {
     fetchProduct();
   }, [id, request]);
 
-  const handleOnMouseEnter = (event, img, index) => {
+  const handleOnMouseEnter = (
+    event: React.MouseEvent<HTMLImageElement>,
+    img: any,
+    index: number
+  ) => {
     setIndexImg(index);
-    const imgs = divImgs.current.querySelectorAll("img");
-    imgs.forEach((img) => {
+    const imgs = divImgs.current?.querySelectorAll("img");
+    imgs?.forEach((img) => {
       if (img !== event.target) {
         img.classList.remove("color");
       } else {
@@ -31,7 +34,6 @@ const Index = () => {
     });
   };
 
-
   return (
     <div className="productDescription">
       {data ? (
@@ -39,14 +41,14 @@ const Index = () => {
           <div className="containerImg">
             <div className="imgs" ref={divImgs}>
               {data.images &&
-                data.images.map((img, index) => (
+                data.images.map((img, index: number) => (
                   <img
                     key={img.id}
                     src={`http://localhost:3000/api/files/${img.fileName}`}
                     onMouseEnter={(event) =>
                       handleOnMouseEnter(event, img, index)
                     }
-                    className={index === 0 && `color`}
+                    className={index === 0 ? `color` : ""}
                   />
                 ))}
             </div>
@@ -70,7 +72,7 @@ const Index = () => {
             <li>
               Quantity: <span className="quantity">{data.quantity}</span>
             </li>
-           
+
             <h2>Description</h2>
             <li>{data.description}</li>
             <button className="btn">Buy</button>

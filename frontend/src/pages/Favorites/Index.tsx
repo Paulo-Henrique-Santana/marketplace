@@ -1,22 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../Hooks/useFetch";
 import { GET_FAVORITES_PRODUCTY } from "../../Api/Index";
-import AppContext from "../../context/AppContext";
+import { LocalStorageProvider } from "../../Context/LocalStorageContext";
 
 const Index = () => {
   const { request } = useFetch();
-  const { loggedUser } = useContext(AppContext);
+  const { loggedUser } = useContext(LocalStorageProvider);
   const [favoriteProduct, setFavoriteProduct] = useState("");
 
   useEffect(() => {
     const getFavorite = async () => {
       const { url, options } = GET_FAVORITES_PRODUCTY(loggedUser.id);
       const { json } = await request(url, options);
-      console.log(json);
+
       setFavoriteProduct(json);
     };
     getFavorite();
   }, [loggedUser.id, request]);
+
   if (favoriteProduct)
     return (
       <section>

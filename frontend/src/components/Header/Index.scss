@@ -197,11 +197,12 @@ header {
           }
         }
 
-        .ola {
-          padding-left: 0;
-          padding-right: 0;
+        .userName {
+          // padding-left: 0;
+          // padding-right: 0;
+        
           &:hover::after {
-            width: 0%;
+            width: 0% !important;
           }
           // &:hover::before {
           //     display: flex;
@@ -221,7 +222,7 @@ header {
           // }
         }
 
-        a {
+        a, .userName {
           font-weight: 500;
           color: $brown;
           display: flex;
@@ -253,7 +254,7 @@ header {
         display: none;
         justify-content: center;
         padding: 0.5rem;
-        left: 0px;
+        left: 7px;
         top: 45px;
         flex-direction: column;
         gap: 10px;

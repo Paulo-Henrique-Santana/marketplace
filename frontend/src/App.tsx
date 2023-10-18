@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import Header from "../src/components/Header/Index";
-import Provider from "./context/Provider";
+import Header from "./components/Header/Index";
+import LocalStorageProvider  from "./Context/LocalStorageContext";
 import RouterLogin from "./pages/Login/RouterLogin";
 import Sales from "./pages/Sales/Index";
 import Product from "./pages/Product/Index";
 import Home from "./pages/Home/HomePage/Index";
-import Categories from "./context/Categories";
+
 import Favorites from "./pages/Favorites/Index";
 import "./styles/Global.scss";
 
@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Provider>
+      <LocalStorageProvider>
         <Header useFilters={[filters, setFilters]} />
         <Routes>
           <Route
@@ -27,7 +27,7 @@ const App = () => {
           <Route path="product/:id" element={<Product />} />
           <Route path="/favorites" element={<Favorites />} />
         </Routes>
-      </Provider>
+      </LocalStorageProvider>
     </BrowserRouter>
   );
 };
