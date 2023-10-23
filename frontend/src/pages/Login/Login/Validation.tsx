@@ -37,7 +37,7 @@ const Validation = () => {
         email: data.email,
         password: data.password,
       });
-      const { response, json } = await request(url, options);
+      const { response, json } = await request(url, true, options);
       if (!response.ok) return setErrorInputLogin(json.message);
 
       if (response.ok) {

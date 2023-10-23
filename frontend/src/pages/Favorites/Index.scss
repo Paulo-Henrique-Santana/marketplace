@@ -1,0 +1,88 @@
+@import "../../styles/Variables.scss";
+
+.favoriteContainer {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 0 1.5rem;
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    li {
+      position: relative;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      border-radius: 0.5rem;
+
+      &::before {
+        content: "";
+        width: 100%;
+        height: 1px;
+        background: rgb(241, 240, 240);
+        position: absolute;
+        bottom: 168px;
+      }
+
+      a {
+        color: initial;
+        div {
+          border-radius: 0.3rem;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          img {
+            max-width: 400px;
+            width: 100%;
+            height: 400px;
+            padding: 1.5rem 1rem 1.5rem 1rem;
+          }
+        }
+      }
+
+      div {
+        &:nth-child(2) {
+          display: flex;
+
+          justify-content: space-between;
+          p {
+            padding: 0 1rem;
+            &:nth-child(1) {
+              font-size: 1.5rem;
+              color: #333;
+              text-transform: capitalize;
+            }
+            &:nth-child(2) {
+              font-size: 1.2rem;
+              color: $purple;
+            }
+          }
+
+          svg {
+            cursor: pointer;
+            color: $purple;
+            font-size: 2rem;
+            margin-right: 1rem;
+            z-index: 112;
+          }
+        }
+      }
+
+      button {
+        width: 92%;
+        height: 3.5rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        font-size: 1.2rem;
+        color: $white;
+        transition: 0.3s;
+        font-weight: 600;
+        background-color: #fff;
+        color: $purple;
+        margin: 1rem 0rem 1.5rem 1rem;
+        border: 1px solid $lightPurple;
+        &:hover {
+          background-color: $purple;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

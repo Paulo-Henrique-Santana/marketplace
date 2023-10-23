@@ -9,7 +9,7 @@ import {
   FaMagnifyingGlass,
   FaUserLarge,
 } from "react-icons/fa6";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LocalStorageProvider } from "../../Context/LocalStorageContext";
 import Logo from "../Logo/Logo";
 
@@ -21,13 +21,6 @@ const Header = ({ useFilters }) => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useFilters;
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
-  }, [filters]);
 
   const handleClickLogo = () => {
     setFilters({});
@@ -42,11 +35,13 @@ const Header = ({ useFilters }) => {
   const handleClickCategory = async (id) => {
     setFilters({ idCategory: id });
     setSearch("");
+    navigate("/");
   };
 
   const handleSearch = (event) => {
     event.preventDefault();
     setFilters({ ...filters, search: search });
+    navigate("/");
   };
 
   return (
@@ -63,7 +58,7 @@ const Header = ({ useFilters }) => {
       </div>
       <header>
         <nav>
-          <Logo onClick={handleClickLogo} />
+          <Logo onClick={handleClickLogo} to="/" />
           <form className="inputContainer" onSubmit={handleSearch}>
             <input
               type="text"

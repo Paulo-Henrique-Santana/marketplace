@@ -111,7 +111,6 @@ export function FAVORITES_PRODUCTY(body) {
 }
 
 export function DELETE_FAVORITES_PRODUCTY(id) {
-
   return {
     url: API_URL + "favorite/" + id,
     options: {
@@ -128,6 +127,9 @@ export function GET_FAVORITES_PRODUCTY(id) {
     url: API_URL + "favorite?idUser=" + id,
     options: {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
   };
 }

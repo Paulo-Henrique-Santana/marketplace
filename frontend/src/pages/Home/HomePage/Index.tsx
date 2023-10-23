@@ -31,7 +31,7 @@ type ProductProps = {
 
 const Home = ({ useFilters }) => {
   const [filters] = useFilters;
-  const { request, loading } = useFetch();
+  const { request, loading, error } = useFetch();
   const [products, setProducts] = useState<ProductProps | any>([]);
   const { loggedUser } = useContext(LocalStorageProvider);
 
@@ -41,19 +41,19 @@ const Home = ({ useFilters }) => {
         ...filters,
         idLoggedUser: loggedUser.id,
       });
-      const { json } = await request(url, options);
+      const { json } = await request(url, true, options);
       setProducts(json.items);
-      
     };
     getProducts();
   }, [filters]);
 
   const toogleFavorite = async (favoriteProduct: ProductProps) => {
     if (favoriteProduct.favorites?.length) {
+      console.log(favoriteProduct.favorites[0].id);
       const { url, options } = DELETE_FAVORITES_PRODUCTY(
         favoriteProduct.favorites[0].id
       );
-      await request(url, options);
+      await request(url, false, options);
       setProducts((prevProducts: ProductProps[]) => {
         return prevProducts.map((item: ProductProps) => {
           if (item.id === favoriteProduct.id) {
@@ -67,7 +67,7 @@ const Home = ({ useFilters }) => {
         idProduct: favoriteProduct.id,
         idUser: loggedUser.id,
       });
-      const { json } = await request(url, options);
+      const { json } = await request(url, false, options);
       setProducts((prevProducts: ProductProps[]) => {
         return prevProducts.map((item: ProductProps) => {
           if (item.id === favoriteProduct.id) {
@@ -79,38 +79,38 @@ const Home = ({ useFilters }) => {
     }
   };
 
-  console.log(loading);
-  if (products.length)
-    return (
-      <section className="productContainer">
-        {loading && <p>Loading</p>}
-        <ul>
-          {products.map((product: ProductProps) => (
-            <li key={product.id}>
-              <Link to={`product/${product.id}`}>
-                <div className="containerImg">
-                  <img
-                    src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
-                  />
+  return (
+    <section className="productContainer">
+      {loading && <p>Loading</p>}
+      {!products.length && !loading && <p>Product not found</p>}
+      <ul>
+        {products.length
+          ? products.map((product: ProductProps) => (
+              <li key={product.id}>
+                <Link to={`product/${product.id}`}>
+                  <div className="containerImg">
+                    <img
+                      src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
+                    />
+                  </div>
+                </Link>
+                <div className="containerName">
+                  <p className="name">{product.name}</p>
+                  <button onClick={() => toogleFavorite(product)}>
+                    {product.favorites?.length ? (
+                      <AiFillHeart />
+                    ) : (
+                      <AiOutlineHeart />
+                    )}
+                  </button>
                 </div>
-              </Link>
-              <div className="containerName">
-                <p className="name">{product.name}</p>
-                <button onClick={() => toogleFavorite(product)}>
-                  {product.favorites?.length ? (
-                    <AiFillHeart />
-                  ) : (
-                    <AiOutlineHeart />
-                  )}
-                </button>
-              </div>
-              <p className="price">R${product.price}</p>
-            </li>
-          ))}
-        </ul>
-        {!products.length && <p>Product not found</p>}
-      </section>
-    );
+                <p className="price">R${product.price}</p>
+              </li>
+            ))
+          : ""}
+      </ul>
+    </section>
+  );
 };
 
 export default Home;

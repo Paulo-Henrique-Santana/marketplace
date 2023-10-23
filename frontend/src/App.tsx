@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Header from "./components/Header/Index";
-import LocalStorageProvider  from "./Context/LocalStorageContext";
+import LocalStorageProvider from "./Context/LocalStorageContext";
 import RouterLogin from "./pages/Login/RouterLogin";
 import Sales from "./pages/Sales/Index";
 import Product from "./pages/Product/Index";
@@ -26,6 +32,7 @@ const App = () => {
           <Route path="/sales" element={<Sales />} />
           <Route path="product/:id" element={<Product />} />
           <Route path="/favorites" element={<Favorites />} />
+
         </Routes>
       </LocalStorageProvider>
     </BrowserRouter>

@@ -30,7 +30,7 @@ const Index = () => {
   const { category } = useContext(LocalStorageProvider);
   const [apiData, setApiData] = useState<Response | null>(null);
   const [imgs, setImg] = useState<ResultProps[]>([]);
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const modalContainer = useRef(null);
 
   function separator(numb: string) {
@@ -51,7 +51,7 @@ const Index = () => {
     formData.append("idUser", "1");
 
     const { url, options } = PRODUCTY_POST(formData);
-    const { response } = await request(url, options);
+    const { response } = await request(url, true, options);
     setApiData(response);
     reset();
     setImg([]);
@@ -70,16 +70,10 @@ const Index = () => {
     setImg(result);
   };
 
-  const toggleModal = () => {
-    setActive((boolean) => !boolean);
+  const closeModal = () => {
+    setApiData(null);
+    setActive(false);
   };
-
-  // const closeModal = (e) => {
-  //   modalContainer.current.style.display = "none";
-  //   if (modalContainer.current && !modalContainer.current.contains(e.target)) {
-  //     modalContainer.current.style.display = "none";
-  //   }
-  // };
 
   return (
     <section className="salesContainer">
@@ -108,9 +102,7 @@ const Index = () => {
 
           <div className="inputFileContainer">
             <input type="file" onChange={handleImgChange} multiple required />
-            <button onClick={() => setActive((boolean) => !boolean)}>
-              Send
-            </button>
+            <button onClick={() => setActive(true)}>Send</button>
           </div>
         </div>
         <div className="salesForm">
@@ -174,14 +166,12 @@ const Index = () => {
       {apiData !== null && apiData.ok && (
         <div
           ref={modalContainer}
-          className={`modalContainer`}
-          style={active ? { display: "flex" } : { display: "none" }}
+          className={active ? `modalContainer` : `modalContainer close`}
         >
-          <div className={`modal `}>
-            <button onClick={toggleModal}>
+          <div className="modal">
+            <button onClick={closeModal}>
               <FaXmark />
             </button>
-
             <p>Sent successfully</p>
           </div>
         </div>

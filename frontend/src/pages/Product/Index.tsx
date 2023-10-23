@@ -13,7 +13,7 @@ const Index = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await request(`http://localhost:3000/api/product/${id}`);
+      await request(`http://localhost:3000/api/product/${id}`, true);
     };
     fetchProduct();
   }, [id, request]);
@@ -33,6 +33,7 @@ const Index = () => {
       }
     });
   };
+  console.log(data);
 
   return (
     <div className="productDescription">

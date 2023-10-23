@@ -4,12 +4,12 @@ import useFetch from "../Hooks/useFetch";
 
 type LocalStorageProps = {
   children: React.ReactNode;
-}
+};
 
 type CategoryProps = {
   id: number;
   name: string;
-}
+};
 
 type LocalStorageProviderProps = {
   category?: CategoryProps[];
@@ -20,7 +20,7 @@ type LocalStorageProviderProps = {
   setToken?: React.Dispatch<React.SetStateAction<string>> | any;
   loggedUser?: any;
   setloggedUser?: any;
-}
+};
 
 export const LocalStorageProvider = createContext<LocalStorageProviderProps>(
   {} as LocalStorageProviderProps
@@ -32,7 +32,7 @@ const LocalStorageContext = ({ children }: LocalStorageProps) => {
   const [categoryName, setCategoryName] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("key") || "");
   const [loggedUser, setloggedUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || ""
+    JSON.parse(localStorage.getItem("user") || "")
   );
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const LocalStorageContext = ({ children }: LocalStorageProps) => {
   useEffect(() => {
     const getCategory = async () => {
       const { url, options } = GET_CATEGORY();
-      const { json } = await request(url, options);
+      const { json } = await request(url, true, options);
       setCategory(json);
     };
     getCategory();

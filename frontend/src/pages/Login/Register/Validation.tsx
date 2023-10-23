@@ -71,7 +71,7 @@ const Validation = () => {
       const { url, options } = USERS_GET({
         cpf: RemoverSpecialCharacters(cpf.target.value),
       });
-      const { json } = await request(url, options);
+      const { json } = await request(url, true, options);
       if (json.length) setErrorInputCpf("CPF already registered");
       else setErrorInputCpf("");
     }
@@ -80,7 +80,7 @@ const Validation = () => {
   const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
     if (email.target.value && !errors.email) {
       const { url, options } = USERS_GET({ email: email.target.value });
-      const { json } = await request(url, options);
+      const { json } = await request(url, true, options);
       if (json.length) {
         setErrorInputEmail("E-mail already registered");
       } else {
@@ -96,7 +96,7 @@ const Validation = () => {
       email: data.email,
       cpf: data.cpf,
     });
-    const { response } = await request(url, options);
+    const { response } = await request(url, true, options);
 
     if (response.ok) {
       setloggedUser(data.name);
