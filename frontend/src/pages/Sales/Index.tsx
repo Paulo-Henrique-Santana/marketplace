@@ -6,10 +6,9 @@ import { FaAngleDown } from "react-icons/fa6";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
 import { FaXmark } from "react-icons/fa6";
-import { LocalStorageProvider } from "../../Context/LocalStorageContext";
+import { CategoryContext } from "../../Context/CategoryContext";
 
 import "./Index.scss";
-import { boolean } from "yup";
 
 type OnSubmitData = {
   category: string;
@@ -27,7 +26,7 @@ type ResultProps = {
 const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { request } = useFetch();
-  const { category } = useContext(LocalStorageProvider);
+  const { category } = useContext(CategoryContext);
   const [apiData, setApiData] = useState<Response | null>(null);
   const [imgs, setImg] = useState<ResultProps[]>([]);
   const [active, setActive] = useState(true);

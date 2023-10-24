@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   FaAngleDown,
   FaArrowRightFromBracket,
@@ -10,14 +10,16 @@ import {
   FaUserLarge,
 } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { LocalStorageProvider } from "../../Context/LocalStorageContext";
+import { LocalStorageContext } from "../../Context/LocalStorageContext";
+import { CategoryContext } from "../../Context/CategoryContext";
 import Logo from "../Logo/Logo";
 
 import "./Index.scss";
 
 const Header = ({ useFilters }) => {
-  const { token, loggedUser, setToken, setloggedUser, category } =
-    useContext(LocalStorageProvider);
+  const { token, loggedUser, setToken, setloggedUser } =
+    useContext(LocalStorageContext);
+  const { category } = useContext(CategoryContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useFilters;
@@ -96,7 +98,7 @@ const Header = ({ useFilters }) => {
 
                 <ul className="subMenu">
                   <li>
-                    <Link>
+                    <Link to="/">
                       <FaCartShopping />
                       Cart
                     </Link>
@@ -136,7 +138,7 @@ const Header = ({ useFilters }) => {
               style={token ? { display: "none" } : { display: "block" }}
               className="li-home"
             >
-              <Link>
+              <Link to="/">
                 <FaCartShopping />
                 Cart
               </Link>

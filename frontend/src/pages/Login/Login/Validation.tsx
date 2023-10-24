@@ -5,13 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import { LocalStorageProvider } from "../../../Context/LocalStorageContext";
+import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 
 const Validation = () => {
   const [errorInputLogin, setErrorInputLogin] = useState("");
   const { request } = useFetch();
   const navigate = useNavigate();
-  const { setToken, setloggedUser } = useContext(LocalStorageProvider);
+  const { setToken, setloggedUser } = useContext(LocalStorageContext);
 
   const schema = Yup.object().shape({
     email: Yup.string()

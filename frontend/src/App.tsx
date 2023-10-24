@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Index";
-import LocalStorageProvider from "./Context/LocalStorageContext";
 import RouterLogin from "./pages/Login/RouterLogin";
 import Sales from "./pages/Sales/Index";
 import Product from "./pages/Product/Index";
 import Home from "./pages/Home/HomePage/Index";
-
 import Favorites from "./pages/Favorites/Index";
+import { LocalStorageProvider } from "./Context/LocalStorageContext";
+import { CategoryProvider } from "./Context/CategoryContext";
+
 import "./styles/Global.scss";
 
 const App = () => {
@@ -21,20 +16,21 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <LocalStorageProvider>
-        <Header useFilters={[filters, setFilters]} />
-        <Routes>
-          <Route
-            path="/"
-            element={<Home useFilters={[filters, setFilters]} />}
-          />
-          <Route path="login/*" element={<RouterLogin />} />
-          <Route path="/sales" element={<Sales />} />
-          <Route path="product/:id" element={<Product />} />
-          <Route path="/favorites" element={<Favorites />} />
-
-        </Routes>
-      </LocalStorageProvider>
+      <CategoryProvider>
+        <LocalStorageProvider>
+          <Header useFilters={[filters, setFilters]} />
+          <Routes>
+            <Route
+              path="/"
+              element={<Home useFilters={[filters, setFilters]} />}
+            />
+            <Route path="login/*" element={<RouterLogin />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="product/:id" element={<Product />} />
+            <Route path="/favorites" element={<Favorites />} />
+          </Routes>
+        </LocalStorageProvider>
+      </CategoryProvider>
     </BrowserRouter>
   );
 };

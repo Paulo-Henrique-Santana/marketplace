@@ -7,7 +7,8 @@ import {
 } from "../../../Api/Index";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { LocalStorageProvider } from "../../../Context/LocalStorageContext";
+import { LocalStorageContext } from "../../../Context/LocalStorageContext";
+import { ImagesProps } from "../../../Types/Index";
 
 import "./Index.scss";
 
@@ -19,11 +20,7 @@ type ProductProps = {
     idUser: number;
   }>;
   description: string;
-  images: Array<{
-    id: number;
-    fileName: string;
-    idProdyct: number;
-  }>;
+  images: ImagesProps;
   name: string;
   price: string;
   quantity: number;
@@ -32,8 +29,8 @@ type ProductProps = {
 const Home = ({ useFilters }) => {
   const [filters] = useFilters;
   const { request, loading, error } = useFetch();
-  const [products, setProducts] = useState<ProductProps | any>([]);
-  const { loggedUser } = useContext(LocalStorageProvider);
+  const [products, setProducts] = useState<ProductProps[]>([]);
+  const { loggedUser } = useContext(LocalStorageContext);
 
   useEffect(() => {
     const getProducts = async () => {

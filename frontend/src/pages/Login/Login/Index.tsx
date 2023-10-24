@@ -5,7 +5,7 @@ import LinkForm from "../../../components/Form/Link/Index";
 import Input from "../../../components/Form/Input/Index";
 import Button from "../../../components/Button/Index";
 import Validation from "./Validation";
-import { LocalStorageProvider } from "../../../Context/LocalStorageContext";
+import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import Error from "../../../components/Form/Error/Index";
 import { Navigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ import "../Index.scss";
 
 const Login = () => {
   const { onSubmit, register, handleSubmit, errorInputLogin } = Validation();
-  const { token } = useContext(LocalStorageProvider);
+  const { token } = useContext(LocalStorageContext);
 
   if (token) return <Navigate to="/home" />;
 

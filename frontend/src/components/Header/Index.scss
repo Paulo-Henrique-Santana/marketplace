@@ -34,6 +34,7 @@ header {
   background: $white;
   justify-content: space-between;
   box-shadow: $boxShadowContainer;
+
   nav {
     display: flex;
     align-items: center;
@@ -41,10 +42,12 @@ header {
     max-width: 1300px;
     margin: 0 auto;
     padding: 1rem;
+
     .inputContainer {
       width: 100%;
       display: flex;
       justify-content: center;
+
       input {
         width: 70%;
         height: 3.5rem;
@@ -55,6 +58,7 @@ header {
         outline: none;
         border-top-left-radius: 0.5rem;
         border-bottom-left-radius: 0.5rem;
+
         &:focus {
           border-color: $lightPurple;
         }
@@ -62,6 +66,7 @@ header {
           border-color: $lightPurple;
         }
       }
+
       button {
         padding: 0 1rem;
         font-size: 1.2rem;
@@ -73,28 +78,62 @@ header {
         border: 1px solid $borderInput;
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
+
         svg {
           color: $purple;
         }
       }
     }
+
     .menu {
       display: flex;
       align-items: center;
       gap: 1.7rem;
 
-      .li-home {
-        display: flex;
-        align-items: center;
+      .subMenuCategories,
+      .subMenu {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        padding: 0.5rem;
+        left: 0;
+        top: 35px;
+        flex-direction: column;
+        gap: 10px;
+        border: 2px solid $lightPurple;
+        z-index: 200;
+        background: #eae4f8;
 
-        a {
-          display: flex;
-          align-items: center;
-          gap: 0.7rem;
-          color: $brown;
+        &::before {
+          content: "";
+          display: block;
+          top: -10px;
+          right: 20px;
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid $lightPurple;
         }
       }
-      .categories {
+
+      .subMenu {
+        left: 7px;
+        top: 45px;
+
+        &::before {
+          left: -2px;
+        }
+      }
+
+      .subMenuCategories.active,
+      .subMenu.active {
+        display: flex;
+      }
+
+      .categories,
+      .loggedUser {
         display: flex;
         align-items: center;
         padding-top: 0.1rem;
@@ -103,7 +142,8 @@ header {
         padding: 0.5rem 0;
         cursor: pointer;
 
-        &:hover .subMenuCategories {
+        &:hover .subMenuCategories,
+        &:hover .subMenu {
           display: flex;
           animation: show-up 0.3s forwards;
         }
@@ -118,7 +158,9 @@ header {
           }
         }
 
-        p {
+        p,
+        a,
+        .userName {
           font-weight: 500;
           color: $brown;
           display: flex;
@@ -143,140 +185,23 @@ header {
             width: 100%;
           }
         }
-        .subMenuCategories {
-          position: absolute;
-          display: none;
-          justify-content: center;
-          padding: 0.5rem;
-          left: 0;
-          top: 35px;
-          flex-direction: column;
-          gap: 10px;
-          border: 2px solid $lightPurple;
-          z-index: 200;
-          background: #eae4f8;
+      }
 
-          &::before {
-            content: "";
-            display: block;
-            top: -10px;
-            right: 20px;
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid $lightPurple;
-          }
-        }
-        .subMenuCategories.active {
-          display: flex;
+      .userName {
+        &:hover::after {
+          width: 0% !important;
         }
       }
 
-      .loggedUser {
+      .li-home {
         display: flex;
         align-items: center;
-        padding-top: 0.1rem;
-        gap: 0.6rem;
-        position: relative;
-        padding: 0.5rem 0;
-        cursor: pointer;
-        &:hover .subMenu {
-          display: flex;
-          animation: show-up 0.3s forwards;
-        }
-        @keyframes show-up {
-          from {
-            opacity: 0;
-            transform: translate3d(0, 30px, 0);
-          }
-          to {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-          }
-        }
-
-        .userName {
-          // padding-left: 0;
-          // padding-right: 0;
-        
-          &:hover::after {
-            width: 0% !important;
-          }
-          // &:hover::before {
-          //     display: flex;
-          //     animation: show-up .3s forwards;
-          // }
-          // &::before {
-          //     content: '';
-          //     display: none;
-          //     top: 27px;
-          //     right: 5px;
-          //     position: absolute;
-          //     width: 0;
-          //     height: 0;
-          //     border-left: 10px solid transparent;
-          //     border-right: 10px solid transparent;
-          //     border-bottom: 10px solid $lightPurple;
-          // }
-        }
-
-        a, .userName {
-          font-weight: 500;
-          color: $brown;
+        a {
           display: flex;
           align-items: center;
-          gap: 0.6rem;
-          border-bottom: 2px solid transparent;
-          position: relative;
-          padding: 0.5rem;
-          &::after {
-            content: "";
-            width: 0px;
-            display: block;
-            height: 2px;
-            background-color: $purple;
-            bottom: 0px;
-            left: 0px;
-            position: absolute;
-            transition: 0.4s;
-          }
-
-          &:hover::after {
-            width: 100%;
-          }
+          gap: 0.7rem;
+          color: $brown;
         }
-      }
-      .subMenu {
-        position: absolute;
-        // display: flex;
-        display: none;
-        justify-content: center;
-        padding: 0.5rem;
-        left: 7px;
-        top: 45px;
-        flex-direction: column;
-        gap: 10px;
-        border: 2px solid $lightPurple;
-        z-index: 200;
-        background: #eae4f8;
-
-        &::before {
-          content: "";
-          display: block;
-          top: -10px;
-          left: -2px;
-          position: absolute;
-          width: 0;
-          height: 0;
-          border-left: 10px solid transparent;
-          border-right: 10px solid transparent;
-          border-bottom: 10px solid $lightPurple;
-        }
-      }
-      .subMenu.active {
-        display: flex;
       }
     }
   }

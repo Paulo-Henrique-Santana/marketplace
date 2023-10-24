@@ -33,6 +33,7 @@ const Index = () => {
       }
     });
   };
+
   console.log(data);
 
   return (

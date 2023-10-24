@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import { LocalStorageProvider } from "../../../Context/LocalStorageContext";
+import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import Regex from "./Regex";
 
 type OnSubmitProps = {
@@ -20,7 +20,7 @@ const Validation = () => {
   const [errorInputCpf, setErrorInputCpf] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState("");
   const { passwordRegex, cpfRegex } = Regex();
-  const { setloggedUser } = useContext(LocalStorageProvider);
+  const { setloggedUser } = useContext(LocalStorageContext);
   const { request } = useFetch();
   const navigate = useNavigate();
 
