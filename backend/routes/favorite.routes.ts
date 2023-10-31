@@ -1,9 +1,9 @@
-const express = require("express");
-const Favorite = require("../models/Favorites");
-const Product = require("../models/Product");
-const ProductImage = require("../models/ProductImage");
+import express from "express";
+import { Favorite } from "../models/Favorites";
+import { Product } from "../models/Product";
+import { ProductImage } from "../models/ProductImage";
 
-const FavoriteRouter = express.Router();
+export const FavoriteRouter = express.Router();
 
 FavoriteRouter.get("/", async (req, res) => {
   try {
@@ -15,7 +15,7 @@ FavoriteRouter.get("/", async (req, res) => {
         include: {
           model: Product,
           as: "product",
-          include: { model: ProductImage, as: "images" },
+          include: [{ model: ProductImage, as: "images" }],
         },
       });
       return res.status(200).json(data);
@@ -33,7 +33,7 @@ FavoriteRouter.get("/:id", async (req, res) => {
       include: {
         model: Product,
         as: "product",
-        include: { model: ProductImage, as: "images" },
+        include: [{ model: ProductImage, as: "images" }],
       },
     });
     return res.status(200).json(data);
@@ -86,5 +86,3 @@ FavoriteRouter.put("*", async (req, res) => {
 FavoriteRouter.delete("*", async (req, res) => {
   return res.json({ error: "Endpoint não encontrado" });
 });
-
-module.exports = FavoriteRouter;

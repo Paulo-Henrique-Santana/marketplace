@@ -16,11 +16,23 @@ const categories = [
 ];
 
 /** @type {import('sequelize-cli').Migration} */
-module.exports = {
-  async up(queryInterface, Sequelize) {
-    const users = [];
-    const products = [];
-    const images = [];
+export const sla = {
+  async up(queryInterface: any, Sequelize) {
+    const users: {
+      name: string;
+      email: string;
+      password: string;
+      cpf: number;
+    }[] = [];
+    const products: {
+      idUser: number;
+      name: string;
+      quantity: number;
+      idCategory: number;
+      description: string;
+      price: number;
+    }[] = [];
+    const images: { fileName: string; idProduct: number }[] = [];
 
     let idCategory = 1;
 

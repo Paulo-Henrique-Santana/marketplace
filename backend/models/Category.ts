@@ -1,9 +1,8 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../db/conn");
-const User = require("./User");
-const Product = require("./Product");
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../db/conn";
+import { Product } from "./Product";
 
-class Category extends Model {}
+export class Category extends Model {}
 
 Category.init(
   {
@@ -18,5 +17,3 @@ Category.hasMany(Product, {
 Product.belongsTo(Category, {
   foreignKey: { name: "idCategory", allowNull: false },
 });
-
-module.exports = Category;

@@ -1,7 +1,7 @@
-const express = require("express");
-const Category = require("../models/Category");
+import express from "express";
+import { Category } from "../models/Category";
 
-const CategoryRouter = express.Router();
+export const CategoryRouter = express.Router();
 
 CategoryRouter.get("/", async (req, res) => {
   try {
@@ -33,5 +33,3 @@ CategoryRouter.put("*", async (req, res) => {
 CategoryRouter.delete("*", async (req, res) => {
   return res.json({ message: "Endpoint não encontrado" });
 });
-
-module.exports = CategoryRouter;

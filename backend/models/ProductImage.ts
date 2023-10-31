@@ -1,8 +1,8 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../db/conn");
-const Product = require("./Product");
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../db/conn";
+import { Product } from "./Product";
 
-class ProductImage extends Model {}
+export class ProductImage extends Model {}
 
 ProductImage.init(
   { fileName: { type: DataTypes.STRING, allowNull: false } },
@@ -22,5 +22,3 @@ ProductImage.belongsTo(Product, {
   foreignKey: { name: "idProduct", allowNull: false },
   as: "images",
 });
-
-module.exports = ProductImage;

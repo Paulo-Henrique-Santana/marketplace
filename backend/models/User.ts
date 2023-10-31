@@ -1,22 +1,19 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../db/conn");
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../db/conn";
 
-class User extends Model {}
+export class User extends Model {}
 
 User.init(
   {
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
-    cpf: { type: DataTypes.BIGINT(11), allowNull: false },
+    cpf: { type: DataTypes.INTEGER({ length: 12 }), allowNull: false },
   },
   {
     sequelize,
     modelName: "User",
     timestamps: false,
-    // defaultScope: {
-    //   attributes: { exclude: ["password"] },
-    // },
     hooks: {
       afterCreate: (record) => {
         delete record.dataValues.password;
@@ -24,5 +21,3 @@ User.init(
     },
   }
 );
-
-module.exports = User;

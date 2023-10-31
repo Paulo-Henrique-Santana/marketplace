@@ -1,8 +1,8 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const User = require("../models/User");
+import express from "express";
+import bcrypt from "bcrypt";
+import { User } from "../models/User";
 
-const UserRouter = express.Router();
+export const UserRouter = express.Router();
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -71,7 +71,7 @@ UserRouter.put("/:id", async (req, res) => {
     if (password) {
       data.password = bcrypt.hashSync(
         Buffer.from(password).toString("base64"),
-        salt
+        10
       );
     }
 
@@ -103,5 +103,3 @@ UserRouter.put("*", async (req, res) => {
 UserRouter.delete("*", async (req, res) => {
   return res.json({ error: "Endpoint não encontrado" });
 });
-
-module.exports = UserRouter;

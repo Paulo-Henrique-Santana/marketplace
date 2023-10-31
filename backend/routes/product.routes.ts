@@ -1,27 +1,21 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const Product = require("../models/Product");
-const Favorite = require("../models/Favorites");
-const ProductImage = require("../models/ProductImage");
-const upload = require("../config/multer");
-const { Op } = require("sequelize");
+import { Router } from "express";
+import { FindOptions, Op } from "sequelize";
+import { upload } from "../config/multer";
+import { Favorite } from "../models/Favorites";
+import { Product } from "../models/Product";
+import { ProductImage } from "../models/ProductImage";
 
-const ProductRouter = express.Router();
+const ProductRouter = Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
-    const {
-      idCategory,
-      page,
-      pageSize,
-      name,
-      minPrice,
-      maxPrice,
-      idLoggedUser,
-      idSeller,
-    } = req.query;
+    const { idCategory, name, minPrice, maxPrice, idLoggedUser, idSeller } =
+      req.query;
 
-    const findOptions = {
+    const page = Number(req.query.page);
+    const pageSize = Number(req.query.pageSize);
+
+    const findOptions: any = {
       where: {},
       include: [{ model: ProductImage, as: "images" }],
       distinct: true,
@@ -29,7 +23,7 @@ ProductRouter.get("/", async (req, res) => {
 
     if (page && pageSize) {
       findOptions.limit = pageSize;
-      findOptions.offset = (page - 1) * pageSize;
+      findOptions.offset = (Number(page) - 1) * Number(pageSize);
     }
 
     if (name) {
@@ -88,16 +82,16 @@ ProductRouter.get("/:id", async (req, res) => {
 
 ProductRouter.post("/", upload.array("image"), async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const product: any = await Product.create(req.body);
 
-    const productsImages = req.files.map((item) => {
+    const productsImages = (req.files as any[]).map((item) => {
       return {
         fileName: item.filename,
         idProduct: product.id,
       };
     });
 
-    await ProductImage.bulkCreate(productsImages);
+    await Product.bulkCreate(productsImages);
 
     return res.status(201).json(product);
   } catch (err) {
@@ -107,17 +101,9 @@ ProductRouter.post("/", upload.array("image"), async (req, res) => {
 
 ProductRouter.put("/:id", async (req, res) => {
   try {
-    let { password } = req.body;
-    const data = req.body;
-
-    if (password) {
-      data.password = bcrypt.hashSync(
-        Buffer.from(password).toString("base64"),
-        salt
-      );
-    }
-
-    const result = await Product.update(data, { where: { id: req.params.id } });
+    const result = await Product.update(req.body, {
+      where: { id: req.params.id },
+    });
     return res.status(200).json(result);
   } catch (err) {
     res.status(400).send(err);
@@ -146,4 +132,4 @@ ProductRouter.delete("*", async (req, res) => {
   return res.json({ message: "Endpoint não encontrado" });
 });
 
-module.exports = ProductRouter;
+export default ProductRouter;

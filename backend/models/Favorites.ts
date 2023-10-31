@@ -1,9 +1,9 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../db/conn");
-const User = require("./User");
-const Product = require("./Product");
+import { Model } from "sequelize";
+import { sequelize } from "../db/conn";
+import { Product } from "./Product";
+import { User } from "./User";
 
-class Favorite extends Model {}
+export class Favorite extends Model {}
 
 Favorite.init({}, { sequelize, modelName: "Favorite", timestamps: false });
 
@@ -18,5 +18,3 @@ Favorite.belongsTo(Product, {
   foreignKey: { name: "idProduct", allowNull: false },
   as: "product",
 });
-
-module.exports = Favorite;
