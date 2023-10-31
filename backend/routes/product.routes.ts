@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { FindOptions, Op } from "sequelize";
+import { FindOptions, Includeable, Op } from "sequelize";
 import { upload } from "../config/multer";
 import { Favorite } from "../models/Favorites";
 import { Product } from "../models/Product";
@@ -71,9 +71,20 @@ ProductRouter.get("/", async (req, res) => {
 
 ProductRouter.get("/:id", async (req, res) => {
   try {
-    const data = await Product.findByPk(req.params.id, {
-      include: { model: ProductImage, as: "images" },
-    });
+    const findOptions: FindOptions = {
+      include: [{ model: ProductImage, as: "images" }],
+    };
+
+    if (req.query.idUser) {
+      (findOptions.include as Includeable[]).push({
+        model: Favorite,
+        as: "favorites",
+        where: { idUser: req.query.idUser },
+      });
+    }
+
+    const data = await Product.findByPk(req.params.id, findOptions);
+
     return res.status(200).json(data);
   } catch (err) {
     res.status(400).send(err);
