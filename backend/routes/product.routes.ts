@@ -5,7 +5,7 @@ import { Favorite } from "../models/Favorites";
 import { Product } from "../models/Product";
 import { ProductImage } from "../models/ProductImage";
 
-const ProductRouter = Router();
+export const ProductRouter = Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
@@ -131,5 +131,3 @@ ProductRouter.put("*", async (req, res) => {
 ProductRouter.delete("*", async (req, res) => {
   return res.json({ message: "Endpoint não encontrado" });
 });
-
-export default ProductRouter;

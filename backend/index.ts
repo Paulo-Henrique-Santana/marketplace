@@ -4,7 +4,7 @@ import cors from "cors";
 import { sequelize } from "./db/conn";
 import { UserRouter } from "./routes/user.routes";
 import { AuthRouter } from "./routes/auth.routes";
-import ProductRouter from "./routes/product.routes";
+import { ProductRouter } from "./routes/product.routes";
 import { CategoryRouter } from "./routes/category.routes";
 import { FavoriteRouter } from "./routes/favorite.routes";
 
