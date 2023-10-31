@@ -8,7 +8,7 @@ User.init(
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
-    cpf: { type: DataTypes.INTEGER({ length: 12 }), allowNull: false },
+    cpf: { type: DataTypes.BIGINT, allowNull: false },
   },
   {
     sequelize,
