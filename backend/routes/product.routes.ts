@@ -9,8 +9,15 @@ export const ProductRouter = Router();
 
 ProductRouter.get("/", async (req, res) => {
   try {
-    const { idCategory, name, minPrice, maxPrice, idLoggedUser, idSeller } =
-      req.query;
+    const {
+      idCategory,
+      name,
+      minPrice,
+      maxPrice,
+      idLoggedUser,
+      idSeller,
+      idProducts,
+    } = req.query;
 
     const page = Number(req.query.page);
     const pageSize = Number(req.query.pageSize);
@@ -24,6 +31,12 @@ ProductRouter.get("/", async (req, res) => {
     if (page && pageSize) {
       findOptions.limit = pageSize;
       findOptions.offset = (Number(page) - 1) * Number(pageSize);
+    }
+
+    if (typeof idProducts === "string") {
+      findOptions.where.id = {
+        [Op.in]: idProducts.split(",").map(Number),
+      };
     }
 
     if (name) {
@@ -64,8 +77,8 @@ ProductRouter.get("/", async (req, res) => {
     };
 
     return res.status(200).json(result);
-  } catch (err) {
-    res.status(400).send(err);
+  } catch (err: any) {
+    res.status(400).send(err.toString());
   }
 });
 
