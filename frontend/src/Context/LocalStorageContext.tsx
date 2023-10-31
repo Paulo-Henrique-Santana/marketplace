@@ -22,6 +22,7 @@ export const LocalStorageProvider = ({ children }: LocalStorageProps) => {
   const [loggedUser, setloggedUser] = useState(
     JSON.parse(localStorage.getItem("user")!) || ""
   );
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -43,6 +44,8 @@ export const LocalStorageProvider = ({ children }: LocalStorageProps) => {
         setToken,
         loggedUser,
         setloggedUser,
+        cart,
+        setCart,
       }}
     >
       {children}

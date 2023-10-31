@@ -6,6 +6,7 @@ import Sales from "./pages/Sales/Index";
 import Product from "./pages/Product/Index";
 import Home from "./pages/Home/HomePage/Index";
 import Favorites from "./pages/Favorites/Index";
+import Cart from "./pages/Cart/Index";
 import { LocalStorageProvider } from "./Context/LocalStorageContext";
 import { CategoryProvider } from "./Context/CategoryContext";
 
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/sales" element={<Sales />} />
             <Route path="product/:id" element={<Product />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </LocalStorageProvider>
       </CategoryProvider>

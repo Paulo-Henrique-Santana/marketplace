@@ -19,7 +19,7 @@
         height: 1px;
         background: rgb(241, 240, 240);
         position: absolute;
-        bottom: 141px;
+        bottom: 135px;
       }
       a {
         color: initial;
@@ -52,7 +52,7 @@
           cursor: pointer;
           svg {
             font-size: 2rem;
-            fill: $lightPurple;
+            fill: $purple;
             // &:hover {
             //     fill: red;
             // }
@@ -61,10 +61,10 @@
       }
 
       .price {
-        font-size: 1.4rem;
-        text-align: center;
-        padding-top: 1.5rem;
+        font-size: 1.6rem;
         padding-bottom: 1rem;
+        padding-left: 1.5rem;
+        color: $purple;
       }
     }
   }

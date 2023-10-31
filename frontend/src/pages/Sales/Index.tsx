@@ -5,7 +5,8 @@ import useFetch from "../../Hooks/useFetch";
 import { FaAngleDown } from "react-icons/fa6";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
-import { FaXmark } from "react-icons/fa6";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { CategoryContext } from "../../Context/CategoryContext";
 
 import "./Index.scss";
@@ -69,15 +70,15 @@ const Index = () => {
     setImg(result);
   };
 
-  const closeModal = () => {
-    setApiData(null);
-    setActive(false);
-  };
+  if (apiData !== null && apiData.ok) {
+    toast.success("Sent successfully");
+  }
 
   return (
     <section className="salesContainer">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="salesImg">
+          <ToastContainer position="top-right" autoClose={3000} />
           <span className="textPreviw">Preview Image</span>
           <div className="previewImg">
             {imgs.length ? (
@@ -161,20 +162,21 @@ const Index = () => {
           </div>
         </div>
       </form>
-
+      {/* 
       {apiData !== null && apiData.ok && (
-        <div
-          ref={modalContainer}
-          className={active ? `modalContainer` : `modalContainer close`}
-        >
-          <div className="modal">
-            <button onClick={closeModal}>
-              <FaXmark />
-            </button>
-            <p>Sent successfully</p>
-          </div>
-        </div>
-      )}
+        // <div
+        //   ref={modalContainer}
+        //   className={active ? `modalContainer` : `modalContainer close`}
+        // >
+        //   <div className="modal">
+        //     <button onClick={closeModal}>
+        //       <FaXmark />
+        //     </button>
+        //     <p>Sent successfully</p>
+        //   </div>
+        // </div>
+       
+      )} */}
     </section>
   );
 };

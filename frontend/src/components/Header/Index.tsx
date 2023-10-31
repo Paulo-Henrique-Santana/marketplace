@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
 import { CategoryContext } from "../../Context/CategoryContext";
 import Logo from "../Logo/Logo";
+import Cart from "../../pages/Cart/Index";
 
 import "./Index.scss";
 
@@ -98,7 +99,7 @@ const Header = ({ useFilters }) => {
 
                 <ul className="subMenu">
                   <li>
-                    <Link to="/">
+                    <Link to="/cart">
                       <FaCartShopping />
                       Cart
                     </Link>
@@ -133,12 +134,11 @@ const Header = ({ useFilters }) => {
                 Enter
               </Link>
             </li>
-
             <li
               style={token ? { display: "none" } : { display: "block" }}
               className="li-home"
             >
-              <Link to="/">
+              <Link to="/cart">
                 <FaCartShopping />
                 Cart
               </Link>

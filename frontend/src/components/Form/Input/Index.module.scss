@@ -1,28 +1,30 @@
 @import "../../../styles/Variables.scss";
 
 .wrapper {
-    label {
-        margin-top: .8rem;
-        margin-bottom: .7rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: $colorLabel;
+  label {
+    margin-top: 0.8rem;
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: $colorLabel;
+  }
+  input {
+    display: block;
+    width: 100%;
+    border-radius: 0.4rem;
+    border: 1px solid $borderInput;
+    font-size: 0.9rem;
+    padding: 1rem 0.7rem;
+    box-shadow: $boxShadowForm;
+    color: rgb(143, 137, 137);
+    font-weight: 200;
+
+    &:focus {
+      border-color: $lightPurple !important;
     }
-    input {
-        display: block;
-        width: 100%;
-        height: 2.7rem;
-        border-radius: .4rem;
-        border: 1px solid $borderInput;
-        font-size: .9rem;
-        padding: 0 .7rem;
-        box-shadow: $boxShadowForm;
-        &:focus {
-            border-color: $lightPurple;
-        }
-        &::placeholder {
-            font-size: .9rem;
-            color: $placeholder;
-        }
+    &::placeholder {
+      font-size: 0.9rem;
+      color: $placeholder;
     }
+  }
 }

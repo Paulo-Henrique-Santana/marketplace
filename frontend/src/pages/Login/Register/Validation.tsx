@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
-import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
+import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
+import * as Yup from "yup";
+import useFetch from "../../../Hooks/useFetch";
 import Regex from "./Regex";
 
 type OnSubmitProps = {
@@ -19,6 +19,7 @@ type OnSubmitProps = {
 const Validation = () => {
   const [errorInputCpf, setErrorInputCpf] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState("");
+  const [cpf, setCpf] = useState("");
   const { passwordRegex, cpfRegex } = Regex();
   const { setloggedUser } = useContext(LocalStorageContext);
   const { request } = useFetch();
@@ -103,7 +104,7 @@ const Validation = () => {
       alert("Registration done successfully");
       navigate("/login");
     }
-
+    setCpf("");
     reset();
   };
 
@@ -117,6 +118,8 @@ const Validation = () => {
     isSubmitting,
     errorInputCpf,
     errorInputEmail,
+    cpf,
+    setCpf,
   };
 };
 

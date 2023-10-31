@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../../Hooks/useFetch";
 import {
-  DELETE_FAVORITES_PRODUCTY,
-  FAVORITES_PRODUCTY,
-  GET_PRODUCTS,
+  AddFavoriteProduct,
+  DeleteFavoriteProduct,
+  GetProducts,
 } from "../../../Api/Index";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -11,6 +11,7 @@ import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import { ImagesProps } from "../../../Types/Index";
 
 import "./Index.scss";
+import Loading from "../../../components/Loading/Loading";
 
 type ProductProps = {
   id: number;
@@ -27,62 +28,36 @@ type ProductProps = {
 };
 
 const Home = ({ useFilters }) => {
+  const { mutate: deleteProduct } = DeleteFavoriteProduct();
+  const { mutate: addProduct } = AddFavoriteProduct();
   const [filters] = useFilters;
-  const { request, loading, error } = useFetch();
-  const [products, setProducts] = useState<ProductProps[]>([]);
-  const { loggedUser } = useContext(LocalStorageContext);
+  const { loggedUser, token } = useContext(LocalStorageContext);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const { url, options } = GET_PRODUCTS({
-        ...filters,
-        idLoggedUser: loggedUser.id,
-      });
-      const { json } = await request(url, true, options);
-      setProducts(json.items);
-    };
-    getProducts();
-  }, [filters]);
+  const { data, isLoading } = GetProducts({
+    ...filters,
+    idLoggedUser: loggedUser.id,
+  });
 
-  const toogleFavorite = async (favoriteProduct: ProductProps) => {
+  const toogleFavorite = (favoriteProduct: ProductProps) => {
     if (favoriteProduct.favorites?.length) {
-      console.log(favoriteProduct.favorites[0].id);
-      const { url, options } = DELETE_FAVORITES_PRODUCTY(
-        favoriteProduct.favorites[0].id
-      );
-      await request(url, false, options);
-      setProducts((prevProducts: ProductProps[]) => {
-        return prevProducts.map((item: ProductProps) => {
-          if (item.id === favoriteProduct.id) {
-            return { ...item, favorites: [] };
-          }
-          return item;
-        });
-      });
+      const id = favoriteProduct.favorites[0].id;
+      deleteProduct(id);
     } else {
-      const { url, options } = FAVORITES_PRODUCTY({
+      const body = {
         idProduct: favoriteProduct.id,
         idUser: loggedUser.id,
-      });
-      const { json } = await request(url, false, options);
-      setProducts((prevProducts: ProductProps[]) => {
-        return prevProducts.map((item: ProductProps) => {
-          if (item.id === favoriteProduct.id) {
-            return { ...item, favorites: [json] };
-          }
-          return item;
-        });
-      });
+      };
+      addProduct(body);
     }
   };
 
   return (
     <section className="productContainer">
-      {loading && <p>Loading</p>}
-      {!products.length && !loading && <p>Product not found</p>}
+      {isLoading && <Loading />}
+      {!data && !isLoading && <p>Product not found</p>}
       <ul>
-        {products.length
-          ? products.map((product: ProductProps) => (
+        {data
+          ? data.map((product: ProductProps) => (
               <li key={product.id}>
                 <Link to={`product/${product.id}`}>
                   <div className="containerImg">
@@ -93,13 +68,15 @@ const Home = ({ useFilters }) => {
                 </Link>
                 <div className="containerName">
                   <p className="name">{product.name}</p>
-                  <button onClick={() => toogleFavorite(product)}>
-                    {product.favorites?.length ? (
-                      <AiFillHeart />
-                    ) : (
-                      <AiOutlineHeart />
-                    )}
-                  </button>
+                  {token && (
+                    <button onClick={() => toogleFavorite(product)}>
+                      {product.favorites?.length ? (
+                        <AiFillHeart />
+                      ) : (
+                        <AiOutlineHeart />
+                      )}
+                    </button>
+                  )}
                 </div>
                 <p className="price">R${product.price}</p>
               </li>

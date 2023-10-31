@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../../Hooks/useFetch";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-
+import { LocalStorageContext } from "../../Context/LocalStorageContext";
 import "./Index.scss";
+import Loading from "../../components/Loading/Loading";
 
 const Index = () => {
   const { data, request } = useFetch();
   const { id } = useParams();
   const [indexImg, setIndexImg] = useState(0);
   const divImgs = useRef<HTMLInputElement | null>(null);
+
+  const { cart, setCart } = useContext(LocalStorageContext);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,7 +37,18 @@ const Index = () => {
     });
   };
 
-  console.log(data);
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")!);
+    setCart(storedCart);
+  }, []);
+
+  const addToCart = (productId) => {
+    if (!cart.includes(productId)) {
+      const updatedCart = [...cart, productId];
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+  };
 
   return (
     <div className="productDescription">
@@ -78,11 +92,13 @@ const Index = () => {
             <h2>Description</h2>
             <li>{data.description}</li>
             <button className="btn">Buy</button>
-            <button className="btn cart">Add to Cart</button>
+            <button className="btn cart" onClick={() => addToCart(data.id)}>
+              Add to Cart
+            </button>
           </ul>
         </div>
       ) : (
-        "loading..."
+        <Loading />
       )}
     </div>
   );

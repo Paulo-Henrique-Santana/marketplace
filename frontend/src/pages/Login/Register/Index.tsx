@@ -6,6 +6,7 @@ import Button from "../../../components/Button/Index";
 import LinkForm from "../../../components/Form/Link/Index";
 import Validation from "./Validation";
 import Error from "../../../components/Form/Error/Index";
+import InputMask from "react-input-mask";
 
 const Register = () => {
   const {
@@ -17,6 +18,8 @@ const Register = () => {
     errors,
     errorInputCpf,
     errorInputEmail,
+    cpf,
+    setCpf,
   } = Validation();
 
   return (
@@ -53,17 +56,25 @@ const Register = () => {
           {errors.email && <Error error={errors.email.message} />}
           <Error error={errorInputEmail} />
 
-          <Input
+          <label htmlFor="cpf">CPF</label>
+          <InputMask
             htmlFor="cpf"
             type="text"
-            name="cpf"
             id="cpf"
             text="CPF"
+            mask="999.999.999-99"
             placeholder="123.456.789-10"
-            register={register}
-            validation="cpf"
+            {...register("cpf", {
+              onChange: ({ target }) => setCpf(target.value),
+            })}
+            value={cpf}
             onBlur={onBlurCpf}
-            errors={errors}
+            className="inputMask"
+            style={
+              errors.cpf
+                ? { borderColor: "red" }
+                : { borderColor: "rgb(170, 170, 170)" }
+            }
           />
           {errors.cpf && <Error error={errors.cpf.message} />}
           <Error error={errorInputCpf} />

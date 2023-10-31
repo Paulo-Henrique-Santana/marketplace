@@ -15,7 +15,7 @@ const Login = () => {
   const { onSubmit, register, handleSubmit, errorInputLogin } = Validation();
   const { token } = useContext(LocalStorageContext);
 
-  if (token) return <Navigate to="/home" />;
+  if (token) return <Navigate to="/" />;
 
   return (
     <section className="formContainer">
@@ -29,7 +29,6 @@ const Login = () => {
             name="email"
             id="email"
             text="E-mail"
-            placeholder="market@gmail.com"
             register={register}
             validation="email"
             errors

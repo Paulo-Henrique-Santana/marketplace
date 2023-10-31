@@ -3,13 +3,16 @@ import useFetch from "../../Hooks/useFetch";
 import {
   DELETE_FAVORITES_PRODUCTY,
   GET_FAVORITES_PRODUCTY,
+  axiosInstance,
 } from "../../Api/Index";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
 import { Link } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ImagesProps } from "../../Types/Index";
+import Loading from "../../components/Loading/Loading";
 
 import "./Index.scss";
+import { useAxiosQuery, useAxiosDelete } from "../../Hooks/useAxiosQuery";
 
 type FavoriteProductProps = {
   id: number;
@@ -23,6 +26,7 @@ type FavoriteProductProps = {
 };
 
 const Index = () => {
+  const { mutate } = useAxiosDelete();
   const { request, loading } = useFetch();
   const { loggedUser } = useContext(LocalStorageContext);
   const [favoriteProduct, setFavoriteProduct] = useState<
@@ -39,6 +43,11 @@ const Index = () => {
     getFavorite();
   }, [loggedUser.id, request]);
 
+  const { data, isLoading } = useAxiosQuery(
+    ["favoriteProduct"],
+    "favorite?idUser=" + loggedUser.id
+  );
+
   const deleteProduct = async () => {
     const { url, options } = DELETE_FAVORITES_PRODUCTY(favoriteProduct[0].id);
     await request(url, false, options);
@@ -46,17 +55,20 @@ const Index = () => {
       return prevProducts.filter((item) => item.id !== favoriteProduct[0].id);
     });
   };
-  console.log(!favoriteProduct.length);
+
+  const deleteProduct2 = () => {
+    console.log(data[0].id);
+
+    mutate(data[0].id);
+  };
 
   return (
     <section className="favoriteContainer">
-      {loading && <p>Loading...</p>}
-      {!favoriteProduct.length && !loading && (
-        <p>Does not have favorite items :(</p>
-      )}
+      {isLoading && <Loading />}
+      {!data && !isLoading && <p>Does not have favorite items :(</p>}
       <ul>
-        {favoriteProduct.length
-          ? favoriteProduct.map((item) => (
+        {data
+          ? data.map((item) => (
               <li key={item.id}>
                 <Link to={`/product/${item.idProduct}`}>
                   <div>
@@ -74,7 +86,7 @@ const Index = () => {
                   </div>
                   <AiOutlineCloseCircle
                     className="delete"
-                    onClick={deleteProduct}
+                    onClick={deleteProduct2}
                   />
                 </div>
                 <button>Add to cart</button>
