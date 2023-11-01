@@ -75,6 +75,7 @@ ProductRouter.get("/", async (req, res) => {
     const result = {
       items: rows,
       hasNext: count > pageSize * page,
+      pages: count / pageSize,
     };
 
     return res.status(200).json(result);
@@ -116,7 +117,7 @@ ProductRouter.post("/", upload.array("image"), verifyJWT, async (req, res) => {
       };
     });
 
-    await Product.bulkCreate(productsImages);
+    await ProductImage.bulkCreate(productsImages);
 
     return res.status(201).json(product);
   } catch (err) {
