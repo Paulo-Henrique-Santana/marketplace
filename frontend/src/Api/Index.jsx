@@ -30,22 +30,6 @@ export const GetProducts = (params) => {
   });
 };
 
-export const GetFavoritesProduct = () => {
-  return useQuery(["favoriteProducts"], async () => {});
-};
-
-// export function GET_FAVORITES_PRODUCTY(id) {
-//   return {
-//     url: API_URL + "favorite?idUser=" + id,
-//     options: {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     },
-//   };
-// }
-
 const deleteFavorite = async (id) => {
   let url = "favorite/" + id;
   return await axiosInstance.delete(url);
