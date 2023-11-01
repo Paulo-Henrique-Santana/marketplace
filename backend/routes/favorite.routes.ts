@@ -8,9 +8,13 @@ export const FavoriteRouter = express.Router();
 FavoriteRouter.get("/", async (req, res) => {
   try {
     const { idUser } = req.query;
+    const page = Number(req.query.page);
+    const pageSize = Number(req.query.pageSize);
 
     if (idUser) {
-      const data = await Favorite.findAll({
+      const { rows, count } = await Favorite.findAndCountAll({
+        limit: pageSize,
+        offset: (Number(page) - 1) * Number(pageSize),
         where: { idUser },
         include: {
           model: Product,
@@ -18,7 +22,13 @@ FavoriteRouter.get("/", async (req, res) => {
           include: [{ model: ProductImage, as: "images" }],
         },
       });
-      return res.status(200).json(data);
+
+      const result = {
+        items: rows,
+        hasNext: count > pageSize * page,
+      };
+
+      return res.status(200).json(result);
     } else {
       res.status(422).send({ message: "idUser expected as query parameter" });
     }

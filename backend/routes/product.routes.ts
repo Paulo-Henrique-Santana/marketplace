@@ -4,6 +4,7 @@ import { upload } from "../config/multer";
 import { Favorite } from "../models/Favorites";
 import { Product } from "../models/Product";
 import { ProductImage } from "../models/ProductImage";
+import { verifyJWT } from "../middlewares/verifyJwt";
 
 export const ProductRouter = Router();
 
@@ -104,7 +105,7 @@ ProductRouter.get("/:id", async (req, res) => {
   }
 });
 
-ProductRouter.post("/", upload.array("image"), async (req, res) => {
+ProductRouter.post("/", upload.array("image"), verifyJWT, async (req, res) => {
   try {
     const product: any = await Product.create(req.body);
 
@@ -123,7 +124,7 @@ ProductRouter.post("/", upload.array("image"), async (req, res) => {
   }
 });
 
-ProductRouter.put("/:id", async (req, res) => {
+ProductRouter.put("/:id", verifyJWT, async (req, res) => {
   try {
     const result = await Product.update(req.body, {
       where: { id: req.params.id },
@@ -134,7 +135,7 @@ ProductRouter.put("/:id", async (req, res) => {
   }
 });
 
-ProductRouter.delete("/:id", async (req, res) => {
+ProductRouter.delete("/:id", verifyJWT, async (req, res) => {
   try {
     const data = await Product.destroy({ where: { id: req.params.id } });
     return res.status(200).json(data);
