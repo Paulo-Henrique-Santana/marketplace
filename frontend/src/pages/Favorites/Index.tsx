@@ -1,66 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import useFetch from "../../Hooks/useFetch";
-import {
-  DELETE_FAVORITES_PRODUCTY,
-  GET_FAVORITES_PRODUCTY,
-  axiosInstance,
-} from "../../Api/Index";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
 import { Link } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ImagesProps } from "../../Types/Index";
 import Loading from "../../components/Loading/Loading";
+import {
+  useAxiosQuery,
+  useAxiosDelete,
+} from "../../Hooks/useAxiosFavoriteQuery";
 
 import "./Index.scss";
-import { useAxiosQuery, useAxiosDelete } from "../../Hooks/useAxiosQuery";
-
-type FavoriteProductProps = {
-  id: number;
-  idProduct: number;
-  idUser: number;
-  product: {
-    price: number;
-    name: string;
-    images: ImagesProps;
-  };
-};
 
 const Index = () => {
-  const { mutate } = useAxiosDelete();
-  const { request, loading } = useFetch();
+  const { mutate } = useAxiosDelete(["favoriteProduct"]);
   const { loggedUser } = useContext(LocalStorageContext);
-  const [favoriteProduct, setFavoriteProduct] = useState<
-    FavoriteProductProps[]
-  >([]);
-
-  useEffect(() => {
-    const getFavorite = async () => {
-      const { url, options } = GET_FAVORITES_PRODUCTY(loggedUser.id);
-      const { json } = await request(url, true, options);
-
-      setFavoriteProduct(json);
-    };
-    getFavorite();
-  }, [loggedUser.id, request]);
 
   const { data, isLoading } = useAxiosQuery(
     ["favoriteProduct"],
     "favorite?idUser=" + loggedUser.id
   );
-
-  const deleteProduct = async () => {
-    const { url, options } = DELETE_FAVORITES_PRODUCTY(favoriteProduct[0].id);
-    await request(url, false, options);
-    setFavoriteProduct((prevProducts) => {
-      return prevProducts.filter((item) => item.id !== favoriteProduct[0].id);
-    });
-  };
-
-  const deleteProduct2 = () => {
-    console.log(data[0].id);
-
-    mutate(data[0].id);
-  };
 
   return (
     <section className="favoriteContainer">
@@ -86,7 +43,7 @@ const Index = () => {
                   </div>
                   <AiOutlineCloseCircle
                     className="delete"
-                    onClick={deleteProduct2}
+                    onClick={() => mutate(item.id)}
                   />
                 </div>
                 <button>Add to cart</button>

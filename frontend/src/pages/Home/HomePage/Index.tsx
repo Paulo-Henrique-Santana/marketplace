@@ -9,9 +9,13 @@ import { Link } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import { ImagesProps } from "../../../Types/Index";
+import Loading from "../../../components/Loading/Loading";
+import {
+  useAxiosDelete,
+  usePostFavoriteAxios,
+} from "../../../Hooks/useAxiosFavoriteQuery";
 
 import "./Index.scss";
-import Loading from "../../../components/Loading/Loading";
 
 type ProductProps = {
   id: number;
@@ -28,11 +32,10 @@ type ProductProps = {
 };
 
 const Home = ({ useFilters }) => {
-  const { mutate: deleteProduct } = DeleteFavoriteProduct();
-  const { mutate: addProduct } = AddFavoriteProduct();
+  const { mutate: addProduct } = usePostFavoriteAxios();
+  const { mutate: deleteProduct } = useAxiosDelete(["products"]);
   const [filters] = useFilters;
   const { loggedUser, token } = useContext(LocalStorageContext);
-
   const { data, isLoading } = GetProducts({
     ...filters,
     idLoggedUser: loggedUser.id,

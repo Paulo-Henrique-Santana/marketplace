@@ -1,7 +1,18 @@
 export type ImagesProps = {
-  images: Array<{
-    id: number;
-    fileName: string;
-    idProdyct: number;
-  }>;
+  id: number;
+  fileName: string;
+  idProduct: number;
+};
+
+export type FavoriteProps = {
+  id: number;
+  idProduct: number;
+  idUSer: number;
+  product: {
+    description: string;
+    images: ImagesProps[];
+    name: string;
+    price: string;
+    quantity: number;
+  };
 };
