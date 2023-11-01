@@ -1,12 +1,15 @@
-import express, { urlencoded, json } from "express";
 import cors from "cors";
-
+import dotenv from "dotenv";
+import express, { json, urlencoded } from "express";
 import { sequelize } from "./db/conn";
-import { UserRouter } from "./routes/user.routes";
 import { AuthRouter } from "./routes/auth.routes";
-import { ProductRouter } from "./routes/product.routes";
 import { CategoryRouter } from "./routes/category.routes";
 import { FavoriteRouter } from "./routes/favorite.routes";
+import { ProductRouter } from "./routes/product.routes";
+import { UserRouter } from "./routes/user.routes";
+import { verifyJWT } from "./middlewares/verifyJwt";
+
+dotenv.config();
 
 const app = express();
 
@@ -27,39 +30,11 @@ app.use(function (req, res, next) {
   next();
 });
 
-// app.use(/(\/api)/, (req, res, next) => {
-//   if (
-//     req.headers.authorization === undefined ||
-//     req.headers.authorization.split(" ")[0] !== "Bearer"
-//   ) {
-//     const status = 401;
-//     const message = "Error in authorization format";
-//     res.status(status).json({ status, message });
-//     return;
-//   }
-//   try {
-//     let verifyTokenResult;
-//     verifyTokenResult = verifyToken(req.headers.authorization.split(" ")[1]);
-
-//     if (verifyTokenResult) {
-//       const status = 401;
-//       const message = "Access token not provided";
-//       res.status(status).json({ status, message });
-//       return;
-//     }
-//     next();
-//   } catch (err) {
-//     const status = 401;
-//     const message = "Error access_token is revoked";
-//     res.status(status).json({ status, message });
-//   }
-// });
-
 app.use("/api/auth", AuthRouter);
-app.use("/api/user", UserRouter);
+app.use("/api/user", verifyJWT, UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/category", CategoryRouter);
-app.use("/api/favorite", FavoriteRouter);
+app.use("/api/favorite", verifyJWT, FavoriteRouter);
 app.use("/api/files", express.static("uploads"));
 
 sequelize
