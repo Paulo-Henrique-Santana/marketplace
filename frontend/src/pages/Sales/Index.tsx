@@ -102,7 +102,7 @@ const Index = () => {
 
           <div className="inputFileContainer">
             <input type="file" onChange={handleImgChange} multiple required />
-            <button onClick={() => setActive(true)}>Send</button>
+            <button>Send</button>
           </div>
         </div>
         <div className="salesForm">

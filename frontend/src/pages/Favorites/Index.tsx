@@ -13,11 +13,12 @@ import "./Index.scss";
 const Index = () => {
   const { mutate } = useAxiosDelete(["favoriteProduct"]);
   const { loggedUser } = useContext(LocalStorageContext);
-
   const { data, isLoading } = useAxiosQuery(
-    ["favoriteProduct"],
-    "favorite?idUser=" + loggedUser.id
+    "favoriteProduct",
+    "favorite?page=1&pageSize=10&idUser=" + loggedUser.id
   );
+
+  
 
   return (
     <section className="favoriteContainer">

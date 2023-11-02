@@ -11,6 +11,8 @@ type LocalStorageContext = {
   setToken?: React.Dispatch<React.SetStateAction<string>> | any;
   loggedUser?: any;
   setloggedUser?: any;
+  cart: any;
+  setCart: any;
 };
 
 export const LocalStorageContext = createContext<LocalStorageContext>(

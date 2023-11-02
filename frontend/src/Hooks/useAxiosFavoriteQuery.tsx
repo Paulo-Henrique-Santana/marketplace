@@ -3,9 +3,22 @@ import { useQuery, useQueryClient, useMutation } from "react-query";
 import { axiosInstance } from "../Api/Index";
 import { ImagesProps, FavoriteProps } from "../Types/Index";
 
-const fetchData = async (url: string) => {
-  const response = await axiosInstance.get<FavoriteProps[]>(url);
-  return response.data;
+
+const fetchData = async (url: any, params: any) => {
+  if (params) {
+    if (params.idCategory) {
+      url += `idCategory=${params.idCategory}&`;
+    }
+    if (params.search) {
+      url += `name=${params.search}&`;
+    }
+    if (params.idLoggedUser) {
+      url += `idLoggedUser=${params.idLoggedUser}&`;
+    }
+  }
+
+  const response = await axiosInstance.get(url);
+  return response.data.items;
 };
 
 const deleteFavorite = async (itemId: number) => {
@@ -13,12 +26,14 @@ const deleteFavorite = async (itemId: number) => {
 };
 
 const postFavorite = async (body) => {
+  console.log(body);
+
   let url = "favorite";
   return await axiosInstance.post(url, JSON.stringify(body));
 };
 
-export const useAxiosQuery = (queryKey: string[], url: string) => {
-  return useQuery(queryKey, () => fetchData(url));
+export const useAxiosQuery = (queryKey: any, url, params?: any) => {
+  return useQuery([queryKey, params], () => fetchData(url, params));
 };
 
 export const useAxiosDelete = (key) => {
@@ -38,7 +53,7 @@ export const usePostFavoriteAxios = () => {
   const mutate = useMutation({
     mutationFn: postFavorite,
     onSuccess: () => {
-      queryCliente.invalidateQueries(["products"]);
+      queryCliente.invalidateQueries("products");
     },
   });
 
