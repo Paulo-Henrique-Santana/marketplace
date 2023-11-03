@@ -1,10 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../../Hooks/useFetch";
-import {
-  AddFavoriteProduct,
-  DeleteFavoriteProduct,
-  GetProducts,
-} from "../../../Api/Index";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
@@ -53,11 +48,14 @@ const Home = ({ useFilters }) => {
       const id = favoriteProduct.favorites[0].id;
       deleteProduct(id);
     } else {
-      const body = {
-        idProduct: favoriteProduct.id,
-        idUser: loggedUser.id,
+      const params = {
+        data: {
+          idProduct: favoriteProduct.id,
+          idUser: loggedUser.id,
+        },  
+        url: "favorite",
       };
-      addProduct(body);
+      addProduct(params);
     }
   };
 
@@ -67,7 +65,7 @@ const Home = ({ useFilters }) => {
       {!data && !isLoading && <p>Product not found</p>}
       <ul>
         {data
-          ? data.map((product: ProductProps) => (
+          ? data?.map((product: ProductProps) => (
               <li key={product.id}>
                 <Link to={`product/${product.id}`}>
                   <div className="containerImg">

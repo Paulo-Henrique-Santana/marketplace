@@ -1,8 +1,18 @@
 import React from "react";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { axiosInstance } from "../Api/Index";
+import axios from "axios";
 import { ImagesProps, FavoriteProps } from "../Types/Index";
 
+const axiosInstance = axios.create({
+  baseURL: "http://localhost:3000/api/",
+});
+
+const headers = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer ",
+  },
+};
 
 const fetchData = async (url: any, params: any) => {
   if (params) {
@@ -17,22 +27,19 @@ const fetchData = async (url: any, params: any) => {
     }
   }
 
-  const response = await axiosInstance.get(url);
+  const response = await axiosInstance.get(url, headers);
   return response.data.items;
 };
 
 const deleteFavorite = async (itemId: number) => {
-  await axiosInstance.delete("favorite/" + itemId);
+  await axiosInstance.delete("favorite/" + itemId, headers);
 };
 
-const postFavorite = async (body) => {
-  console.log(body);
-
-  let url = "favorite";
-  return await axiosInstance.post(url, JSON.stringify(body));
+const postFavorite = async (params) => {
+  await axiosInstance.post(params.url, params.data);
 };
 
-export const useAxiosQuery = (queryKey: any, url, params?: any) => {
+export const useAxiosQuery = (queryKey: any, url: string, params?: any) => {
   return useQuery([queryKey, params], () => fetchData(url, params));
 };
 

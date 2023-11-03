@@ -7,66 +7,11 @@ import { LocalStorageContext } from "../Context/LocalStorageContext";
 
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api/",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer ",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  //   Authorization: "Bearer ",
+  // },
 });
-
-export const GetProducts = (params) => {
-  return useQuery(["products", params], async () => {
-    let url = "/product?";
-
-    if (params) {
-      if (params.idCategory) {
-        url += `idCategory=${params.idCategory}&`;
-      }
-      if (params.search) {
-        url += `name=${params.search}&`;
-      }
-      if (params.idLoggedUser) {
-        url += `idLoggedUser=${params.idLoggedUser}&`;
-      }
-    }
-
-    const response = await axiosInstance.get(url);
-    return response.data.items;
-  });
-};
-
-const deleteFavorite = async (id) => {
-  let url = "favorite/" + id;
-  return await axiosInstance.delete(url);
-};
-
-export const DeleteFavoriteProduct = () => {
-  const queryCliente = useQueryClient();
-  const mutate = useMutation({
-    mutationFn: deleteFavorite,
-    onSuccess: () => {
-      queryCliente.invalidateQueries(["products"]);
-    },
-  });
-
-  return mutate;
-};
-
-const postFavorite = async (body) => {
-  let url = "favorite";
-  return await axiosInstance.post(url, JSON.stringify(body));
-};
-
-export const AddFavoriteProduct = () => {
-  const queryCliente = useQueryClient();
-  const mutate = useMutation({
-    mutationFn: postFavorite,
-    onSuccess: () => {
-      queryCliente.invalidateQueries(["products"]);
-    },
-  });
-
-  return mutate;
-};
 
 export const API_URL = "http://localhost:3000/api/";
 
@@ -155,6 +100,8 @@ export function GET_PRODUCTS(params) {
 }
 
 export function PRODUCTY_POST(body) {
+  console.log(body);
+
   return {
     url: API_URL + "product",
     options: {

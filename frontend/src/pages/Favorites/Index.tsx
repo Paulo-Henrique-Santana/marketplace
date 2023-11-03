@@ -18,8 +18,6 @@ const Index = () => {
     "favorite?page=1&pageSize=10&idUser=" + loggedUser.id
   );
 
-  
-
   return (
     <section className="favoriteContainer">
       {isLoading && <Loading />}
