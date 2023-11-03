@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Input from "./Input/Input";
+import React, { useContext, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
+import { ToastContainer, toast } from "react-toastify";
+import { CategoryContext } from "../../Context/CategoryContext";
+import { useAxiosQueryPost } from "../../Hooks/useAxiosFavoriteQuery";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { CategoryContext } from "../../Context/CategoryContext";
+import Input from "./Input/Input";
 
 import "./Index.scss";
-import { usePostFavoriteAxios } from "../../Hooks/useAxiosFavoriteQuery";
+import "react-toastify/dist/ReactToastify.css";
 
 type OnSubmitData = {
   category: string;
@@ -27,7 +27,7 @@ const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { category } = useContext(CategoryContext);
   const [imgs, setImg] = useState<ResultProps[]>([]);
-  const { mutate, error } = usePostFavoriteAxios();
+  const { mutate, error } = useAxiosQueryPost();
 
   function separator(numb: string) {
     const str = numb.toString().split(".");

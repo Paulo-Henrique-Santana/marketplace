@@ -6,9 +6,9 @@ import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import { ImagesProps } from "../../../Types/Index";
 import Loading from "../../../components/Loading/Loading";
 import {
-  useAxiosDelete,
-  useAxiosQuery,
-  usePostFavoriteAxios,
+  useAxiosQueryDelete,
+  useAxiosQueryGet,
+  useAxiosQueryPost,
 } from "../../../Hooks/useAxiosFavoriteQuery";
 
 import "./Index.scss";
@@ -28,8 +28,8 @@ type ProductProps = {
 };
 
 const Home = ({ useFilters }) => {
-  const { mutate: addProduct } = usePostFavoriteAxios();
-  const { mutate: deleteProduct } = useAxiosDelete(["products"]);
+  const { mutate: addProduct } = useAxiosQueryPost();
+  const { mutate: deleteProduct } = useAxiosQueryDelete(["products"]);
   const [filters] = useFilters;
   const { loggedUser, token } = useContext(LocalStorageContext);
   const dataProducts = {
@@ -37,7 +37,7 @@ const Home = ({ useFilters }) => {
     idLoggedUser: loggedUser.id,
   };
 
-  const { data, isLoading } = useAxiosQuery(
+  const { data, isLoading } = useAxiosQueryGet(
     "products",
     "/product?",
     dataProducts
@@ -52,7 +52,7 @@ const Home = ({ useFilters }) => {
         data: {
           idProduct: favoriteProduct.id,
           idUser: loggedUser.id,
-        },  
+        },
         url: "favorite",
       };
       addProduct(params);
@@ -62,34 +62,32 @@ const Home = ({ useFilters }) => {
   return (
     <section className="productContainer">
       {isLoading && <Loading />}
-      {!data && !isLoading && <p>Product not found</p>}
+      {!data?.items && !isLoading && <p>Product not found</p>}
       <ul>
-        {data
-          ? data?.map((product: ProductProps) => (
-              <li key={product.id}>
-                <Link to={`product/${product.id}`}>
-                  <div className="containerImg">
-                    <img
-                      src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
-                    />
-                  </div>
-                </Link>
-                <div className="containerName">
-                  <p className="name">{product.name}</p>
-                  {token && (
-                    <button onClick={() => toogleFavorite(product)}>
-                      {product.favorites?.length ? (
-                        <AiFillHeart />
-                      ) : (
-                        <AiOutlineHeart />
-                      )}
-                    </button>
+        {data?.items.map((product: ProductProps) => (
+          <li key={product.id}>
+            <Link to={`product/${product.id}`}>
+              <div className="containerImg">
+                <img
+                  src={`http://localhost:3000/api/files/${product.images[0].fileName}`}
+                />
+              </div>
+            </Link>
+            <div className="containerName">
+              <p className="name">{product.name}</p>
+              {token && (
+                <button onClick={() => toogleFavorite(product)}>
+                  {product.favorites?.length ? (
+                    <AiFillHeart />
+                  ) : (
+                    <AiOutlineHeart />
                   )}
-                </div>
-                <p className="price">R${product.price}</p>
-              </li>
-            ))
-          : ""}
+                </button>
+              )}
+            </div>
+            <p className="price">R${product.price}</p>
+          </li>
+        ))}
       </ul>
     </section>
   );

@@ -14,7 +14,7 @@ const headers = {
   },
 };
 
-const fetchData = async (url: any, params: any) => {
+const getData = async (url: any, params: any) => {
   if (params) {
     if (params.idCategory) {
       url += `idCategory=${params.idCategory}&`;
@@ -28,25 +28,27 @@ const fetchData = async (url: any, params: any) => {
   }
 
   const response = await axiosInstance.get(url, headers);
-  return response.data.items;
+  return response.data;
 };
 
-const deleteFavorite = async (itemId: number) => {
+const deleteData = async (itemId: number) => {
   await axiosInstance.delete("favorite/" + itemId, headers);
 };
 
-const postFavorite = async (params) => {
+const postData = async (params) => {
   await axiosInstance.post(params.url, params.data);
 };
 
-export const useAxiosQuery = (queryKey: any, url: string, params?: any) => {
-  return useQuery([queryKey, params], () => fetchData(url, params));
+export const useAxiosQueryGet = (queryKey: any, url: string, params?: any) => {
+  console.log(queryKey, url);
+
+  return useQuery([queryKey, params], () => getData(url, params));
 };
 
-export const useAxiosDelete = (key) => {
+export const useAxiosQueryDelete = (key) => {
   const queryCliente = useQueryClient();
   const mutate = useMutation({
-    mutationFn: deleteFavorite,
+    mutationFn: deleteData,
     onSuccess: () => {
       queryCliente.invalidateQueries(key);
     },
@@ -55,10 +57,10 @@ export const useAxiosDelete = (key) => {
   return mutate;
 };
 
-export const usePostFavoriteAxios = () => {
+export const useAxiosQueryPost = () => {
   const queryCliente = useQueryClient();
   const mutate = useMutation({
-    mutationFn: postFavorite,
+    mutationFn: postData,
     onSuccess: () => {
       queryCliente.invalidateQueries("products");
     },

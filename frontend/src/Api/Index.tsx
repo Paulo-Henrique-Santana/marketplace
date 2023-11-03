@@ -1,18 +1,3 @@
-import React, { useContext } from "react";
-import axios from "axios";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import { LocalStorageContext } from "../Context/LocalStorageContext";
-
-// const { token } = useContext(LocalStorageContext);
-
-export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api/",
-  // headers: {
-  //   "Content-Type": "application/json",
-  //   Authorization: "Bearer ",
-  // },
-});
-
 export const API_URL = "http://localhost:3000/api/";
 
 export function USER_POST_REGISTER(body) {
