@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Input from "./Input/Input";
-import { PRODUCTY_POST } from "../../Api/Index";
-import useFetch from "../../Hooks/useFetch";
+import React, { useContext, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
+import { ToastContainer, toast } from "react-toastify";
+import { CategoryContext } from "../../Context/CategoryContext";
+import { useAxiosQueryPost } from "../../Hooks/useAxiosFavoriteQuery";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { CategoryContext } from "../../Context/CategoryContext";
+import Input from "./Input/Input";
 
 import "./Index.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 type OnSubmitData = {
   category: string;
@@ -26,12 +25,9 @@ type ResultProps = {
 
 const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
-  const { request } = useFetch();
   const { category } = useContext(CategoryContext);
-  const [apiData, setApiData] = useState<Response | null>(null);
   const [imgs, setImg] = useState<ResultProps[]>([]);
-  const [active, setActive] = useState(true);
-  const modalContainer = useRef(null);
+  const { mutate, error } = useAxiosQueryPost();
 
   function separator(numb: string) {
     const str = numb.toString().split(".");
@@ -50,17 +46,14 @@ const Index = () => {
     formData.append("description", data.description);
     formData.append("idUser", "1");
 
-    const { url, options } = PRODUCTY_POST(formData);
-    const { response } = await request(url, true, options);
-    setApiData(response);
+    mutate({ data: formData, url: "product" });
     reset();
     setImg([]);
+    if (!error) toast.success("Sent successfully");
   };
 
   const handleImgChange = ({ target }) => {
     const result = Array.from(target?.files).map((img: any) => {
-      console.log(img);
-
       return {
         preview: URL.createObjectURL(img),
         file: img,
@@ -69,10 +62,6 @@ const Index = () => {
 
     setImg(result);
   };
-
-  if (apiData !== null && apiData.ok) {
-    toast.success("Sent successfully");
-  }
 
   return (
     <section className="salesContainer">
@@ -102,7 +91,7 @@ const Index = () => {
 
           <div className="inputFileContainer">
             <input type="file" onChange={handleImgChange} multiple required />
-            <button onClick={() => setActive(true)}>Send</button>
+            <button>Send</button>
           </div>
         </div>
         <div className="salesForm">
@@ -162,21 +151,6 @@ const Index = () => {
           </div>
         </div>
       </form>
-      {/* 
-      {apiData !== null && apiData.ok && (
-        // <div
-        //   ref={modalContainer}
-        //   className={active ? `modalContainer` : `modalContainer close`}
-        // >
-        //   <div className="modal">
-        //     <button onClick={closeModal}>
-        //       <FaXmark />
-        //     </button>
-        //     <p>Sent successfully</p>
-        //   </div>
-        // </div>
-       
-      )} */}
     </section>
   );
 };

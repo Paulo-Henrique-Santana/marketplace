@@ -5,21 +5,14 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
 import "./Index.scss";
 import Loading from "../../components/Loading/Loading";
+import { useAxiosQueryGet } from "../../Hooks/useAxiosFavoriteQuery";
 
 const Index = () => {
-  const { data, request } = useFetch();
-  const { id } = useParams();
-  const [indexImg, setIndexImg] = useState(0);
   const divImgs = useRef<HTMLInputElement | null>(null);
-
+  const [indexImg, setIndexImg] = useState(0);
+  const { id } = useParams();
   const { cart, setCart } = useContext(LocalStorageContext);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      await request(`http://localhost:3000/api/product/${id}`, true);
-    };
-    fetchProduct();
-  }, [id, request]);
+  const { data } = useAxiosQueryGet("favoriteProduct", `product/${id}`);
 
   const handleOnMouseEnter = (
     event: React.MouseEvent<HTMLImageElement>,

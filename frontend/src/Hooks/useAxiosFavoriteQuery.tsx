@@ -1,30 +1,54 @@
 import React from "react";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { axiosInstance } from "../Api/Index";
+import axios from "axios";
 import { ImagesProps, FavoriteProps } from "../Types/Index";
 
-const fetchData = async (url: string) => {
-  const response = await axiosInstance.get<FavoriteProps[]>(url);
+const axiosInstance = axios.create({
+  baseURL: "http://localhost:3000/api/",
+});
+
+const headers = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer ",
+  },
+};
+
+const getData = async (url: any, params: any) => {
+  if (params) {
+    if (params.idCategory) {
+      url += `idCategory=${params.idCategory}&`;
+    }
+    if (params.search) {
+      url += `name=${params.search}&`;
+    }
+    if (params.idLoggedUser) {
+      url += `idLoggedUser=${params.idLoggedUser}&`;
+    }
+  }
+
+  const response = await axiosInstance.get(url, headers);
   return response.data;
 };
 
-const deleteFavorite = async (itemId: number) => {
-  await axiosInstance.delete("favorite/" + itemId);
+const deleteData = async (itemId: number) => {
+  await axiosInstance.delete("favorite/" + itemId, headers);
 };
 
-const postFavorite = async (body) => {
-  let url = "favorite";
-  return await axiosInstance.post(url, JSON.stringify(body));
+const postData = async (params) => {
+  await axiosInstance.post(params.url, params.data);
 };
 
-export const useAxiosQuery = (queryKey: string[], url: string) => {
-  return useQuery(queryKey, () => fetchData(url));
+export const useAxiosQueryGet = (queryKey: any, url: string, params?: any) => {
+  console.log(queryKey, url);
+
+  return useQuery([queryKey, params], () => getData(url, params));
 };
 
-export const useAxiosDelete = (key) => {
+export const useAxiosQueryDelete = (key) => {
   const queryCliente = useQueryClient();
   const mutate = useMutation({
-    mutationFn: deleteFavorite,
+    mutationFn: deleteData,
     onSuccess: () => {
       queryCliente.invalidateQueries(key);
     },
@@ -33,12 +57,12 @@ export const useAxiosDelete = (key) => {
   return mutate;
 };
 
-export const usePostFavoriteAxios = () => {
+export const useAxiosQueryPost = () => {
   const queryCliente = useQueryClient();
   const mutate = useMutation({
-    mutationFn: postFavorite,
+    mutationFn: postData,
     onSuccess: () => {
-      queryCliente.invalidateQueries(["products"]);
+      queryCliente.invalidateQueries("products");
     },
   });
 
