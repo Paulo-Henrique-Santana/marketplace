@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import useFetch from "../../Hooks/useFetch";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
-import "./Index.scss";
-import Loading from "../../components/Loading/Loading";
 import { useAxiosQueryGet } from "../../Hooks/useAxiosFavoriteQuery";
+import Loading from "../../components/Loading/Loading";
+
+import "./Index.scss";
 
 const Index = () => {
   const divImgs = useRef<HTMLInputElement | null>(null);
   const [indexImg, setIndexImg] = useState(0);
   const { id } = useParams();
-  const { cart, setCart } = useContext(LocalStorageContext);
-  const { data } = useAxiosQueryGet("favoriteProduct", `product/${id}`);
+  const { cart, setCart, loggedUser } = useContext(LocalStorageContext);
+  const { data } = useAxiosQueryGet(
+    "products",
+    `product/${id}?idUser=${loggedUser.id}`
+  );
 
   const handleOnMouseEnter = (
     event: React.MouseEvent<HTMLImageElement>,

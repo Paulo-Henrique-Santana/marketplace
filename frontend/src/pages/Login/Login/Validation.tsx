@@ -1,17 +1,16 @@
 import React, { useContext, useState } from "react";
-import { USER_POST_LOGIN } from "../../../Api/Index";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import useFetch from "../../../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
+import { useAxiosQueryPost } from "../../../Hooks/useAxiosFavoriteQuery";
 
 const Validation = () => {
-  const [errorInputLogin, setErrorInputLogin] = useState("");
-  const { request } = useFetch();
+  const [errorInputLogin, setErrorInputLogin] = useState<any>("");
   const navigate = useNavigate();
   const { setToken, setloggedUser } = useContext(LocalStorageContext);
+  const { mutate } = useAxiosQueryPost();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -31,24 +30,37 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: { email: string; password: string }) => {
-    if (data) {
-      const { url, options } = USER_POST_LOGIN({
-        email: data.email,
-        password: data.password,
+  const onSubmit = ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    if (email && password) {
+      const login = {
+        url: "auth",
+        data: {
+          email,
+          password,
+        },
+      };
+      mutate(login, {
+        onSuccess: (data) => {
+          navigate("/");
+          setToken(data.token);
+          setloggedUser(data.user);
+          setErrorInputLogin("");
+        },
+        onError: (error) => {
+          setErrorInputLogin(error.response.data.message);
+        },
       });
-      const { response, json } = await request(url, true, options);
-      if (!response.ok) return setErrorInputLogin(json.message);
-
-      if (response.ok) {
-        navigate("/");
-        setToken(json.token);
-        setloggedUser(json.user);
-        setErrorInputLogin("");
-      }
     }
+
     reset();
   };
+
   return {
     onSubmit,
     register,

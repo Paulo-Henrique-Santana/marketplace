@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import axios from "axios";
-import { ImagesProps, FavoriteProps } from "../Types/Index";
+import { useNavigate } from "react-router-dom";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api/",
@@ -35,17 +35,16 @@ const deleteData = async (itemId: number) => {
   await axiosInstance.delete("favorite/" + itemId, headers);
 };
 
-const postData = async (params) => {
-  await axiosInstance.post(params.url, params.data);
+const postData = async ({ url, data }) => {
+  const response = await axiosInstance.post(url, data);
+  return response.data;
 };
 
 export const useAxiosQueryGet = (queryKey: any, url: string, params?: any) => {
-  console.log(queryKey, url);
-
   return useQuery([queryKey, params], () => getData(url, params));
 };
 
-export const useAxiosQueryDelete = (key) => {
+export const useAxiosQueryDelete = (key: string[]) => {
   const queryCliente = useQueryClient();
   const mutate = useMutation({
     mutationFn: deleteData,

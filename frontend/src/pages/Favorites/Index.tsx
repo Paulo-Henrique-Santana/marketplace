@@ -21,7 +21,7 @@ const Index = () => {
   return (
     <section className="favoriteContainer">
       {isLoading && <Loading />}
-      {!data?.items && !isLoading && <p>Does not have favorite items :(</p>}
+      {!data?.items.length && !isLoading && <p>Does not have favorite items :(</p>}
       <ul>
         {data?.items?.map((item) => (
           <li key={item.id}>

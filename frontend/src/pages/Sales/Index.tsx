@@ -46,7 +46,7 @@ const Index = () => {
     formData.append("description", data.description);
     formData.append("idUser", "1");
 
-    mutate({ data: formData, url: "product" });
+    mutate({ url: "product", data: formData });
     reset();
     setImg([]);
     if (!error) toast.success("Sent successfully");

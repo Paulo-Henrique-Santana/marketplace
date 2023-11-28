@@ -7,6 +7,7 @@ import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import * as Yup from "yup";
 import useFetch from "../../../Hooks/useFetch";
 import Regex from "./Regex";
+import { useAxiosQueryPost } from "../../../Hooks/useAxiosFavoriteQuery";
 
 type OnSubmitProps = {
   name: string;
@@ -24,6 +25,8 @@ const Validation = () => {
   const { setloggedUser } = useContext(LocalStorageContext);
   const { request } = useFetch();
   const navigate = useNavigate();
+
+  const { mutate, error } = useAxiosQueryPost();
 
   const RemoverSpecialCharacters = (string: string) => {
     return string.replace(/[^a-zA-Z0-9]/g, "");
@@ -90,7 +93,7 @@ const Validation = () => {
     }
   };
 
-  const onSubmit = async (data: OnSubmitProps) => {
+  const onSubmit1 = async (data: OnSubmitProps) => {
     const { url, options } = USER_POST_REGISTER({
       name: data.name,
       password: data.password,
@@ -100,6 +103,26 @@ const Validation = () => {
     const { response } = await request(url, true, options);
 
     if (response.ok) {
+      setloggedUser(data.name);
+      alert("Registration done successfully");
+      navigate("/login");
+    }
+    setCpf("");
+    reset();
+  };
+
+  const onSubmit = (data: OnSubmitProps) => {
+    mutate({
+      url: "user",
+      data: {
+        name: data.name,
+        password: data.password,
+        email: data.email,
+        cpf: data.cpf,
+      },
+    });
+
+    if (!error) {
       setloggedUser(data.name);
       alert("Registration done successfully");
       navigate("/login");

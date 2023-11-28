@@ -29,7 +29,9 @@ type ProductProps = {
 
 const Home = ({ useFilters }) => {
   const { mutate: addProduct } = useAxiosQueryPost();
-  const { mutate: deleteProduct } = useAxiosQueryDelete(["products"]);
+  const { mutate: deleteProduct, isSuccess } = useAxiosQueryDelete([
+    "products",
+  ]);
   const [filters] = useFilters;
   const { loggedUser, token } = useContext(LocalStorageContext);
   const dataProducts = {
@@ -47,13 +49,14 @@ const Home = ({ useFilters }) => {
     if (favoriteProduct.favorites?.length) {
       const id = favoriteProduct.favorites[0].id;
       deleteProduct(id);
+      console.log(isSuccess);
     } else {
       const params = {
+        url: "favorite",
         data: {
           idProduct: favoriteProduct.id,
           idUser: loggedUser.id,
         },
-        url: "favorite",
       };
       addProduct(params);
     }

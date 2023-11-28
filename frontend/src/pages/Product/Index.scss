@@ -48,10 +48,7 @@
           cursor: pointer;
           svg {
             font-size: 2rem;
-            fill: $lightPurple;
-            &:hover {
-              fill: red;
-            }
+            fill: $purple;
           }
         }
       }
