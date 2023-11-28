@@ -31,8 +31,7 @@ app.use(function (req, res, next) {
 });
 
 const verifyRouteNeedToken = (req: Request) => {
-  const regex = /\/api\/(.*?)\?/;
-  const route = regex.exec(req.url)?.toString();
+  const route = req.url.replace(/\/api\//g, "");
 
   const routesToken = [
     { name: "user" },
@@ -43,13 +42,7 @@ const verifyRouteNeedToken = (req: Request) => {
   if (route) {
     return routesToken.some((item) => {
       if (item.name === route) {
-        if (!item.methods) {
-          return true;
-        } else if (item.methods.includes(req.method)) {
-          return true;
-        } else {
-          return false;
-        }
+        return !item.methods || item.methods.includes(req.method);
       }
     });
   }
@@ -58,31 +51,30 @@ const verifyRouteNeedToken = (req: Request) => {
 };
 
 app.use((req, res, next) => {
+  console.log(verifyRouteNeedToken(req));
+
   if (!verifyRouteNeedToken(req)) {
     return next();
   }
 
-  if (
-    req.headers.authorization === undefined ||
-    req.headers.authorization.split(" ")[0] !== "Bearer"
-  ) {
+  if (req.headers.authorization === undefined) {
     const status = 401;
     const message = "Error in authorization format";
-    res.status(status).json({ status, message });
+    res.status(status).json({ message });
     return;
   }
 
   try {
     var token = req.headers?.["authorization"]?.split(" ")[1];
 
-    jwt.verify(token!, process.env.JWT_SECRET as string, (err, decoded) => {
+    jwt.verify(token!, process.env.JWT_SECRET as string, (err) => {
       if (err) return res.status(401).send({ message: "Invalid token" });
       next();
     });
   } catch (err) {
     const status = 401;
-    const message = "Error access_token is revoked";
-    res.status(status).json({ status, message });
+    const message = "Error access token is revoked";
+    res.status(status).json({ message });
   }
 });
 
