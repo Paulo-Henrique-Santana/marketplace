@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
 import { CategoryContext } from "../../Context/CategoryContext";
-import { useAxiosQueryPost } from "../../Hooks/useAxiosFavoriteQuery";
+import { usePostRequest } from "../../Hooks/useAxiosFavoriteQuery";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
 import Input from "./Input/Input";
@@ -27,7 +27,7 @@ const Index = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { category } = useContext(CategoryContext);
   const [imgs, setImg] = useState<ResultProps[]>([]);
-  const { mutate, error } = useAxiosQueryPost();
+  const { mutate, error } = usePostRequest();
 
   function separator(numb: string) {
     const str = numb.toString().split(".");

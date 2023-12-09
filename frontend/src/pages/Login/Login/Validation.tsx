@@ -3,10 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
-import {
-  useAxiosQueryPost,
-  postData,
-} from "../../../Hooks/useAxiosFavoriteQuery";
+import { usePostRequest } from "../../../Hooks/useAxiosFavoriteQuery";
 
 import * as Yup from "yup";
 
@@ -23,16 +20,12 @@ type LoginData = {
   password: string;
 };
 
-type postLoginProps = {
-  url: "string";
-  data: LoginData;
-};
-
 const Validation = () => {
   const [errorInputLogin, setErrorInputLogin] = useState("");
   const navigate = useNavigate();
   const { setToken, setloggedUser } = useContext(LocalStorageContext);
-  const { mutate, mutateAsync, data } = useAxiosQueryPost();
+
+  const { mutate } = usePostRequest();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -51,8 +44,6 @@ const Validation = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-
-  console.log(data);
 
   const onSubmit = ({ email, password }: LoginData) => {
     if (email && password) {
