@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
-import { useAxiosQueryGet } from "../../Hooks/useAxiosFavoriteQuery";
+import { useAxiosQueryGet, useGetRequest } from "../../Hooks/useAxiosFavoriteQuery";
 import Loading from "../../components/Loading/Loading";
 
 import "./Index.scss";

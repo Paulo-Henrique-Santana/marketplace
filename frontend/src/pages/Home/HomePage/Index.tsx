@@ -6,9 +6,9 @@ import { LocalStorageContext } from "../../../Context/LocalStorageContext";
 import { ImagesProps } from "../../../Types/Index";
 import Loading from "../../../components/Loading/Loading";
 import {
-  useAxiosQueryDelete,
-  useAxiosQueryGet,
-  useAxiosQueryPost,
+  usePostRequest,
+  useDeleteRequest,
+  useGetRequest,
 } from "../../../Hooks/useAxiosFavoriteQuery";
 
 import "./Index.scss";
@@ -28,10 +28,8 @@ type ProductProps = {
 };
 
 const Home = ({ useFilters }) => {
-  const { mutate: addProduct } = useAxiosQueryPost();
-  const { mutate: deleteProduct, isSuccess } = useAxiosQueryDelete([
-    "products",
-  ]);
+  const { mutate: addProduct } = usePostRequest();
+  const { mutate: deleteProduct } = useDeleteRequest(["products"]);
   const [filters] = useFilters;
   const { loggedUser, token } = useContext(LocalStorageContext);
   const dataProducts = {
@@ -39,27 +37,24 @@ const Home = ({ useFilters }) => {
     idLoggedUser: loggedUser.id,
   };
 
-  const { data, isLoading } = useAxiosQueryGet(
+  const { data, isLoading } = useGetRequest(
     "products",
     "/product?",
     dataProducts
   );
 
   const toogleFavorite = (favoriteProduct: ProductProps) => {
+    const params = {
+      url: "favorite",
+      data: {
+        idProduct: favoriteProduct.id,
+        idUser: loggedUser.id,
+      },
+    };
     if (favoriteProduct.favorites?.length) {
       const id = favoriteProduct.favorites[0].id;
       deleteProduct(id);
-      console.log(isSuccess);
-    } else {
-      const params = {
-        url: "favorite",
-        data: {
-          idProduct: favoriteProduct.id,
-          idUser: loggedUser.id,
-        },
-      };
-      addProduct(params);
-    }
+    } else addProduct(params);
   };
 
   return (

@@ -7,7 +7,9 @@ import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import * as Yup from "yup";
 import useFetch from "../../../Hooks/useFetch";
 import Regex from "./Regex";
-import { useAxiosQueryPost } from "../../../Hooks/useAxiosFavoriteQuery";
+import {
+  usePostRequest,
+} from "../../../Hooks/useAxiosFavoriteQuery";
 
 type OnSubmitProps = {
   name: string;
@@ -26,7 +28,7 @@ const Validation = () => {
   const { request } = useFetch();
   const navigate = useNavigate();
 
-  const { mutate, error } = useAxiosQueryPost();
+  const { mutate, error } = usePostRequest();
 
   const RemoverSpecialCharacters = (string: string) => {
     return string.replace(/[^a-zA-Z0-9]/g, "");
