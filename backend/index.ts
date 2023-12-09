@@ -1,13 +1,13 @@
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { json, urlencoded } from "express";
+import express, { Request, json, urlencoded } from "express";
+import jwt from "jsonwebtoken";
 import { sequelize } from "./db/conn";
 import { AuthRouter } from "./routes/auth.routes";
 import { CategoryRouter } from "./routes/category.routes";
 import { FavoriteRouter } from "./routes/favorite.routes";
 import { ProductRouter } from "./routes/product.routes";
 import { UserRouter } from "./routes/user.routes";
-import { verifyJWT } from "./middlewares/verifyJwt";
 
 dotenv.config();
 
@@ -79,10 +79,10 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", AuthRouter);
-app.use("/api/user", verifyJWT, UserRouter);
+app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/category", CategoryRouter);
-app.use("/api/favorite", verifyJWT, FavoriteRouter);
+app.use("/api/favorite", FavoriteRouter);
 app.use("/api/files", express.static("uploads"));
 
 sequelize
