@@ -12,7 +12,8 @@ import { Navigate } from "react-router-dom";
 import "../Index.scss";
 
 const Login = () => {
-  const { onSubmit, register, handleSubmit, errorInputLogin } = Validation();
+  const { onSubmit, register, handleSubmit, errorInputLogin, errors } =
+    Validation();
   const { token } = useContext(LocalStorageContext);
 
   if (token) return <Navigate to="/" />;
@@ -31,8 +32,10 @@ const Login = () => {
             text="E-mail"
             register={register}
             validation="email"
-            errors
+            errors={errors}
           />
+          {errors.email && <Error error={errors.email.message} />}
+
           <Input
             htmlFor="password"
             type="password"
@@ -41,8 +44,10 @@ const Login = () => {
             text="Password"
             register={register}
             validation="password"
-            errors
+            errors={errors}
           />
+          {errors.password && <Error error={errors.password.message} />}
+
           <Error error={errorInputLogin} />
           <Button text="Enter" />
         </form>
