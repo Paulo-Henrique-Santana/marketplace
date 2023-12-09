@@ -16,25 +16,11 @@ const app = express();
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
-  );
-  app.use(cors());
-  next();
-});
-
 const verifyRouteNeedToken = (req: Request) => {
   const route = req.url.replace(/\/api\//g, "");
 
   const routesToken = [
-    { name: "user" },
+    { name: "user", methods: ["PUT", "DELETE"] },
     { name: "favorite" },
     { name: "product", methods: ["POST", "PUT", "DELETE"] },
   ];
@@ -50,30 +36,46 @@ const verifyRouteNeedToken = (req: Request) => {
   return false;
 };
 
-app.use((req, res, next) => {
-  if (!verifyRouteNeedToken(req)) {
-    return next();
-  }
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+  );
 
-  if (req.headers.authorization === undefined) {
-    const status = 401;
-    const message = "Error in authorization format";
-    res.status(status).json({ message });
-    return;
-  }
+  app.use(cors());
 
-  try {
-    var token = req.headers?.["authorization"]?.split(" ")[1];
+  app.use((req, res, next) => {
+    if (!verifyRouteNeedToken(req)) {
+      return next();
+    }
 
-    jwt.verify(token!, process.env.JWT_SECRET as string, (err) => {
-      if (err) return res.status(401).send({ message: "Invalid token" });
-      next();
-    });
-  } catch (err) {
-    const status = 401;
-    const message = "Error access token is revoked";
-    res.status(status).json({ message });
-  }
+    if (req.headers.authorization === undefined) {
+      const status = 401;
+      const message = "Error in authorization format";
+      res.status(status).json({ message });
+      return;
+    }
+
+    try {
+      var token = req.headers?.["authorization"]?.split(" ")[1];
+
+      jwt.verify(token!, process.env.JWT_SECRET as string, (err) => {
+        if (err) return res.status(401).send({ message: "Invalid token" });
+        next();
+      });
+    } catch (err) {
+      const status = 401;
+      const message = "Error access token is revoked";
+      res.status(status).json({ message });
+    }
+  });
+
+  next();
 });
 
 app.use("/api/auth", AuthRouter);
