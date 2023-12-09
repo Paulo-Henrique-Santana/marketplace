@@ -14,6 +14,11 @@ const headers = {
   },
 };
 
+interface PostDataParams<T> {
+  url: string;
+  data: T;
+}
+
 const getData = async (url: any, params: any) => {
   if (params) {
     if (params.idCategory) {
@@ -35,7 +40,7 @@ const deleteData = async (itemId: number) => {
   await axiosInstance.delete("favorite/" + itemId, headers);
 };
 
-const postData = async ({ url, data }) => {
+export const postData = async <T,>({ url, data }: PostDataParams<T>): Promise<T> => {
   const response = await axiosInstance.post(url, data);
   return response.data;
 };

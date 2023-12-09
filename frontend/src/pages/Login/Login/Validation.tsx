@@ -1,16 +1,38 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
-import { useAxiosQueryPost } from "../../../Hooks/useAxiosFavoriteQuery";
+import {
+  useAxiosQueryPost,
+  postData,
+} from "../../../Hooks/useAxiosFavoriteQuery";
+
+import * as Yup from "yup";
+
+type ErrorProps = {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+};
+
+type LoginData = {
+  email: string;
+  password: string;
+};
+
+type postLoginProps = {
+  url: "string";
+  data: LoginData;
+};
 
 const Validation = () => {
-  const [errorInputLogin, setErrorInputLogin] = useState<any>("");
+  const [errorInputLogin, setErrorInputLogin] = useState("");
   const navigate = useNavigate();
   const { setToken, setloggedUser } = useContext(LocalStorageContext);
-  const { mutate } = useAxiosQueryPost();
+  const { mutate, mutateAsync, data } = useAxiosQueryPost();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -30,13 +52,9 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
+  console.log(data);
+
+  const onSubmit = ({ email, password }: LoginData) => {
     if (email && password) {
       const login = {
         url: "auth",
@@ -45,20 +63,24 @@ const Validation = () => {
           password,
         },
       };
+
       mutate(login, {
-        onSuccess: (data) => {
+        onSuccess: (data: any) => {
           navigate("/");
           setToken(data.token);
           setloggedUser(data.user);
           setErrorInputLogin("");
         },
-        onError: (error) => {
-          setErrorInputLogin(error.response.data.message);
+        onError: (error: unknown) => {
+          if (error instanceof Error && "response" in error) {
+            const errorResponse = error as ErrorProps;
+            setErrorInputLogin(errorResponse.response.data.message);
+          }
         },
       });
-    }
 
-    reset();
+      reset();
+    }
   };
 
   return {
