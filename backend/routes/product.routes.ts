@@ -94,6 +94,7 @@ ProductRouter.get("/:id", async (req, res) => {
         model: Favorite,
         as: "favorites",
         where: { idUser: req.query.idUser },
+        required: false,
       });
     }
 
