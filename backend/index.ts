@@ -51,8 +51,6 @@ const verifyRouteNeedToken = (req: Request) => {
 };
 
 app.use((req, res, next) => {
-  console.log(verifyRouteNeedToken(req));
-
   if (!verifyRouteNeedToken(req)) {
     return next();
   }
