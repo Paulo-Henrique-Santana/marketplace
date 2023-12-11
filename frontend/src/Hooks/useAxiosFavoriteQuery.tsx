@@ -14,21 +14,13 @@ const headers = {
   },
 };
 
-type ApiResponse<T> = {
+export type ApiResponse<T> = {
   data: T;
 };
 
 type PostDataParams<T> = {
   url: string;
   data: T;
-};
-
-type GetDataParams = {
-  query: string;
-  url: string;
-  params: {
-    idLoggedUser: number;
-  };
 };
 
 const getData = async (url: any, params: any) => {
@@ -96,7 +88,6 @@ export const useGetRequest = (
     idLoggedUser: number;
   }
 ) => {
-
   const getData = async (url: string, params: any) => {
     if (params) {
       if (params.idCategory) {
@@ -120,10 +111,7 @@ export const useGetRequest = (
 export const usePostRequest = <T,>() => {
   const queryClient = useQueryClient();
 
-  const postData = async ({
-    url,
-    data,
-  }: PostDataParams<T>): Promise<ApiResponse<T>> => {
+  const postData = async ({ url, data }: PostDataParams<T>): Promise<T> => {
     const response = await axiosInstance.post(url, data);
     return response.data;
   };
