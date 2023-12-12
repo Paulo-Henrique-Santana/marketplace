@@ -38,8 +38,8 @@ const Home = ({ useFilters }) => {
   };
 
   const { data, isLoading } = useGetRequest(
-    "products",
     "/product?",
+    "products",
     dataProducts
   );
 

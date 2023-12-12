@@ -3,10 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
-import {
-  ApiResponse,
-  usePostRequest,
-} from "../../../Hooks/useAxiosFavoriteQuery";
+import { usePostRequest } from "../../../Hooks/useAxiosFavoriteQuery";
 
 import * as Yup from "yup";
 
@@ -38,7 +35,7 @@ const Validation = () => {
   const navigate = useNavigate();
   const { setToken, setloggedUser } = useContext(LocalStorageContext);
 
-  const { mutate } = usePostRequest<LoginResponse>();
+  const { mutate } = usePostRequest();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -69,7 +66,7 @@ const Validation = () => {
       };
 
       mutate(login, {
-        onSuccess: (data) => {
+        onSuccess: (data: LoginResponse) => {
           navigate("/");
           setToken(data.token);
           setloggedUser(data.user);

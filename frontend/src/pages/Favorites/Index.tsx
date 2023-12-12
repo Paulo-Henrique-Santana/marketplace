@@ -7,15 +7,16 @@ import {
   useGetRequest,
   useDeleteRequest,
 } from "../../Hooks/useAxiosFavoriteQuery";
+import { FavoriteData } from "../../Types/Index";
 
 import "./Index.scss";
 
 const Index = () => {
   const { mutate } = useDeleteRequest(["favoriteProduct"]);
   const { loggedUser } = useContext(LocalStorageContext);
-  const { data, isLoading } = useGetRequest(
-    "favoriteProduct",
-    "favorite?page=1&pageSize=10&idUser=" + loggedUser.id
+  const { data, isLoading } = useGetRequest<FavoriteData>(
+    "favorite?page=1&pageSize=10&idUser=" + loggedUser.id,
+    "favoriteProduct"
   );
 
   return (

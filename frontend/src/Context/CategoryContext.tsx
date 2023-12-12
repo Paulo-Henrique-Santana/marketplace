@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { GET_CATEGORY } from "../Api/Index";
 import useFetch from "../Hooks/useFetch";
+import { useGetRequest } from "../Hooks/useAxiosFavoriteQuery";
 
 type CategoryContextProviderProps = {
   children: React.ReactNode;
@@ -34,9 +35,16 @@ export const CategoryProvider = ({
       const { url, options } = GET_CATEGORY();
       const { json } = await request(url, true, options);
       setCategory(json);
+
+      // console.log(json);
     };
     getCategory();
   }, [request]);
+
+  // useEffect(() => {
+  //   const { data, isLoading } = useGetRequest("category", "category");
+  //   setCategory(data);
+  // }, []);
 
   return (
     <CategoryContext.Provider

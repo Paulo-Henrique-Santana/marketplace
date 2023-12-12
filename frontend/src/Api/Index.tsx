@@ -14,8 +14,6 @@ export function USER_POST_REGISTER(body) {
 }
 
 export function USER_POST_LOGIN(body) {
-  console.log(body);
-
   return {
     url: API_URL + "auth",
     options: {

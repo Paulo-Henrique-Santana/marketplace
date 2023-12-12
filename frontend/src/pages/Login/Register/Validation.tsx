@@ -71,7 +71,6 @@ const Validation = () => {
   });
 
   const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(cpf);
 
     if (cpf.target.value && !errors.email) {
       const { url, options } = USERS_GET({
