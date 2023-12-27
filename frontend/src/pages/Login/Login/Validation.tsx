@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
-import { usePostRequest } from "../../../Hooks/useAxiosFavoriteQuery";
 
 import * as Yup from "yup";
+import { usePostLogin } from "../../../Hooks/useAxiosLogin";
 
 type ErrorProps = {
   response: {
@@ -35,7 +35,7 @@ const Validation = () => {
   const navigate = useNavigate();
   const { setToken, setloggedUser } = useContext(LocalStorageContext);
 
-  const { mutate } = usePostRequest();
+  const { mutate } = usePostLogin();
 
   const schema = Yup.object().shape({
     email: Yup.string()

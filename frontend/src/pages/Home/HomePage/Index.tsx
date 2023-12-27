@@ -1,35 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
-import useFetch from "../../../Hooks/useFetch";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../../Context/LocalStorageContext";
-import { ImagesProps } from "../../../Types/Index";
 import Loading from "../../../components/Loading/Loading";
 import {
-  usePostRequest,
-  useDeleteRequest,
-  useGetRequest,
-} from "../../../Hooks/useAxiosFavoriteQuery";
+  useAxiosDeleteFavorite,
+  useAxiosPostFavorite,
+} from "../../../Hooks/useAxiosFavorite";
+import { useAxiosGetProducts } from "../../../Hooks/useAxiosProducts";
+import { ProductData } from "../../../Types/Product";
 
 import "./Index.scss";
 
-type ProductProps = {
-  id: number;
-  favorites?: Array<{
-    id: number;
-    idProduct: number;
-    idUser: number;
-  }>;
-  description: string;
-  images: ImagesProps;
-  name: string;
-  price: string;
-  quantity: number;
-};
-
-const Home = ({ useFilters }) => {
-  const { mutate: addProduct } = usePostRequest();
-  const { mutate: deleteProduct } = useDeleteRequest(["products"]);
+const Home = ({ useFilters }: { useFilters: any }) => {
+  const { mutate: addProduct } = useAxiosPostFavorite();
+  const { mutate: deleteProduct } = useAxiosDeleteFavorite(["products"]);
   const [filters] = useFilters;
   const { loggedUser, token } = useContext(LocalStorageContext);
   const dataProducts = {
@@ -37,13 +22,13 @@ const Home = ({ useFilters }) => {
     idLoggedUser: loggedUser.id,
   };
 
-  const { data, isLoading } = useGetRequest(
+  const { data, isLoading } = useAxiosGetProducts(
     "/product?",
     "products",
     dataProducts
   );
 
-  const toogleFavorite = (favoriteProduct: ProductProps) => {
+  const toogleFavorite = (favoriteProduct: ProductData) => {
     const params = {
       url: "favorite",
       data: {
@@ -62,7 +47,7 @@ const Home = ({ useFilters }) => {
       {isLoading && <Loading />}
       {!data?.items && !isLoading && <p>Product not found</p>}
       <ul>
-        {data?.items.map((product: ProductProps) => (
+        {data?.items.map((product) => (
           <li key={product.id}>
             <Link to={`product/${product.id}`}>
               <div className="containerImg">

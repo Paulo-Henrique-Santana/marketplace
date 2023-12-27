@@ -10,6 +10,7 @@ export type ProductsData = {
   name: string;
   price: string;
   quantity: number;
+  id: number;
 };
 
 export type FavoriteProps = {

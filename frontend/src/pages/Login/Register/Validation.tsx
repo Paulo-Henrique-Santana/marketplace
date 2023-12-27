@@ -7,9 +7,7 @@ import { USERS_GET, USER_POST_REGISTER } from "../../../Api/Index";
 import * as Yup from "yup";
 import useFetch from "../../../Hooks/useFetch";
 import Regex from "./Regex";
-import {
-  usePostRequest,
-} from "../../../Hooks/useAxiosFavoriteQuery";
+import { useAxiosGetCPF, usePostLogin } from "../../../Hooks/useAxiosLogin";
 
 type OnSubmitProps = {
   name: string;
@@ -28,7 +26,7 @@ const Validation = () => {
   const { request } = useFetch();
   const navigate = useNavigate();
 
-  const { mutate, error } = usePostRequest();
+  const { mutate, error } = usePostLogin();
 
   const RemoverSpecialCharacters = (string: string) => {
     return string.replace(/[^a-zA-Z0-9]/g, "");
@@ -70,17 +68,48 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
 
-  const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
-
+  const onBlurCpf1 = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
     if (cpf.target.value && !errors.email) {
       const { url, options } = USERS_GET({
         cpf: RemoverSpecialCharacters(cpf.target.value),
       });
       const { json } = await request(url, true, options);
+      // console.log(json);
+
       if (json.length) setErrorInputCpf("CPF already registered");
       else setErrorInputCpf("");
     }
   };
+
+  // const { data } = useGetRequest(
+  //   "user",
+  //   "userKey",
+  //   RemoverSpecialCharacters(cpf)
+  // );
+  // console.log(data);
+  // console.log(cpf);
+
+  const { data } = useAxiosGetCPF("user", "cpfExists", cpf);
+
+  const cpfs = data?.map((item) => item.cpf);
+
+  console.log(cpfs.length);
+
+  // console.log(data);
+
+  if (cpf && !errors.email) {
+    if (cpfs?.length) setErrorInputCpf("CPF already registered");
+    else setErrorInputCpf("");
+  }
+
+  // const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
+  //   // console.log(cpf.target.value);
+
+  //   if (cpf.target.value && !errors.email) {
+  //     if (data.length) setErrorInputCpf("CPF already registered");
+  //     else setErrorInputCpf("");
+  //   }
+  // };
 
   const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
     if (email.target.value && !errors.email) {
@@ -92,24 +121,6 @@ const Validation = () => {
         setErrorInputEmail("");
       }
     }
-  };
-
-  const onSubmit1 = async (data: OnSubmitProps) => {
-    const { url, options } = USER_POST_REGISTER({
-      name: data.name,
-      password: data.password,
-      email: data.email,
-      cpf: data.cpf,
-    });
-    const { response } = await request(url, true, options);
-
-    if (response.ok) {
-      setloggedUser(data.name);
-      alert("Registration done successfully");
-      navigate("/login");
-    }
-    setCpf("");
-    reset();
   };
 
   const onSubmit = (data: OnSubmitProps) => {
@@ -134,7 +145,7 @@ const Validation = () => {
 
   return {
     onSubmit,
-    onBlurCpf,
+    // onBlurCpf,
     onBlurEmail,
     register,
     handleSubmit,

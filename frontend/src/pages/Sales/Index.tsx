@@ -2,66 +2,17 @@ import React, { useContext, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
 import { CategoryContext } from "../../Context/CategoryContext";
-import { usePostRequest } from "../../Hooks/useAxiosFavoriteQuery";
+import { useFormData } from "../../Hooks/useFormData";
 import Validation from "./Validation";
 import Error from "../../components/Form/Error/Index";
 import Input from "./Input/Input";
 
 import "./Index.scss";
-import "react-toastify/dist/ReactToastify.css";
 
-type OnSubmitData = {
-  category: string;
-  description: string;
-  price: string;
-  productName: string;
-  quantity: string;
-};
-
-type ResultProps = {
-  preview: string;
-  file: any;
-};
-
-const Index = () => {
+const salesProduct = () => {
   const { register, handleSubmit, reset, errors } = Validation();
   const { category } = useContext(CategoryContext);
-  const [imgs, setImg] = useState<ResultProps[]>([]);
-  const { mutate, error } = usePostRequest();
-
-  function separator(numb: string) {
-    const str = numb.toString().split(".");
-    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return str.join(".");
-  }
-
-  const onSubmit = async (data: OnSubmitData) => {
-    const formData = new FormData();
-    imgs.forEach((img: { file: File }) => formData.append("image", img.file));
-
-    formData.append("name", data.productName);
-    formData.append("price", separator(data.price));
-    formData.append("quantity", data.quantity);
-    formData.append("idCategory", data.category);
-    formData.append("description", data.description);
-    formData.append("idUser", "1");
-
-    mutate({ url: "product", data: formData });
-    reset();
-    setImg([]);
-    if (!error) toast.success("Sent successfully");
-  };
-
-  const handleImgChange = ({ target }) => {
-    const result = Array.from(target?.files).map((img: any) => {
-      return {
-        preview: URL.createObjectURL(img),
-        file: img,
-      };
-    });
-
-    setImg(result);
-  };
+  const { handleImgChange, imgs, onSubmit } = useFormData(reset);
 
   return (
     <section className="salesContainer">
@@ -155,4 +106,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default salesProduct;

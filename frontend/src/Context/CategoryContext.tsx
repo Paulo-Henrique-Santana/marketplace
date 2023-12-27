@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { GET_CATEGORY } from "../Api/Index";
 import useFetch from "../Hooks/useFetch";
-import { useGetRequest } from "../Hooks/useAxiosFavoriteQuery";
 
 type CategoryContextProviderProps = {
   children: React.ReactNode;

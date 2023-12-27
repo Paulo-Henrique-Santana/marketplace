@@ -2,17 +2,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
-import { useGetRequest } from "../../Hooks/useAxiosFavoriteQuery";
 import Loading from "../../components/Loading/Loading";
 
 import "./Index.scss";
+import { useAxiosGet } from "../../Hooks/useAxiosGet";
+import { ProductData } from "../../Types/Product";
 
-const Index = () => {
+const productDescription = () => {
   const divImgs = useRef<HTMLInputElement | null>(null);
   const [indexImg, setIndexImg] = useState(0);
   const { id } = useParams();
   const { cart, setCart, loggedUser } = useContext(LocalStorageContext);
-  const { data } = useGetRequest(
+  const { data } = useAxiosGet<ProductData>(
     `product/${id}?idUser=${loggedUser.id}`,
     "products"
   );
@@ -38,7 +39,7 @@ const Index = () => {
     setCart(storedCart);
   }, []);
 
-  const addToCart = (productId) => {
+  const addToCart = (productId: any) => {
     if (!cart.includes(productId)) {
       const updatedCart = [...cart, productId];
       setCart(updatedCart);
@@ -100,4 +101,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default productDescription;

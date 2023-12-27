@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import {
   FaAngleDown,
   FaArrowRightFromBracket,
@@ -11,19 +11,22 @@ import {
 } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { LocalStorageContext } from "../../Context/LocalStorageContext";
-import { CategoryContext } from "../../Context/CategoryContext";
 import Logo from "../Logo/Logo";
-import Cart from "../../pages/Cart/Index";
-
+import { useAxiosGet } from "../../Hooks/useAxiosGet";
 import "./Index.scss";
 
-const Header = ({ useFilters }) => {
+type CategoryData = {
+  id: number;
+  name: string;
+};
+
+const Header = ({ useFilters }: { useFilters: any }) => {
   const { token, loggedUser, setToken, setloggedUser } =
     useContext(LocalStorageContext);
-  const { category } = useContext(CategoryContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useFilters;
+  const { data } = useAxiosGet<CategoryData[]>("category", "categoryKey");
 
   const handleClickLogo = () => {
     setFilters({});
@@ -35,13 +38,13 @@ const Header = ({ useFilters }) => {
     setloggedUser("");
   };
 
-  const handleClickCategory = async (id) => {
+  const handleClickCategory = async (id: number) => {
     setFilters({ idCategory: id });
     setSearch("");
     navigate("/");
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: FormEvent) => {
     event.preventDefault();
     setFilters({ ...filters, search: search });
     navigate("/");
@@ -77,8 +80,8 @@ const Header = ({ useFilters }) => {
               <li className="categories">
                 Categories <FaAngleDown />
                 <ul className="subMenuCategories">
-                  {category &&
-                    category.map((cat) => (
+                  {data &&
+                    data.map((cat) => (
                       <li
                         key={cat.id}
                         onClick={() => handleClickCategory(cat.id)}

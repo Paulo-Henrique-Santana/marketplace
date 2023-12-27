@@ -27,6 +27,8 @@ export function USER_POST_LOGIN(body) {
 }
 
 export function USERS_GET(params) {
+  // console.log(params);
+  
   const api = {
     url: API_URL + "user",
     options: {
@@ -85,8 +87,6 @@ export function GET_PRODUCTS(params) {
 }
 
 export function PRODUCTY_POST(body) {
-  console.log(body);
-
   return {
     url: API_URL + "product",
     options: {
