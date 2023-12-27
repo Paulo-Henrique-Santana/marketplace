@@ -5,7 +5,7 @@ import validateJWT from "../validateJWT";
 
 export const UserRouter = express.Router();
 
-UserRouter.get("/", validateJWT, async (req, res) => {
+UserRouter.get("/", async (req, res) => {
   try {
     const { cpf, email } = req.query;
 

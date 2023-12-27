@@ -22,11 +22,13 @@ const Home = ({ useFilters }: { useFilters: any }) => {
     idLoggedUser: loggedUser.id,
   };
 
-  const { data, isLoading } = useAxiosGetProducts(
+  const { data, isLoading, error } = useAxiosGetProducts(
     "/product?",
     "products",
     dataProducts
   );
+
+  console.log(error);
 
   const toogleFavorite = (favoriteProduct: ProductData) => {
     const params = {

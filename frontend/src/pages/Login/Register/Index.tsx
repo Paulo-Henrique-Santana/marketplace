@@ -11,7 +11,7 @@ import InputMask from "react-input-mask";
 const Register = () => {
   const {
     onSubmit,
-    // onBlurCpf,
+    onBlurCpf,
     onBlurEmail,
     register,
     handleSubmit,
@@ -58,17 +58,17 @@ const Register = () => {
 
           <label htmlFor="cpf">CPF</label>
           <InputMask
-            htmlFor="cpf"
+            // htmlFor="cpf"
             type="text"
             id="cpf"
-            text="CPF"
+            // text="CPF"
             mask="999.999.999-99"
             placeholder="123.456.789-10"
             {...register("cpf", {
               onChange: ({ target }) => setCpf(target.value),
             })}
             value={cpf}
-            // onBlur={onBlurCpf}
+            onBlur={(e) => onBlurCpf(e)}
             className="inputMask"
             style={
               errors.cpf

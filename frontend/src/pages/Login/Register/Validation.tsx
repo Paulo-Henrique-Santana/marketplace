@@ -91,25 +91,27 @@ const Validation = () => {
 
   const { data } = useAxiosGetCPF("user", "cpfExists", cpf);
 
+  console.log(data);
+
   const cpfs = data?.map((item) => item.cpf);
 
-  console.log(cpfs.length);
+  // console.log(cpfs.length);
 
   // console.log(data);
 
-  if (cpf && !errors.email) {
-    if (cpfs?.length) setErrorInputCpf("CPF already registered");
-    else setErrorInputCpf("");
-  }
+  // if (cpf && !errors.email) {
+  //   if (cpfs?.length) setErrorInputCpf("CPF already registered");
+  //   else setErrorInputCpf("");
+  // }
 
-  // const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
-  //   // console.log(cpf.target.value);
+  const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(cpfs.length);
 
-  //   if (cpf.target.value && !errors.email) {
-  //     if (data.length) setErrorInputCpf("CPF already registered");
-  //     else setErrorInputCpf("");
-  //   }
-  // };
+    if (cpf.target.value && !errors.email) {
+      if (cpfs.length) setErrorInputCpf("CPF already registered");
+      else setErrorInputCpf("");
+    }
+  };
 
   const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
     if (email.target.value && !errors.email) {
@@ -145,7 +147,7 @@ const Validation = () => {
 
   return {
     onSubmit,
-    // onBlurCpf,
+    onBlurCpf,
     onBlurEmail,
     register,
     handleSubmit,
