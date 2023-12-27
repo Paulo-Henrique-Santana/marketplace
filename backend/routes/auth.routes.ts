@@ -1,7 +1,11 @@
-import express from "express";
 import bcrypt from "bcrypt";
+import express from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
+import {
+  nodemailerTransporter,
+  nodemailerTransporterUser,
+} from "../utils/nodemailerTransporter";
 
 export const AuthRouter = express.Router();
 
@@ -27,7 +31,7 @@ AuthRouter.post("/", async (req, res) => {
     });
   }
 
-  let token;
+  let token: string;
   try {
     //Creating jwt token
     token = jwt.sign(
@@ -50,6 +54,43 @@ AuthRouter.post("/", async (req, res) => {
     },
     token: token,
   });
+});
+
+AuthRouter.post("/recover-password", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: { email: req.body.email },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "The email provided does not belong to any registered user",
+      });
+    }
+
+    const token = jwt.sign(
+      { email: user.get("email") },
+      process.env.JWT_SECRET!,
+      { expiresIn: "24h" }
+    );
+
+    try {
+      await nodemailerTransporter.sendMail({
+        from: nodemailerTransporterUser,
+        to: req.body.email,
+        subject: "Recuperação de senha - Marketplace",
+        text: `Você solicitou a recuperação de senha. Clique no link a abaixo para cadastrar uma nova senha. 
+          \n${process.env.FRONT_URL}nova-senha?token=${token}
+        `,
+      });
+
+      return res.status(200).send({ message: "Email successfully sent!" });
+    } catch (error: any) {
+      return res.status(400).send(error);
+    }
+  } catch (err: any) {
+    return res.status(400).send(err.message);
+  }
 });
 
 AuthRouter.get("*", async (req, res) => {
