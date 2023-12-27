@@ -4,6 +4,7 @@ import { upload } from "../config/multer";
 import { Favorite } from "../models/Favorites";
 import { Product } from "../models/Product";
 import { ProductImage } from "../models/ProductImage";
+import validateJWT from "../validateJWT";
 
 export const ProductRouter = Router();
 
@@ -106,26 +107,31 @@ ProductRouter.get("/:id", async (req, res) => {
   }
 });
 
-ProductRouter.post("/", upload.array("image"), async (req, res) => {
-  try {
-    const product: any = await Product.create(req.body);
+ProductRouter.post(
+  "/",
+  // validateJWT,
+  upload.array("image"),
+  async (req, res) => {
+    try {
+      const product: any = await Product.create(req.body);
 
-    const productsImages = (req.files as any[]).map((item) => {
-      return {
-        fileName: item.filename,
-        idProduct: product.id,
-      };
-    });
+      const productsImages = (req.files as any[]).map((item) => {
+        return {
+          fileName: item.filename,
+          idProduct: product.id,
+        };
+      });
 
-    await ProductImage.bulkCreate(productsImages);
+      await ProductImage.bulkCreate(productsImages);
 
-    return res.status(201).json(product);
-  } catch (err) {
-    res.status(400).send(err);
+      return res.status(201).json(product);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
-});
+);
 
-ProductRouter.put("/:id", async (req, res) => {
+ProductRouter.put("/:id", validateJWT, async (req, res) => {
   try {
     const result = await Product.update(req.body, {
       where: { id: req.params.id },
@@ -136,7 +142,7 @@ ProductRouter.put("/:id", async (req, res) => {
   }
 });
 
-ProductRouter.delete("/:id", async (req, res) => {
+ProductRouter.delete("/:id", validateJWT, async (req, res) => {
   try {
     const data = await Product.destroy({ where: { id: req.params.id } });
     return res.status(200).json(data);

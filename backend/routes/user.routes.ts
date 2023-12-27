@@ -1,10 +1,11 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { User } from "../models/User";
+import validateJWT from "../validateJWT";
 
 export const UserRouter = express.Router();
 
-UserRouter.get("/", async (req, res) => {
+UserRouter.get("/", validateJWT, async (req, res) => {
   try {
     const { cpf, email } = req.query;
 
@@ -63,7 +64,7 @@ UserRouter.post("/", async (req, res) => {
   }
 });
 
-UserRouter.put("/:id", async (req, res) => {
+UserRouter.put("/:id", validateJWT, async (req, res) => {
   try {
     let { password } = req.body;
     const data = req.body;
@@ -82,7 +83,7 @@ UserRouter.put("/:id", async (req, res) => {
   }
 });
 
-UserRouter.delete("/:id", async (req, res) => {
+UserRouter.delete("/:id", validateJWT, async (req, res) => {
   try {
     const data = await User.destroy({ where: { id: req.params.id } });
     return res.status(200).json(data);
