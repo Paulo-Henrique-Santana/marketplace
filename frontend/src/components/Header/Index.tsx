@@ -46,7 +46,7 @@ const Header = ({ useFilters }: { useFilters: any }) => {
 
   const handleSearch = (event: FormEvent) => {
     event.preventDefault();
-    setFilters({ ...filters, search: search });
+    setFilters({ ...filters, name: search });
     navigate("/");
   };
 

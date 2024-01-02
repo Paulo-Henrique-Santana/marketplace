@@ -27,7 +27,6 @@ export function USER_POST_LOGIN(body) {
 }
 
 export function USERS_GET(params) {
-  // console.log(params);
   
   const api = {
     url: API_URL + "user",
@@ -60,31 +59,31 @@ export function GET_CATEGORY() {
   };
 }
 
-export function GET_PRODUCTS(params) {
-  const apiCategory = {
-    url: API_URL + "product?",
-    options: {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  };
+// export function GET_PRODUCTS(params) {
+//   const apiCategory = {
+//     url: API_URL + "product?",
+//     options: {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     },
+//   };
 
-  if (params) {
-    if (params.idCategory) {
-      apiCategory.url += `idCategory=${params.idCategory}&`;
-    }
-    if (params.search) {
-      apiCategory.url += `name=${params.search}&`;
-    }
-    if (params.idLoggedUser) {
-      apiCategory.url += `idLoggedUser=${params.idLoggedUser}&`;
-    }
-  }
+//   if (params) {
+//     if (params.idCategory) {
+//       apiCategory.url += `idCategory=${params.idCategory}&`;
+//     }
+//     if (params.search) {
+//       apiCategory.url += `name=${params.search}&`;
+//     }
+//     if (params.idLoggedUser) {
+//       apiCategory.url += `idLoggedUser=${params.idLoggedUser}&`;
+//     }
+//   }
 
-  return apiCategory;
-}
+//   return apiCategory;
+// }
 
 export function PRODUCTY_POST(body) {
   return {

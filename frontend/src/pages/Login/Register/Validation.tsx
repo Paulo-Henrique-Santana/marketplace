@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,15 @@ import * as Yup from "yup";
 import useFetch from "../../../Hooks/useFetch";
 import Regex from "./Regex";
 import { useAxiosGetCPF, usePostLogin } from "../../../Hooks/useAxiosLogin";
+import { CpfProps } from "../../../Types/Login";
+import {
+  useAxiosQueryGet,
+  useAxiosQueryGet2,
+  useCheckExistence,
+} from "../../../Hooks/useAxiosQuery";
+import { axiosInstance } from "../../../Api";
+import { useAxiosGet } from "../../../Hooks/useAxiosGet";
+import { useQueries, useQuery } from "react-query";
 
 type OnSubmitProps = {
   name: string;
@@ -18,19 +27,28 @@ type OnSubmitProps = {
 };
 
 const Validation = () => {
+  const RemoverSpecialCharacters = (string: string) => {
+    return string.replace(/[^a-zA-Z0-9]/g, "");
+  };
+
   const [errorInputCpf, setErrorInputCpf] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState("");
   const [cpf, setCpf] = useState("");
+
+  const [email, setEmail] = useState("");
   const { passwordRegex, cpfRegex } = Regex();
   const { setloggedUser } = useContext(LocalStorageContext);
   const { request } = useFetch();
   const navigate = useNavigate();
 
-  const { mutate, error } = usePostLogin();
+  const cpfRemove = RemoverSpecialCharacters(cpf);
 
-  const RemoverSpecialCharacters = (string: string) => {
-    return string.replace(/[^a-zA-Z0-9]/g, "");
-  };
+  // const { data } = useAxiosQueryGet<CpfProps[]>("user?cpf=", "cpfExists", cpfRemove);
+  const [existValue, setExistValue] = useState("");
+
+  const { data } = useAxiosQueryGet2("user?", existValue);
+
+  const { mutate, error } = usePostLogin();
 
   const schema = Yup.object().shape({
     name: Yup.string()
@@ -39,13 +57,21 @@ const Validation = () => {
 
     email: Yup.string()
       .email("Email format is not valid")
-      .required("Required field"),
+      .required("Required field")
+      .test("checkEmailAvailability", "Email already exists", (value) => {
+        setExistValue(`email=${value}`);
+        // return !isError && !(queryData && queryData.length > 0);
+      }),
 
     cpf: Yup.string()
       .required("Required field")
       .max(11, "Maximum 12 characters")
       .matches(cpfRegex, "Invalid CPF")
-      .transform((element) => RemoverSpecialCharacters(element)),
+      .transform((element) => RemoverSpecialCharacters(element))
+      .test("checkCpfAvailability", "CPF already exists", (value) => {
+        setExistValue(`cpf=${value}`);
+        // return !(data && data.length > 0);
+      }),
 
     password: Yup.string().required("Required field"),
     // .matches(
@@ -68,60 +94,39 @@ const Validation = () => {
     resolver: yupResolver(schema),
   });
 
-  const onBlurCpf1 = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
-    if (cpf.target.value && !errors.email) {
-      const { url, options } = USERS_GET({
-        cpf: RemoverSpecialCharacters(cpf.target.value),
-      });
-      const { json } = await request(url, true, options);
-      // console.log(json);
+  // console.log(errors);
 
-      if (json.length) setErrorInputCpf("CPF already registered");
-      else setErrorInputCpf("");
-    }
-  };
+  // const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
+  // const cpfArray = data!.map((item: CpfProps) => item.cpf);
+  // const cpfValue = RemoverSpecialCharacters(cpf.target.value);
 
-  // const { data } = useGetRequest(
-  //   "user",
-  //   "userKey",
-  //   RemoverSpecialCharacters(cpf)
-  // );
-  // console.log(data);
-  // console.log(cpf);
-
-  const { data } = useAxiosGetCPF("user", "cpfExists", cpf);
-
-  console.log(data);
-
-  const cpfs = data?.map((item) => item.cpf);
-
-  // console.log(cpfs.length);
-
-  // console.log(data);
-
-  // if (cpf && !errors.email) {
-  //   if (cpfs?.length) setErrorInputCpf("CPF already registered");
+  // if (cpfValue && !errors.email) {
+  //   if (cpfArray.includes(cpfValue))
+  //     setErrorInputCpf("CPF already registered");
   //   else setErrorInputCpf("");
   // }
+  // };
 
-  const onBlurCpf = async (cpf: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(cpfs.length);
+  // const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (email.target.value && !errors.email) {
+  //     const { url, options } = USERS_GET({ email: email.target.value });
+  //     const { json } = await request(url, true, options);
+  //     if (json.length) {
+  //       setErrorInputEmail("E-mail already registered");
+  //     } else {
+  //       setErrorInputEmail("");
+  //     }
+  //   }
+  // };
 
-    if (cpf.target.value && !errors.email) {
-      if (cpfs.length) setErrorInputCpf("CPF already registered");
+  const onBlurEmail1 = async (email: React.ChangeEvent<HTMLInputElement>) => {
+    const emailArray = data!.map((item: CpfProps) => item.email);
+    const emailValue = RemoverSpecialCharacters(email.target.value);
+
+    if (emailValue && !errors.email) {
+      if (emailArray.includes(emailValue))
+        setErrorInputCpf("CPF already registered");
       else setErrorInputCpf("");
-    }
-  };
-
-  const onBlurEmail = async (email: React.ChangeEvent<HTMLInputElement>) => {
-    if (email.target.value && !errors.email) {
-      const { url, options } = USERS_GET({ email: email.target.value });
-      const { json } = await request(url, true, options);
-      if (json.length) {
-        setErrorInputEmail("E-mail already registered");
-      } else {
-        setErrorInputEmail("");
-      }
     }
   };
 
@@ -147,8 +152,8 @@ const Validation = () => {
 
   return {
     onSubmit,
-    onBlurCpf,
-    onBlurEmail,
+    // onBlurCpf,
+    // onBlurEmail,
     register,
     handleSubmit,
     errors,
@@ -157,6 +162,8 @@ const Validation = () => {
     errorInputEmail,
     cpf,
     setCpf,
+    email,
+    setEmail,
   };
 };
 

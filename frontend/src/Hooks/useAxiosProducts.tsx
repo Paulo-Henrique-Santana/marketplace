@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { LocalStorageContext } from "../Context/LocalStorageContext";
 
 export const useAxiosPostProduct = () => {
+  const { token } = useContext(LocalStorageContext);
   const postData = async ({ url, data }: PostProductData) => {
     const response = await axiosInstance.post(url, data);
     return response.data;
@@ -26,7 +27,6 @@ export const useAxiosGetProducts = (
   queryKey: string,
   params?: any
 ) => {
-  const { token } = useContext(LocalStorageContext);
   const getData = async (url: string, params?: ParamsProducts) => {
     if (params) {
       if (params.idCategory) {
@@ -40,11 +40,7 @@ export const useAxiosGetProducts = (
       }
     }
 
-    const response = await axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.get(url);
     return response.data;
   };
 

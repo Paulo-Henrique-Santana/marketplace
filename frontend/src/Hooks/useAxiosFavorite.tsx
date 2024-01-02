@@ -1,10 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { axiosInstance } from "../Api";
+import { useContext } from "react";
+import { LocalStorageContext } from "../Context/LocalStorageContext";
 
 export const useAxiosPostFavorite = () => {
+  const { token } = useContext(LocalStorageContext);
   const queryClient = useQueryClient();
   const favoritePostData = async ({ url, data }: any) => {
-    const response = await axiosInstance.post(url, data);
+    const response = await axiosInstance.post(url, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
     return response.data;
   };
 

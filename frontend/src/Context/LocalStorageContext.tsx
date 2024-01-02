@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { GET_CATEGORY } from "../Api/Index";
 import useFetch from "../Hooks/useFetch";
+import { axiosHeaders } from "../Api";
 
 type LocalStorageProps = {
   children: React.ReactNode;
@@ -27,6 +28,7 @@ export const LocalStorageProvider = ({ children }: LocalStorageProps) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
+    axiosHeaders(token);
     if (token) {
       localStorage.setItem("key", token);
     } else {

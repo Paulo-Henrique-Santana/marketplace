@@ -7,9 +7,8 @@ import {
   useAxiosDeleteFavorite,
   useAxiosPostFavorite,
 } from "../../../Hooks/useAxiosFavorite";
-import { useAxiosGetProducts } from "../../../Hooks/useAxiosProducts";
-import { ProductData } from "../../../Types/Product";
-
+import { ProductData, ProductsData } from "../../../Types/Product";
+import { useAxiosQueryGet } from "../../../Hooks/useAxiosQuery";
 import "./Index.scss";
 
 const Home = ({ useFilters }: { useFilters: any }) => {
@@ -22,13 +21,11 @@ const Home = ({ useFilters }: { useFilters: any }) => {
     idLoggedUser: loggedUser.id,
   };
 
-  const { data, isLoading, error } = useAxiosGetProducts(
-    "/product?",
+  const { data, isLoading } = useAxiosQueryGet<ProductsData>(
+    "/product",
     "products",
     dataProducts
   );
-
-  console.log(error);
 
   const toogleFavorite = (favoriteProduct: ProductData) => {
     const params = {
@@ -38,6 +35,7 @@ const Home = ({ useFilters }: { useFilters: any }) => {
         idUser: loggedUser.id,
       },
     };
+
     if (favoriteProduct.favorites?.length) {
       const id = favoriteProduct.favorites[0].id;
       deleteProduct(id);
